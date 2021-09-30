@@ -1,0 +1,13 @@
+// Rooms and room cards
+Room, Office, O
+Room, Bedroom, B
+Room, Kitchen, K
+Room, Toilet, T
+Room, Guardroom, G
+Room, Malecave, M
+Room, Femalecave, F
+Room, Batcave, C
+Room, Lounge, L
+// Other spaces on the board
+Space, Unused, X
+Space, Walkway, W
