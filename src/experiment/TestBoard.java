@@ -10,15 +10,24 @@ package experiment;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class TestBoard {
-	private Set<TestBoardCell> board;
+	private int numRows;
+	private int numCols;
+	private TestBoardCell[][] board;
 	private Set<TestBoardCell> targets;
-	private Map<TestBoardCell, Set<TestBoardCell>> adjMatrix;
 	
-	public TestBoard() {
+	public TestBoard(int numRows, int numCols) {
 		super();
-		
+		this.numRows = numRows;
+		this.numCols = numCols;
+		board = new TestBoardCell[numRows][numCols];
+		for(int i = 0; i < numRows; i++) {
+			for(int j = 0; j < numCols; j++) {
+				board[i][j] = new TestBoardCell(i, j);
+			}
+		}
 	}
 	
 	public void calcTargets(TestBoardCell startCell, int pathLength) {
@@ -30,6 +39,6 @@ public class TestBoard {
 	}
 	
 	public TestBoardCell getCell(int row, int column) {
-		
+		return board[row][column];
 	}
 }
