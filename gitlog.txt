@@ -1,0 +1,41 @@
+commit d30facfc2a3e5027f995be5395120acc246205a8
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Sun Oct 3 09:59:42 2021 -0600
+
+    Added two tests for just rooms and just occupied
+
+commit 85477f3f556d6154f03c406d3ae36808123d5cca
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Sun Oct 3 09:28:16 2021 -0600
+
+    Added test cases for occupied spaces
+
+commit b50a4903bc8122da970edb488a6afaa1a65c0890
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Sat Oct 2 16:11:41 2021 -0600
+
+    Added adjacency test cases, began target test cases
+
+commit 49ec324921131cc0267af61922406a0d80ce3185
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Sat Oct 2 15:11:37 2021 -0600
+
+    Added TestBoardCell, TestBoard, and BoardTestsExp skeletons
+
+commit 05d18beef2ec0d38a00618589bbbd2eefc5e6ca4
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Thu Sep 30 11:59:50 2021 -0600
+
+    Added ClueSetup.txt
+
+commit 13a1a92179b6f386823e435b5a0c2818ecadb73c
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Thu Sep 30 10:58:06 2021 -0600
+
+    Initial Commit
+
+commit 5c3e241b0f12a85b1bb07f329a177ea6f77b1e17
+Author: snewman4 <90208190+snewman4@users.noreply.github.com>
+Date:   Thu Sep 30 10:51:49 2021 -0600
+
+    Initial commit

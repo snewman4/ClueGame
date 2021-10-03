@@ -8,6 +8,7 @@
  */
 package experiment;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -22,6 +23,7 @@ public class TestBoard {
 		super();
 		this.numRows = numRows;
 		this.numCols = numCols;
+		targets = new HashSet<TestBoardCell>();
 		board = new TestBoardCell[numRows][numCols];
 		for(int i = 0; i < numRows; i++) {
 			for(int j = 0; j < numCols; j++) {

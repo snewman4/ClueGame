@@ -9,6 +9,7 @@
 
 package experiment;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class TestBoardCell {
@@ -23,6 +24,7 @@ public class TestBoardCell {
 		super();
 		this.row = row;
 		this.column = column;
+		adjacencyList = new HashSet<TestBoardCell>();
 	}
 	
 	public void addAdjecency(TestBoardCell cell) {
