@@ -218,4 +218,75 @@ class BoardTestsExp {
 		Assert.assertTrue(targets.contains(expBoard.getCell(2, 3)));
 		Assert.assertTrue(targets.contains(expBoard.getCell(3, 3)));
 	}
+	
+	/*
+	 * Test the target generation for several starting locations and several rolls,
+	 * given that certain spaces are occupied
+	 * 
+	 * Test two occupied cells
+	 */
+	@Test
+	void TargetsTwoOccupiedTest() {
+		// Set up the occupied cells
+		expBoard.getCell(0, 1).setOccupied(true);
+		expBoard.getCell(1, 0).setOccupied(true);
+		
+		// Starting location (0, 0), roll 4
+		// This starting location should not be able to move, as it
+		// is blocked in by occupied cells
+		TestBoardCell cell = expBoard.getCell(0, 0);
+		expBoard.calcTargets(cell, 4);
+		Set<TestBoardCell> targets = expBoard.getTargets();
+		Assert.assertEquals(0, targets.size());
+		
+		// Starting location (1, 1), roll 6
+		cell = expBoard.getCell(1, 1);
+		expBoard.calcTargets(cell, 6);
+		targets = expBoard.getTargets();
+		Assert.assertEquals(6, targets.size());
+		Assert.assertTrue(targets.contains(expBoard.getCell(0, 2)));
+		Assert.assertTrue(targets.contains(expBoard.getCell(1, 3)));
+		Assert.assertTrue(targets.contains(expBoard.getCell(2, 0)));
+		Assert.assertTrue(targets.contains(expBoard.getCell(2, 2)));
+		Assert.assertTrue(targets.contains(expBoard.getCell(3, 1)));
+		Assert.assertTrue(targets.contains(expBoard.getCell(3, 3)));
+	}
+	
+	/*
+	 * Test the target generation for several starting locations and several rolls,
+	 * given that certain spaces are rooms
+	 * 
+	 * Test two room cells
+	 */
+	@Test
+	void TargetsTwoRoomTest() {
+		// Set up the occupied cells
+		expBoard.getCell(1, 0).setRoom(true);
+		expBoard.getCell(3, 3).setRoom(true);
+		
+		// Starting location (2, 2), roll 5
+		TestBoardCell cell = expBoard.getCell(0, 0);
+		expBoard.calcTargets(cell, 4);
+		Set<TestBoardCell> targets = expBoard.getTargets();
+		Assert.assertEquals(9, targets.size());
+		Assert.assertTrue(targets.contains(expBoard.getCell(0, 1)));
+		Assert.assertTrue(targets.contains(expBoard.getCell(0, 3)));
+		Assert.assertTrue(targets.contains(expBoard.getCell(1, 0)));
+		Assert.assertTrue(targets.contains(expBoard.getCell(1, 2)));
+		Assert.assertTrue(targets.contains(expBoard.getCell(2, 1)));
+		Assert.assertTrue(targets.contains(expBoard.getCell(2, 3)));
+		Assert.assertTrue(targets.contains(expBoard.getCell(3, 0)));
+		Assert.assertTrue(targets.contains(expBoard.getCell(3, 2)));
+		Assert.assertTrue(targets.contains(expBoard.getCell(3, 3)));
+		
+		// Starting location (0, 0), roll 3
+		cell = expBoard.getCell(0, 0);
+		expBoard.calcTargets(cell, 3);
+		targets = expBoard.getTargets();
+		Assert.assertEquals(4, targets.size());
+		Assert.assertTrue(targets.contains(expBoard.getCell(0, 3)));
+		Assert.assertTrue(targets.contains(expBoard.getCell(1, 0)));
+		Assert.assertTrue(targets.contains(expBoard.getCell(1, 2)));
+		Assert.assertTrue(targets.contains(expBoard.getCell(2, 1)));
+	}
 }
