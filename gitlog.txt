@@ -1,3 +1,21 @@
+commit e6464ce891cedebb6b862ffbe5fa91fa7d0054c3
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Tue Oct 5 11:33:13 2021 -0600
+
+    Updated movement algorithm to account for rooms and occupied. Passes all tests.
+
+commit 1b448f4662ea8dab65262af148d578747d77a7e7
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Mon Oct 4 21:02:00 2021 -0600
+
+    Implemented basic target finding algorithm, assuming no rooms or occupieds
+
+commit cdb81688d47e9def8c568fcbc25e1166b1c239ea
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Mon Oct 4 20:42:55 2021 -0600
+
+    Added calculations for adjList to Board Constructor
+
 commit 2c4140614cf90b6c83278994bc77622e169d26a9
 Author: Sam Newman <snewman1@mines.edu>
 Date:   Sun Oct 3 10:07:29 2021 -0600
