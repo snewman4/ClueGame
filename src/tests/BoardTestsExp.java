@@ -78,6 +78,13 @@ class BoardTestsExp {
 		Assert.assertTrue(testList.contains(expBoard.getCell(2, 3)));
 		Assert.assertTrue(testList.contains(expBoard.getCell(3, 2)));
 		Assert.assertEquals(4, testList.size());
+		
+		cell = expBoard.getCell(1, 2); // Cell (1, 2)
+		testList = cell.getAdjList();
+		Assert.assertTrue(testList.contains(expBoard.getCell(0, 2)));
+		Assert.assertTrue(testList.contains(expBoard.getCell(1, 1)));
+		Assert.assertTrue(testList.contains(expBoard.getCell(1, 3)));
+		Assert.assertTrue(testList.contains(expBoard.getCell(2, 2)));
 	}
 	
 	/*

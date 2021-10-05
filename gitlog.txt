@@ -1,3 +1,9 @@
+commit 2c4140614cf90b6c83278994bc77622e169d26a9
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Sun Oct 3 10:07:29 2021 -0600
+
+    Initialized sets in constructors to stop errors, get failures instead
+
 commit d30facfc2a3e5027f995be5395120acc246205a8
 Author: Sam Newman <snewman1@mines.edu>
 Date:   Sun Oct 3 09:59:42 2021 -0600

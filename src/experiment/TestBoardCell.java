@@ -14,11 +14,9 @@ import java.util.Set;
 
 public class TestBoardCell {
 	// Cell's location on board:
-	private int row;
-	private int column;
+	private int row, column;
 	private Set<TestBoardCell> adjacencyList; // Cells adjacent to this
-	private boolean isRoom; // If cell is in a room or not
-	private boolean occupied; // If cell is occupied or not
+	private boolean isRoom, occupied; // If cell is in a room or not, if cell is occupied or not
 	
 	public TestBoardCell(int row, int column) {
 		super();
