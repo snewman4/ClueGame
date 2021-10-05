@@ -48,4 +48,10 @@ public class TestBoardCell {
 	public boolean isOccupied() {
 		return occupied;
 	}
+
+	@Override
+	public String toString() {
+		return "TestBoardCell [row=" + row + ", column=" + column + ", isRoom=" + isRoom + ", occupied=" + occupied
+				+ "]";
+	}
 }

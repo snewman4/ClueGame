@@ -24,8 +24,6 @@ public class TestBoard {
 		super();
 		this.numRows = numRows;
 		this.numCols = numCols;
-		targets = new HashSet<TestBoardCell>();
-		visited = new HashSet<TestBoardCell>();
 		board = new TestBoardCell[numRows][numCols];
 		// Initialize each cell on the board
 		for(int i = 0; i < numRows; i++) {
@@ -50,17 +48,35 @@ public class TestBoard {
 		}
 	}
 	
+	/*
+	 * Public method that will initialize new visited and targets sets, and
+	 * will send them into the private function findAllTargets
+	 */
 	public void calcTargets(TestBoardCell startCell, int pathLength) {
-		visited.add(startCell);
+		visited = new HashSet<TestBoardCell>();
+		targets = new HashSet<TestBoardCell>();
+		findAllTargets(startCell, pathLength);
+	}
+	
+	/*
+	 * Private method to recursively find all targets for a cell, given the
+	 * roll (pathLength). Must be accessed via calcTargets
+	 */
+	private void findAllTargets(TestBoardCell startCell, int pathLength) {
+		visited.add(startCell); // The current cell cannot be returned to
+		// For each cell adjacent to the start cell:
 		for(TestBoardCell cell : startCell.getAdjList()) {
+			// If the cell has already been visited, return to top of loop
 			if(visited.contains(cell))
 				continue;
 			visited.add(cell);
+			// If no more moves:
 			if(pathLength == 1)
 				targets.add(cell);
+			// Recursive call:
 			else
-				calcTargets(cell, pathLength - 1);
-			visited.remove(cell);
+				findAllTargets(cell, pathLength - 1);
+			visited.remove(cell); // Cleanup
 		}
 	}
 	
