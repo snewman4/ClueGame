@@ -1,7 +1,6 @@
 package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.Set;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
@@ -163,7 +162,7 @@ class BoardTestsExp {
 	 * 
 	 * Test one room and one occupied cell
 	 */
-	//@Test
+	@Test
 	void TargetsOneMixedTest() {
 		// Set up the occupied cells
 		expBoard.getCell(0, 2).setOccupied(true);
@@ -198,7 +197,7 @@ class BoardTestsExp {
 	 * 
 	 * Test two rooms and two occupied cells
 	 */
-	//@Test
+	@Test
 	void TargetsTwoMixedTest() {
 		// Set up the occupied cells
 		expBoard.getCell(1, 2).setOccupied(true);
@@ -233,7 +232,7 @@ class BoardTestsExp {
 	 * 
 	 * Test two occupied cells
 	 */
-	//@Test
+	@Test
 	void TargetsTwoOccupiedTest() {
 		// Set up the occupied cells
 		expBoard.getCell(0, 1).setOccupied(true);
@@ -266,7 +265,7 @@ class BoardTestsExp {
 	 * 
 	 * Test two room cells
 	 */
-	//@Test
+	@Test
 	void TargetsTwoRoomTest() {
 		// Set up the occupied cells
 		expBoard.getCell(1, 0).setRoom(true);
@@ -274,10 +273,9 @@ class BoardTestsExp {
 		
 		// Starting location (2, 2), roll 5
 		TestBoardCell cell = expBoard.getCell(0, 0);
-		expBoard.calcTargets(cell, 4);
+		expBoard.calcTargets(cell, 5);
 		Set<TestBoardCell> targets = expBoard.getTargets();
-		Assert.assertEquals(9, targets.size());
-		Assert.assertTrue(targets.contains(expBoard.getCell(0, 1)));
+		Assert.assertEquals(7, targets.size());
 		Assert.assertTrue(targets.contains(expBoard.getCell(0, 3)));
 		Assert.assertTrue(targets.contains(expBoard.getCell(1, 0)));
 		Assert.assertTrue(targets.contains(expBoard.getCell(1, 2)));
@@ -285,7 +283,6 @@ class BoardTestsExp {
 		Assert.assertTrue(targets.contains(expBoard.getCell(2, 3)));
 		Assert.assertTrue(targets.contains(expBoard.getCell(3, 0)));
 		Assert.assertTrue(targets.contains(expBoard.getCell(3, 2)));
-		Assert.assertTrue(targets.contains(expBoard.getCell(3, 3)));
 		
 		// Starting location (0, 0), roll 3
 		cell = expBoard.getCell(0, 0);

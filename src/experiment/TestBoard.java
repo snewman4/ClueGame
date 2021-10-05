@@ -36,14 +36,18 @@ public class TestBoard {
 		for(int i = 0; i < numRows; i++) {
 			for(int j = 0; j < numCols; j++) {
 				TestBoardCell cell = board[i][j];
-				if((i - 1) >= 0)
+				if((i - 1) >= 0) {
 					cell.addAdjecency(board[i-1][j]);
-				if((i + 1) < numRows)
+				}
+				if((i + 1) < numRows) {
 					cell.addAdjecency(board[i+1][j]);
-				if((j - 1) >= 0)
+				}
+				if((j - 1) >= 0) {
 					cell.addAdjecency(board[i][j-1]);
-				if((j + 1) < numCols)
+				}
+				if((j + 1) < numCols) {
 					cell.addAdjecency(board[i][j+1]);
+				}
 			}
 		}
 	}
@@ -55,6 +59,7 @@ public class TestBoard {
 	public void calcTargets(TestBoardCell startCell, int pathLength) {
 		visited = new HashSet<TestBoardCell>();
 		targets = new HashSet<TestBoardCell>();
+		visited.add(startCell); // The current cell cannot be returned to
 		findAllTargets(startCell, pathLength);
 	}
 	
@@ -63,19 +68,22 @@ public class TestBoard {
 	 * roll (pathLength). Must be accessed via calcTargets
 	 */
 	private void findAllTargets(TestBoardCell startCell, int pathLength) {
-		visited.add(startCell); // The current cell cannot be returned to
 		// For each cell adjacent to the start cell:
 		for(TestBoardCell cell : startCell.getAdjList()) {
-			// If the cell has already been visited, return to top of loop
-			if(visited.contains(cell))
+			// If the cell has already been visited or the cell is occupied:
+			if(visited.contains(cell) || cell.isOccupied()) {
+				// Return to loop, do not move to cell
 				continue;
+			}
 			visited.add(cell);
-			// If no more moves:
-			if(pathLength == 1)
+			// If no more moves or in room:
+			if(pathLength == 1 || cell.isRoom()) {
 				targets.add(cell);
+			}
 			// Recursive call:
-			else
+			else {
 				findAllTargets(cell, pathLength - 1);
+			}
 			visited.remove(cell); // Cleanup
 		}
 	}
