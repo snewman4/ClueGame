@@ -40,4 +40,31 @@ public class BoardCell {
 	public boolean isOccupied() {
 		return isOccupied;
 	}
+	
+	public boolean isLabel() {
+		return roomLabel;
+	}
+	
+	public boolean isRoomCenter() {
+		return roomCenter;
+	}
+	
+	public boolean isDoorway() {
+		if(doorDirection == DoorDirection.NONE) {
+			return false;
+		}
+		return true;
+	}
+	
+	public DoorDirection getDoorDirection() {
+		return doorDirection;
+	}
+	
+	public Character getInitial() {
+		return initial;
+	}
+	
+	public Character getSecretPassage() {
+		return secretPassage;
+	}
 }
