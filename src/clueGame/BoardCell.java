@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class BoardCell {
-	private int row, col;
+	private int row, column;
 	private char initial, secretPassage;
 	private DoorDirection doorDirection;
 	private boolean roomLabel, roomCenter, isRoom, isOccupied;
@@ -13,10 +13,11 @@ public class BoardCell {
 	public BoardCell(int row, int column) {
 		super();
 		this.row = row;
-		this.col = column;
+		this.column = column;
 		adjList = new HashSet<BoardCell>();
 	}
 	
+	// All of the getters and setters for BoardCell class	
 	public void addAdjecency(BoardCell cell) {
 		adjList.add(cell);
 	}
@@ -33,16 +34,24 @@ public class BoardCell {
 		return isRoom;
 	}
 	
-	public void setOccupied(boolean occupied) {
-		this.isOccupied = occupied;
+	public void setOccupied(boolean isOccupied) {
+		this.isOccupied = isOccupied;
 	}
 	
 	public boolean isOccupied() {
 		return isOccupied;
 	}
 	
+	public void setLabel(boolean roomLabel) {
+		this.roomLabel = roomLabel;
+	}
+	
 	public boolean isLabel() {
 		return roomLabel;
+	}
+	
+	public void setRoomCenter(boolean roomCenter) {
+		this.roomCenter = roomCenter;
 	}
 	
 	public boolean isRoomCenter() {
@@ -60,8 +69,16 @@ public class BoardCell {
 		return doorDirection;
 	}
 	
+	public void setInitial(Character initial) {
+		this.initial = initial;
+	}
+	
 	public Character getInitial() {
 		return initial;
+	}
+	
+	public void setSecretPassage(Character secretPassage) {
+		this.secretPassage = secretPassage;
 	}
 	
 	public Character getSecretPassage() {

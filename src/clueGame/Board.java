@@ -15,16 +15,6 @@ public class Board {
 		super();
 	}
 	
-	public void setConfigFiles(String layoutConfigFile, String setupConfigFile) {
-		this.layoutConfigFile = layoutConfigFile;
-		this.setupConfigFile = setupConfigFile;
-	}
-	
-	// Return the only board
-	public static Board getInstance() {
-		return theInstance;
-	}
-	
 	// Initialize the board
 	public void initialize() {
 		board = new BoardCell[numRows][numColumns];
@@ -35,7 +25,7 @@ public class Board {
 				board[i][j] = new BoardCell(i, j);
 			}
 		}
-		
+
 		// Create each cell's adjacency list
 		for(int i = 0; i < numRows; i++) {
 			for(int j = 0; j < numColumns; j++) {
@@ -54,6 +44,16 @@ public class Board {
 				}
 			}
 		}
+	}
+	
+	// Return the only board
+	public static Board getInstance() {
+		return theInstance;
+	}
+	
+	public void setConfigFiles(String layoutConfigFile, String setupConfigFile) {
+		this.layoutConfigFile = layoutConfigFile;
+		this.setupConfigFile = setupConfigFile;
 	}
 	
 	public void loadSetupConfig() {
