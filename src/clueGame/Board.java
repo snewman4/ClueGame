@@ -98,11 +98,13 @@ public class Board {
 			Character cellInitial = splitRead[2].charAt(0); // Initial of that cell
 			
 			// If the cellType is a room, create a room with the name and initial
-			if(cellType.equals("Room")) {
+			if(cellType.equals("Room") || cellType.equals("Space")) {
 				Room newRoom = new Room(cellInitial, cellName);
 				roomMap.put(cellInitial, newRoom); // Add to room map
 			}
 		}
+		
+		in.close();
 	}
 	
 	// Method to read in the layout from the layout config file
@@ -136,34 +138,52 @@ public class Board {
 		// Set each room's data, based on the string in splitRead
 		for(int row = 0; row < numRows; row++) {
 			for(int column = 0; column < numColumns; column++) {
-				board[row][column] = new BoardCell(row, column);
-				char roomInitial = splitRead.get(row)[column].charAt(0);
-				board[row][column].setInitial(roomInitial);
-				
-				// Check if there is an optional char. If there is, store it
-				if(splitRead.get(row)[column].length() > 1) {
-					char cellOption = splitRead.get(row)[column].charAt(1);
-					switch(cellOption) {
-						case '>':
-							board[row][column].setDoorway(DoorDirection.RIGHT);
-							break;
-						case '^':
-							board[row][column].setDoorway(DoorDirection.UP);
-							break;
-						case '<':
-							board[row][column].setDoorway(DoorDirection.LEFT);
-							break;
-						case 'v':
-							board[row][column].setDoorway(DoorDirection.DOWN);
-							break;
-						case '#':
-							board[row][column].setLabel(true);
-							break;
-						case '*':
-							board[row][column].setRoomCenter(true);
-							break;
-					}
-				}
+				cellSetUp(splitRead, row, column);
+			}
+		}
+		
+		in.close();
+	}
+
+	/* Method to take a line from the layout file, along with the active cell, and 
+	 * format the cell appropriately
+	 */
+	
+	private void cellSetUp(ArrayList<String[]> splitRead, int row, int column) {
+		board[row][column] = new BoardCell(row, column);
+		BoardCell cell = board[row][column];
+		char roomInitial = splitRead.get(row)[column].charAt(0);
+		cell.setInitial(roomInitial); // Initial of the room
+		cell.setDoorway(DoorDirection.NONE); // Default of no door
+		
+		// Check if there is an optional char. If there is, store it
+		if(splitRead.get(row)[column].length() > 1) {
+			char cellOption = splitRead.get(row)[column].charAt(1);
+			// Determine what to do based on the optional character
+			switch(cellOption) {
+				case '>': // Door right
+					cell.setDoorway(DoorDirection.RIGHT);
+					break;
+				case '^': // Door up
+					cell.setDoorway(DoorDirection.UP);
+					break;
+				case '<': // Door left
+					cell.setDoorway(DoorDirection.LEFT);
+					break;
+				case 'v': // Door down
+					cell.setDoorway(DoorDirection.DOWN);
+					break;
+				case '#': // Room label
+					cell.setLabel(true);
+					roomMap.get(roomInitial).setLabelCell(cell);
+					break;
+				case '*': // Room center
+					board[row][column].setRoomCenter(true);
+					roomMap.get(roomInitial).setCenterCell(cell);
+					break;
+				default: // Secret passage to another room
+					cell.setSecretPassage(cellOption);
+					break;
 			}
 		}
 	}

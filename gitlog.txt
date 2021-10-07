@@ -1,3 +1,39 @@
+commit 40d2f3c23fc73d4f65767ce7663546142f1f8b92
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Wed Oct 6 20:46:42 2021 -0600
+
+    Renamed Tests.txt -> Test.txt
+
+commit 033e996180717577e6c5c5889c4bb0fa7221f63b
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Wed Oct 6 20:44:45 2021 -0600
+
+    Updated all classes to make tests fail instead of error
+
+commit 35fa79da08c7352f33e6cc7dfd1e283e9a0d2f3e
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Wed Oct 6 18:51:33 2021 -0600
+
+    Updated Board and BoardCell getters and setters for better readability
+
+commit 9d1654e168595ecc095401d5ea46a71b1ce113be
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Tue Oct 5 17:43:51 2021 -0600
+
+    Added many, many setters and getters
+
+commit edd011c0a2c75f741652d43044fcfac12cbc93f3
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Tue Oct 5 12:09:19 2021 -0600
+
+    Created classes for gameplay
+
+commit b82d24ae6672bd53502bc17b2b8f4bc886a16a3c
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Tue Oct 5 11:49:09 2021 -0600
+
+    Added data files and provided test files
+
 commit e6464ce891cedebb6b862ffbe5fa91fa7d0054c3
 Author: Sam Newman <snewman1@mines.edu>
 Date:   Tue Oct 5 11:33:13 2021 -0600

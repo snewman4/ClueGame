@@ -53,6 +53,7 @@ class FileInitTest {
 		assertEquals("Guardroom", board.getRoom('G').getName() );
 		assertEquals("Malecave", board.getRoom('M').getName() );
 		assertEquals("Lounge", board.getRoom('L').getName() );
+		assertEquals("Walkway", board.getRoom('W').getName() );
 	}
 
 	@Test
