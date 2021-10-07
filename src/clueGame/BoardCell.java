@@ -68,6 +68,10 @@ public class BoardCell {
 		return roomCenter;
 	}
 	
+	public void setDoorway(DoorDirection direction) {
+		this.doorDirection = direction;
+	}
+	
 	public boolean isDoorway() {
 		if(doorDirection == DoorDirection.NONE) {
 			return false;
