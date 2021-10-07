@@ -31,16 +31,18 @@ public class Board {
 	
 	// Initialize the board
 	public void initialize() {
-		roomMap = new HashMap<Character, Room>();
-
 		try {
 			loadSetupConfig();
-		} catch (FileNotFoundException e1) {
-			e1.getMessage();
+		} catch (FileNotFoundException e) {
+			e.getMessage();
+		} catch (BadConfigFormatException e) {
+			e.getMessage();
 		}
 		try {
 			loadLayoutConfig();
 		} catch (FileNotFoundException e) {
+			e.getMessage();
+		} catch (BadConfigFormatException e) {
 			e.getMessage();
 		}
 
@@ -79,7 +81,8 @@ public class Board {
 	}
 	
 	// Method to read in the setup from the setup config file
-	public void loadSetupConfig() throws FileNotFoundException {
+	public void loadSetupConfig() throws FileNotFoundException, BadConfigFormatException {
+		roomMap = new HashMap<Character, Room>();
 		FileReader reader = new FileReader(setupConfigFile);
 		Scanner in = new Scanner(reader);
 		
@@ -102,13 +105,16 @@ public class Board {
 				Room newRoom = new Room(cellInitial, cellName);
 				roomMap.put(cellInitial, newRoom); // Add to room map
 			}
+			else {
+				throw new BadConfigFormatException("Could not evaluate type in " + setupConfigFile);
+			}
 		}
 		
 		in.close();
 	}
 	
 	// Method to read in the layout from the layout config file
-	public void loadLayoutConfig() throws FileNotFoundException {
+	public void loadLayoutConfig() throws FileNotFoundException, BadConfigFormatException {
 		FileReader reader = new FileReader(layoutConfigFile);
 		Scanner in = new Scanner(reader);
 		ArrayList<String> firstRead = new ArrayList<String>(); // Array of each row
@@ -127,6 +133,13 @@ public class Board {
 		// Add each row, split, to splitRead
 		for(String row : firstRead) {
 			splitRead.add(row.split(","));
+		}
+		
+		// Check that all rows have the same amount of columns
+		for(int row = 0; row < numRows; row++) {
+			if(splitRead.get(row).length != splitRead.get(0).length) {
+				throw new BadConfigFormatException("Not all rows have the same amount of elements in " + layoutConfigFile);
+			}
 		}
 		
 		// Set numColumns to number of elements in one String[]
@@ -149,10 +162,15 @@ public class Board {
 	 * format the cell appropriately
 	 */
 	
-	private void cellSetUp(ArrayList<String[]> splitRead, int row, int column) {
+	private void cellSetUp(ArrayList<String[]> splitRead, int row, int column) throws BadConfigFormatException {
 		board[row][column] = new BoardCell(row, column);
 		BoardCell cell = board[row][column];
 		char roomInitial = splitRead.get(row)[column].charAt(0);
+		
+		// Check that the initial is a room that we know of
+		if(!(roomMap.containsKey(roomInitial))) {
+			throw new BadConfigFormatException("The initial " + roomInitial + " could not be matched with a room. Please check that it is the correct initial.");
+		}
 		cell.setInitial(roomInitial); // Initial of the room
 		cell.setDoorway(DoorDirection.NONE); // Default of no door
 		
