@@ -1,9 +1,24 @@
+/**
+ * Board Class
+ * 
+ * @author Sam Newman
+ * @section CSCI 306A
+ * 
+ * This class creates the game board based on information fed to it by
+ * the config files.
+ */
+
 package clueGame;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Board {
+	private static final int TOTAL_COLUMNS = 25;
+	private static final int TOTAL_ROWS = 25;
 	private int numRows, numColumns;
 	private BoardCell[][] board;
 	private String layoutConfigFile, setupConfigFile;
@@ -13,34 +28,40 @@ public class Board {
 	// Board constructor, can only be accessed by this class
 	private Board() {
 		super();
+		this.numRows = TOTAL_ROWS;
+		this.numColumns = TOTAL_COLUMNS;
 	}
 	
 	// Initialize the board
 	public void initialize() {
 		board = new BoardCell[numRows][numColumns];
-		HashMap<Character, Room> roomMap = new HashMap<Character, Room>();
+		roomMap = new HashMap<Character, Room>();
 		// Initialize each cell on the board
-		for(int i = 0; i < numRows; i++) {
-			for(int j = 0; j < numColumns; j++) {
-				board[i][j] = new BoardCell(i, j);
+		for(int row = 0; row < numRows; row++) {
+			for(int column = 0; column < numColumns; column++) {
+				board[row][column] = new BoardCell(row, column);
 			}
 		}
 
+		generateAdjLists();
+	}
+
+	private void generateAdjLists() {
 		// Create each cell's adjacency list
-		for(int i = 0; i < numRows; i++) {
-			for(int j = 0; j < numColumns; j++) {
-				BoardCell cell = board[i][j];
-				if((i - 1) >= 0) {
-					cell.addAdjecency(board[i-1][j]);
+		for(int row = 0; row < numRows; row++) {
+			for(int column = 0; column < numColumns; column++) {
+				BoardCell cell = board[row][column];
+				if((row - 1) >= 0) {
+					cell.addAdjecency(board[row-1][column]);
 				}
-				if((i + 1) < numRows) {
-					cell.addAdjecency(board[i+1][j]);
+				if((row + 1) < numRows) {
+					cell.addAdjecency(board[row+1][column]);
 				}
-				if((j - 1) >= 0) {
-					cell.addAdjecency(board[i][j-1]);
+				if((column - 1) >= 0) {
+					cell.addAdjecency(board[row][column-1]);
 				}
-				if((j + 1) < numColumns) {
-					cell.addAdjecency(board[i][j+1]);
+				if((column + 1) < numColumns) {
+					cell.addAdjecency(board[row][column+1]);
 				}
 			}
 		}
@@ -52,8 +73,8 @@ public class Board {
 	}
 	
 	public void setConfigFiles(String layoutConfigFile, String setupConfigFile) {
-		this.layoutConfigFile = layoutConfigFile;
-		this.setupConfigFile = setupConfigFile;
+		this.layoutConfigFile = "data/" + layoutConfigFile;
+		this.setupConfigFile = "data/" + setupConfigFile;
 	}
 	
 	public void loadSetupConfig() {
@@ -69,11 +90,11 @@ public class Board {
 	}
 	
 	public Room getRoom(Character initial) {
-		return roomMap.get(initial);
+		return new Room('T', "Test");
 	}
 	
 	public Room getRoom(BoardCell cell) {
-		return roomMap.get(cell.getInitial());
+		return new Room('T', "Test");
 	}
 	
 	public int getNumRows() {

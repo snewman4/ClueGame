@@ -1,0 +1,15 @@
+Author: Sam Newman
+Section: CSCI 306A
+
+How I Selected My Test Cells:
+Several of the doorway cell tests were chosen because they were in tight hallways or sections
+where it is important that they point the correct direction. For example, cell (7, 4) points to
+the left into the Batcave, and has only one other walkway to the right of it. Similarly, (19, 13)
+is near another doorway that faces the opposite direction.
+
+When testing to make sure that certain cells aren't door, I chose (5, 12) because it is directly
+in between two opposite-facing doorways. By testing this location, I can verify that nothing is
+shifted one way to either side.
+
+When choosing the various room cells to test, I didn't test any of the same room more than once,
+that way I can verify that all rooms are being initialized appropriately.

@@ -1,3 +1,13 @@
+/**
+ * Board Cell Class
+ * 
+ * @author Sam Newman
+ * @section CSCI 306A
+ * 
+ * This class creates the individual cells that make up the game board,
+ * and stores relevant information about them
+ */
+
 package clueGame;
 
 import java.util.HashSet;
