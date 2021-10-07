@@ -1,0 +1,1 @@
+Could not evaluate type in data/ClueSetupBadFormat306.txt
