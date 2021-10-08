@@ -1,0 +1,97 @@
+NOTE: I have been refactoring continuously throughout (for example, cellSetup was refactored a few commits ago) so I wasn't able
+to find as much to refactor this time around.
+
+diff --git a/exceptionLog.txt b/exceptionLog.txt
+new file mode 100644
+index 0000000..2803713
+--- /dev/null
++++ b/exceptionLog.txt
+@@ -0,0 +1 @@
++Could not evaluate type in data/ClueSetupBadFormat306.txt
+diff --git a/src/clueGame/Board.java b/src/clueGame/Board.java
+index d956de6..cb52062 100644
+--- a/src/clueGame/Board.java
++++ b/src/clueGame/Board.java
+@@ -33,12 +33,6 @@ public class Board {
+ 	public void initialize() {
+ 		try {
+ 			loadSetupConfig();
+-		} catch (FileNotFoundException e) {
+-			e.getMessage();
+-		} catch (BadConfigFormatException e) {
+-			e.getMessage();
+-		}
+-		try {
+ 			loadLayoutConfig();
+ 		} catch (FileNotFoundException e) {
+ 			e.getMessage();
+@@ -161,7 +155,6 @@ public class Board {
+ 	/* Method to take a line from the layout file, along with the active cell, and 
+ 	 * format the cell appropriately
+ 	 */
+-	
+ 	private void cellSetUp(ArrayList<String[]> splitRead, int row, int column) throws BadConfigFormatException {
+ 		board[row][column] = new BoardCell(row, column);
+ 		BoardCell cell = board[row][column];
+@@ -178,31 +171,36 @@ public class Board {
+ 		if(splitRead.get(row)[column].length() > 1) {
+ 			char cellOption = splitRead.get(row)[column].charAt(1);
+ 			// Determine what to do based on the optional character
+-			switch(cellOption) {
+-				case '>': // Door right
+-					cell.setDoorway(DoorDirection.RIGHT);
+-					break;
+-				case '^': // Door up
+-					cell.setDoorway(DoorDirection.UP);
+-					break;
+-				case '<': // Door left
+-					cell.setDoorway(DoorDirection.LEFT);
+-					break;
+-				case 'v': // Door down
+-					cell.setDoorway(DoorDirection.DOWN);
+-					break;
+-				case '#': // Room label
+-					cell.setLabel(true);
+-					roomMap.get(roomInitial).setLabelCell(cell);
+-					break;
+-				case '*': // Room center
+-					board[row][column].setRoomCenter(true);
+-					roomMap.get(roomInitial).setCenterCell(cell);
+-					break;
+-				default: // Secret passage to another room
+-					cell.setSecretPassage(cellOption);
+-					break;
+-			}
++			handleCellOption(cell, roomInitial, cellOption);
++		}
++	}
++
++	// Method to format a cell further if the cell has an optional character
++	private void handleCellOption(BoardCell cell, char roomInitial, char cellOption) {
++		switch(cellOption) {
++			case '>': // Door right
++				cell.setDoorway(DoorDirection.RIGHT);
++				break;
++			case '^': // Door up
++				cell.setDoorway(DoorDirection.UP);
++				break;
++			case '<': // Door left
++				cell.setDoorway(DoorDirection.LEFT);
++				break;
++			case 'v': // Door down
++				cell.setDoorway(DoorDirection.DOWN);
++				break;
++			case '#': // Room label
++				cell.setLabel(true);
++				roomMap.get(roomInitial).setLabelCell(cell);
++				break;
++			case '*': // Room center
++				cell.setRoomCenter(true);
++				roomMap.get(roomInitial).setCenterCell(cell);
++				break;
++			default: // Secret passage to another room
++				cell.setSecretPassage(cellOption);
++				break;
+ 		}
+ 	}
+ 	

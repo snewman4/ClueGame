@@ -36,10 +36,6 @@ public class BoardCell {
 		return adjList;
 	}
 	
-	public void setRoom(boolean isRoom) {
-		this.isRoom = isRoom;
-	}
-	
 	public boolean isRoom() {
 		return isRoom;
 	}

@@ -14,8 +14,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Board {
 	private int numRows, numColumns;
@@ -23,6 +25,8 @@ public class Board {
 	private String layoutConfigFile, setupConfigFile;
 	private Map<Character, Room> roomMap;
 	private static Board theInstance = new Board(); // Private, single instance of board
+	private Set<BoardCell> targets; // Used to find the targets a certain cell has
+	private Set<BoardCell> visited; // Used to store which cells were visited in a turn
 	
 	// Board constructor, can only be accessed by this class
 	private Board() {
@@ -41,27 +45,6 @@ public class Board {
 		}
 
 		generateAdjLists();
-	}
-
-	private void generateAdjLists() {
-		// Create each cell's adjacency list
-		for(int row = 0; row < numRows; row++) {
-			for(int column = 0; column < numColumns; column++) {
-				BoardCell cell = board[row][column];
-				if((row - 1) >= 0) {
-					cell.addAdjecency(board[row-1][column]);
-				}
-				if((row + 1) < numRows) {
-					cell.addAdjecency(board[row+1][column]);
-				}
-				if((column - 1) >= 0) {
-					cell.addAdjecency(board[row][column-1]);
-				}
-				if((column + 1) < numColumns) {
-					cell.addAdjecency(board[row][column+1]);
-				}
-			}
-		}
 	}
 	
 	// Return the only board
@@ -202,6 +185,40 @@ public class Board {
 				cell.setSecretPassage(cellOption);
 				break;
 		}
+	}
+	
+	private void generateAdjLists() {
+		// Create each cell's adjacency list
+		for(int row = 0; row < numRows; row++) {
+			for(int column = 0; column < numColumns; column++) {
+				BoardCell cell = board[row][column];
+				if((row - 1) >= 0) {
+					cell.addAdjecency(board[row-1][column]);
+				}
+				if((row + 1) < numRows) {
+					cell.addAdjecency(board[row+1][column]);
+				}
+				if((column - 1) >= 0) {
+					cell.addAdjecency(board[row][column-1]);
+				}
+				if((column + 1) < numColumns) {
+					cell.addAdjecency(board[row][column+1]);
+				}
+			}
+		}
+	}
+	
+	// Method to get the adjacency list of a given cell
+	public Set<BoardCell> getAdjList(int row, int col) {
+		return board[row][col].getAdjList();
+	}
+	
+	public void calcTargets(BoardCell cell, int roll) {
+		
+	}
+	
+	public Set<BoardCell> getTargets() {
+		return new HashSet<BoardCell>();
 	}
 	
 	public BoardCell getCell(int row, int col) {
