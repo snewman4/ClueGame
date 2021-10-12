@@ -19,6 +19,8 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+import experiment.TestBoardCell;
+
 public class Board {
 	private int numRows, numColumns;
 	private BoardCell[][] board;
@@ -278,12 +280,44 @@ public class Board {
 		return board[row][col].getAdjList();
 	}
 	
-	public void calcTargets(BoardCell cell, int roll) {
-		
+	/*
+	 * Public method that will initialize new visited and targets sets, and
+	 * will send them into the private function findAllTargets
+	 */
+	public void calcTargets(BoardCell startCell, int roll) {
+		visited = new HashSet<BoardCell>();
+		targets = new HashSet<BoardCell>();
+		visited.add(startCell); // The current cell cannot be returned to
+		findAllTargets(startCell, roll);
 	}
 	
+	/*
+	 * Private method to recursively find all targets for a cell, given the
+	 * roll (pathLength). Must be accessed via calcTargets
+	 */
+	private void findAllTargets(BoardCell startCell, int pathLength) {
+		// For each cell adjacent to the start cell:
+		for(BoardCell cell : startCell.getAdjList()) {
+			// If the cell has already been visited or the cell is occupied:
+			if(visited.contains(cell) || (cell.isOccupied() && !cell.isRoomCenter())) {
+				// Return to loop, do not move to cell
+				continue;
+			}
+			visited.add(cell);
+			// If no more moves or in room:
+			if(pathLength == 1 || cell.isRoom()) {
+				targets.add(cell);
+			}
+			// Recursive call:
+			else {
+				findAllTargets(cell, pathLength - 1);
+			}
+			visited.remove(cell); // Cleanup
+		}
+	}
+
 	public Set<BoardCell> getTargets() {
-		return new HashSet<BoardCell>();
+		return targets;
 	}
 	
 	public BoardCell getCell(int row, int col) {
