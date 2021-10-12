@@ -19,8 +19,6 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
-import experiment.TestBoardCell;
-
 public class Board {
 	private int numRows, numColumns;
 	private BoardCell[][] board;
@@ -201,32 +199,16 @@ public class Board {
 				// Handle walkway adjacencies
 				if(cellType == 'W') {
 					if((row - 1) >= 0) {
-						BoardCell nextCell = board[row-1][column];
-						Character nextCellType = nextCell.getInitial();
-						if(nextCellType == 'W') {
-							cell.addAdjecency(nextCell);
-						}
+						addWalkwayAdjacency(row - 1, column, cell);
 					}
 					if((row + 1) < numRows) {
-						BoardCell nextCell = board[row+1][column];
-						Character nextCellType = nextCell.getInitial();
-						if(nextCellType == 'W') {
-							cell.addAdjecency(nextCell);
-						}
+						addWalkwayAdjacency(row + 1, column, cell);
 					}
 					if((column - 1) >= 0) {
-						BoardCell nextCell = board[row][column-1];
-						Character nextCellType = nextCell.getInitial();
-						if(nextCellType == 'W') {
-							cell.addAdjecency(nextCell);
-						}
+						addWalkwayAdjacency(row, column - 1, cell);
 					}
 					if((column + 1) < numColumns) {
-						BoardCell nextCell = board[row][column+1];
-						Character nextCellType = nextCell.getInitial();
-						if(nextCellType == 'W') {
-							cell.addAdjecency(nextCell);
-						}
+						addWalkwayAdjacency(row, column + 1, cell);
 					}
 					
 					// If the cell is a doorway, add the room as an adjacency
@@ -234,33 +216,18 @@ public class Board {
 						DoorDirection cellDirection = cell.getDoorDirection(); // See where door faces
 						switch(cellDirection) {
 							case UP:
-								BoardCell nextCellUP = board[row-1][column]; // Directly adjacent cell
-								Character nextCellTypeUP = nextCellUP.getInitial(); // Room type
-								BoardCell roomCenterUP = roomMap.get(nextCellTypeUP).getCenterCell(); // Room's center
-								cell.addAdjecency(roomCenterUP);
-								roomCenterUP.addAdjecency(cell); // Update the room's adjacency to include the cell with the door
+								addDoorAdjacency(row - 1, column, cell);
 								break;
 							case DOWN:
-								BoardCell nextCellDOWN = board[row+1][column]; // Directly adjacent cell
-								Character nextCellTypeDOWN = nextCellDOWN.getInitial(); // Room type
-								BoardCell roomCenterDOWN = roomMap.get(nextCellTypeDOWN).getCenterCell(); // Room's center
-								cell.addAdjecency(roomCenterDOWN);
-								roomCenterDOWN.addAdjecency(cell); // Update the room's adjacency to include the cell with the door
+								addDoorAdjacency(row + 1, column, cell);
 								break;
 							case RIGHT:
-								BoardCell nextCellRIGHT = board[row][column+1]; // Directly adjacent cell
-								Character nextCellTypeRIGHT = nextCellRIGHT.getInitial(); // Room type
-								BoardCell roomCenterRIGHT = roomMap.get(nextCellTypeRIGHT).getCenterCell(); // Room's center
-								cell.addAdjecency(roomCenterRIGHT);
-								roomCenterRIGHT.addAdjecency(cell); // Update the room's adjacency to include the cell with the door
+								addDoorAdjacency(row, column + 1, cell);
 								break;
 							case LEFT:
-								BoardCell nextCellLEFT = board[row][column-1]; // Directly adjacent cell
-								Character nextCellTypeLEFT = nextCellLEFT.getInitial(); // Room type
-								BoardCell roomCenterLEFT = roomMap.get(nextCellTypeLEFT).getCenterCell(); // Room's center
-								cell.addAdjecency(roomCenterLEFT);
-								roomCenterLEFT.addAdjecency(cell); // Update the room's adjacency to include the cell with the door
+								addDoorAdjacency(row, column - 1, cell);
 								break;
+							default: break;
 						}
 					}
 				}
@@ -273,6 +240,24 @@ public class Board {
 				}
 			}
 		}
+	}
+
+	// Method to set up adjacencies for walkways
+	private void addWalkwayAdjacency(int row, int column, BoardCell cell) {
+		BoardCell nextCell = board[row][column];
+		Character nextCellType = nextCell.getInitial();
+		if(nextCellType == 'W') {
+			cell.addAdjecency(nextCell);
+		}
+	}
+
+	// Method to set up adjacencies when there is a door
+	private void addDoorAdjacency(int row, int column, BoardCell cell) {
+		BoardCell nextCell = board[row][column]; // Directly adjacent cell
+		Character nextCellType = nextCell.getInitial(); // Room type
+		BoardCell roomCenter = roomMap.get(nextCellType).getCenterCell(); // Room's center
+		cell.addAdjecency(roomCenter);
+		roomCenter.addAdjecency(cell); // Update the room's adjacency to include the cell with the door
 	}
 	
 	// Method to get the adjacency list of a given cell
