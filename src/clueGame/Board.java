@@ -192,17 +192,68 @@ public class Board {
 		for(int row = 0; row < numRows; row++) {
 			for(int column = 0; column < numColumns; column++) {
 				BoardCell cell = board[row][column];
-				if((row - 1) >= 0) {
-					cell.addAdjecency(board[row-1][column]);
-				}
-				if((row + 1) < numRows) {
-					cell.addAdjecency(board[row+1][column]);
-				}
-				if((column - 1) >= 0) {
-					cell.addAdjecency(board[row][column-1]);
-				}
-				if((column + 1) < numColumns) {
-					cell.addAdjecency(board[row][column+1]);
+				Character cellType = cell.getInitial();
+				// Handle walkway adjacencies
+				if(cellType == 'W') {
+					if((row - 1) >= 0) {
+						BoardCell nextCell = board[row-1][column];
+						Character nextCellType = nextCell.getInitial();
+						if(nextCellType == 'W') {
+							cell.addAdjecency(nextCell);
+						}
+					}
+					if((row + 1) < numRows) {
+						BoardCell nextCell = board[row+1][column];
+						Character nextCellType = nextCell.getInitial();
+						if(nextCellType == 'W') {
+							cell.addAdjecency(nextCell);
+						}
+					}
+					if((column - 1) >= 0) {
+						BoardCell nextCell = board[row][column-1];
+						Character nextCellType = nextCell.getInitial();
+						if(nextCellType == 'W') {
+							cell.addAdjecency(nextCell);
+						}
+					}
+					if((column + 1) < numColumns) {
+						BoardCell nextCell = board[row][column+1];
+						Character nextCellType = nextCell.getInitial();
+						if(nextCellType == 'W') {
+							cell.addAdjecency(nextCell);
+						}
+					}
+					
+					// If the cell is a doorway, add the room as an adjacency
+					if(cell.isDoorway()) {
+						DoorDirection cellDirection = cell.getDoorDirection(); // See where door faces
+						switch(cellDirection) {
+							case UP:
+								BoardCell nextCellUP = board[row-1][column]; // Directly adjacent cell
+								Character nextCellTypeUP = nextCellUP.getInitial(); // Room type
+								BoardCell roomCenterUP = roomMap.get(nextCellTypeUP).getCenterCell(); // Room's center
+								cell.addAdjecency(roomCenterUP);
+								break;
+							case DOWN:
+								BoardCell nextCellDOWN = board[row+1][column]; // Directly adjacent cell
+								Character nextCellTypeDOWN = nextCellDOWN.getInitial(); // Room type
+								BoardCell roomCenterDOWN = roomMap.get(nextCellTypeDOWN).getCenterCell(); // Room's center
+								cell.addAdjecency(roomCenterDOWN);
+								break;
+							case RIGHT:
+								BoardCell nextCellRIGHT = board[row][column+1]; // Directly adjacent cell
+								Character nextCellTypeRIGHT = nextCellRIGHT.getInitial(); // Room type
+								BoardCell roomCenterRIGHT = roomMap.get(nextCellTypeRIGHT).getCenterCell(); // Room's center
+								cell.addAdjecency(roomCenterRIGHT);
+								break;
+							case LEFT:
+								BoardCell nextCellLEFT = board[row][column-1]; // Directly adjacent cell
+								Character nextCellTypeLEFT = nextCellLEFT.getInitial(); // Room type
+								BoardCell roomCenterLEFT = roomMap.get(nextCellTypeLEFT).getCenterCell(); // Room's center
+								cell.addAdjecency(roomCenterLEFT);
+								break;
+						}
+					}
 				}
 			}
 		}
