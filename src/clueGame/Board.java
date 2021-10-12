@@ -175,13 +175,16 @@ public class Board {
 				break;
 			case '#': // Room label
 				cell.setLabel(true);
+				cell.setRoom(true);
 				roomMap.get(roomInitial).setLabelCell(cell);
 				break;
 			case '*': // Room center
 				cell.setRoomCenter(true);
+				cell.setRoom(true);
 				roomMap.get(roomInitial).setCenterCell(cell);
 				break;
 			default: // Secret passage to another room
+				cell.setRoom(true);
 				cell.setSecretPassage(cellOption);
 				break;
 		}
@@ -233,27 +236,38 @@ public class Board {
 								Character nextCellTypeUP = nextCellUP.getInitial(); // Room type
 								BoardCell roomCenterUP = roomMap.get(nextCellTypeUP).getCenterCell(); // Room's center
 								cell.addAdjecency(roomCenterUP);
+								roomCenterUP.addAdjecency(cell); // Update the room's adjacency to include the cell with the door
 								break;
 							case DOWN:
 								BoardCell nextCellDOWN = board[row+1][column]; // Directly adjacent cell
 								Character nextCellTypeDOWN = nextCellDOWN.getInitial(); // Room type
 								BoardCell roomCenterDOWN = roomMap.get(nextCellTypeDOWN).getCenterCell(); // Room's center
 								cell.addAdjecency(roomCenterDOWN);
+								roomCenterDOWN.addAdjecency(cell); // Update the room's adjacency to include the cell with the door
 								break;
 							case RIGHT:
 								BoardCell nextCellRIGHT = board[row][column+1]; // Directly adjacent cell
 								Character nextCellTypeRIGHT = nextCellRIGHT.getInitial(); // Room type
 								BoardCell roomCenterRIGHT = roomMap.get(nextCellTypeRIGHT).getCenterCell(); // Room's center
 								cell.addAdjecency(roomCenterRIGHT);
+								roomCenterRIGHT.addAdjecency(cell); // Update the room's adjacency to include the cell with the door
 								break;
 							case LEFT:
 								BoardCell nextCellLEFT = board[row][column-1]; // Directly adjacent cell
 								Character nextCellTypeLEFT = nextCellLEFT.getInitial(); // Room type
 								BoardCell roomCenterLEFT = roomMap.get(nextCellTypeLEFT).getCenterCell(); // Room's center
 								cell.addAdjecency(roomCenterLEFT);
+								roomCenterLEFT.addAdjecency(cell); // Update the room's adjacency to include the cell with the door
 								break;
 						}
 					}
+				}
+				
+				// Add adjacencies for secret passages
+				if(cell.isSecretPassage()) {
+					BoardCell roomCenter = roomMap.get(cellType).getCenterCell(); // Center of currnt room
+					BoardCell nextCell = roomMap.get(cell.getSecretPassage()).getCenterCell(); // Center of passage room
+					roomCenter.addAdjecency(nextCell); // Add passage room to current room adjacency
 				}
 			}
 		}
