@@ -20,9 +20,11 @@ import java.util.Scanner;
 import java.util.Set;
 
 public class Board {
-	private int numRows, numColumns;
-	private BoardCell[][] board;
-	private String layoutConfigFile, setupConfigFile;
+	private int numRows;
+	private int numColumns;
+	private BoardCell[][] gameBoard;
+	private String layoutConfigFile;
+	private String setupConfigFile;
 	private Map<Character, Room> roomMap;
 	private static Board theInstance = new Board(); // Private, single instance of board
 	private Set<BoardCell> targets; // Used to find the targets a certain cell has
@@ -38,12 +40,9 @@ public class Board {
 		try {
 			loadSetupConfig();
 			loadLayoutConfig();
-		} catch (FileNotFoundException e) {
-			e.getMessage();
-		} catch (BadConfigFormatException e) {
+		} catch (Exception e) {
 			e.getMessage();
 		}
-
 		generateAdjLists();
 	}
 	
@@ -59,7 +58,7 @@ public class Board {
 	
 	// Method to read in the setup from the setup config file
 	public void loadSetupConfig() throws FileNotFoundException, BadConfigFormatException {
-		roomMap = new HashMap<Character, Room>();
+		roomMap = new HashMap<>();
 		FileReader reader = new FileReader(setupConfigFile);
 		Scanner in = new Scanner(reader);
 		
@@ -86,7 +85,6 @@ public class Board {
 				throw new BadConfigFormatException("Could not evaluate type in " + setupConfigFile);
 			}
 		}
-		
 		in.close();
 	}
 	
@@ -94,9 +92,9 @@ public class Board {
 	public void loadLayoutConfig() throws FileNotFoundException, BadConfigFormatException {
 		FileReader reader = new FileReader(layoutConfigFile);
 		Scanner in = new Scanner(reader);
-		ArrayList<String> firstRead = new ArrayList<String>(); // Array of each row
+		ArrayList<String> firstRead = new ArrayList<>(); // Array of each row
 		// Array of Arrays of Strings that contain initial for each cell
-		ArrayList<String[]> splitRead = new ArrayList<String[]>();
+		ArrayList<String[]> splitRead = new ArrayList<>();
 		
 		// Read in each row
 		while(in.hasNext() ) {
@@ -123,7 +121,7 @@ public class Board {
 		numColumns = splitRead.get(0).length;
 		
 		// Initialize the board
-		board = new BoardCell[numRows][numColumns];
+		gameBoard = new BoardCell[numRows][numColumns];
 		
 		// Set each room's data, based on the string in splitRead
 		for(int row = 0; row < numRows; row++) {
@@ -139,8 +137,8 @@ public class Board {
 	 * format the cell appropriately
 	 */
 	private void cellSetUp(ArrayList<String[]> splitRead, int row, int column) throws BadConfigFormatException {
-		board[row][column] = new BoardCell(row, column);
-		BoardCell cell = board[row][column];
+		gameBoard[row][column] = new BoardCell(row, column);
+		BoardCell cell = gameBoard[row][column];
 		char roomInitial = splitRead.get(row)[column].charAt(0);
 		
 		// Check that the initial is a room that we know of
@@ -194,7 +192,7 @@ public class Board {
 		// Create each cell's adjacency list
 		for(int row = 0; row < numRows; row++) {
 			for(int column = 0; column < numColumns; column++) {
-				BoardCell cell = board[row][column];
+				BoardCell cell = gameBoard[row][column];
 				Character cellType = cell.getInitial();
 				// Handle walkway adjacencies
 				if(cellType == 'W') {
@@ -244,7 +242,7 @@ public class Board {
 
 	// Method to set up adjacencies for walkways
 	private void addWalkwayAdjacency(int row, int column, BoardCell cell) {
-		BoardCell nextCell = board[row][column];
+		BoardCell nextCell = gameBoard[row][column];
 		Character nextCellType = nextCell.getInitial();
 		if(nextCellType == 'W') {
 			cell.addAdjecency(nextCell);
@@ -253,7 +251,7 @@ public class Board {
 
 	// Method to set up adjacencies when there is a door
 	private void addDoorAdjacency(int row, int column, BoardCell cell) {
-		BoardCell nextCell = board[row][column]; // Directly adjacent cell
+		BoardCell nextCell = gameBoard[row][column]; // Directly adjacent cell
 		Character nextCellType = nextCell.getInitial(); // Room type
 		BoardCell roomCenter = roomMap.get(nextCellType).getCenterCell(); // Room's center
 		cell.addAdjecency(roomCenter);
@@ -262,7 +260,7 @@ public class Board {
 	
 	// Method to get the adjacency list of a given cell
 	public Set<BoardCell> getAdjList(int row, int col) {
-		return board[row][col].getAdjList();
+		return gameBoard[row][col].getAdjList();
 	}
 	
 	/*
@@ -270,8 +268,8 @@ public class Board {
 	 * will send them into the private function findAllTargets
 	 */
 	public void calcTargets(BoardCell startCell, int roll) {
-		visited = new HashSet<BoardCell>();
-		targets = new HashSet<BoardCell>();
+		visited = new HashSet<>();
+		targets = new HashSet<>();
 		visited.add(startCell); // The current cell cannot be returned to
 		findAllTargets(startCell, roll);
 	}
@@ -306,7 +304,7 @@ public class Board {
 	}
 	
 	public BoardCell getCell(int row, int col) {
-		return board[row][col];
+		return gameBoard[row][col];
 	}
 	
 	public Room getRoom(Character initial) {

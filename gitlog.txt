@@ -1,3 +1,63 @@
+commit 8cfde717934134c072c56994ea0ebf3f7682c918
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Tue Oct 12 13:29:28 2021 -0600
+
+    Refactored. Created addDoorAdjacency and addWalkwayAdjacency methods to Board
+
+commit 199c1ab5a176c0b74166e326cff1be4e98285488
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Tue Oct 12 13:15:33 2021 -0600
+
+    Fixed final test to check for correct number of targets. Target tests pass.
+
+commit 09052c78084b0219498c18fbc03f0d68eb364819
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Tue Oct 12 12:12:00 2021 -0600
+
+    Began target calculations
+
+commit d9d921442a6c2f0c2c9aebee442532832f29dcdc
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Tue Oct 12 11:47:06 2021 -0600
+
+    Updated adjacency creation for doors and passages. AdjTests pass.
+
+commit 8f0d2245b3681779d24456fbcd94c261f1133c42
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Tue Oct 12 11:19:37 2021 -0600
+
+    Implemented adjacency creation for walkways
+
+commit 2e809e79d56da2c6ec5bdb24e3deaf0b0e024b4a
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Fri Oct 8 15:35:41 2021 -0600
+
+    Created failing tests for adjacency and target creation
+
+commit ee900520ae9d25e3ebd0af840d6ddd676fc066d8
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Thu Oct 7 14:15:29 2021 -0600
+
+    Refactored Board class to be slightly cleaner
+
+commit 6c689ffbc922b2dc7530d5e236ca20dbb3b071aa
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Thu Oct 7 14:07:47 2021 -0600
+
+    Added BadConfigFormatException to handle bad formats
+
+commit 643586c849852c81e8c3e66335ae4f82f643ddbe
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Thu Oct 7 13:27:30 2021 -0600
+
+    Updated loadLayoutConfig() to properly set up the board. FileInitTests now pass
+
+commit bb86157e0ab82914930400e7286ec232e810806c
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Thu Oct 7 12:08:23 2021 -0600
+
+    Implemented loadSetupConfig(), began work on loadLayoutConfig()
+
 commit 40d2f3c23fc73d4f65767ce7663546142f1f8b92
 Author: Sam Newman <snewman1@mines.edu>
 Date:   Wed Oct 6 20:46:42 2021 -0600
