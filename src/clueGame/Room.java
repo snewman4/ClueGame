@@ -12,7 +12,8 @@ package clueGame;
 public class Room {
 	private Character initial;
 	private String name;
-	private BoardCell centerCell, labelCell;
+	private BoardCell centerCell;
+	private BoardCell labelCell;
 	
 	public Room(Character initial, String name) {
 		super();

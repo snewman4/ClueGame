@@ -14,10 +14,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class BoardCell {
-	private int row, column;
-	private char initial, secretPassage;
+	private int row;
+	private int column;
+	private char initial;
+	private char secretPassage;
 	private DoorDirection doorDirection;
-	private boolean roomLabel, roomCenter, isRoom, isOccupied, isSecretPassage;
+	private boolean roomLabel;
+	private boolean roomCenter;
+	private boolean isRoom;
+	private boolean isOccupied;
+	private boolean isSecretPassage;
 	private Set<BoardCell> adjList;
 	
 	public BoardCell(int row, int column) {
@@ -25,7 +31,7 @@ public class BoardCell {
 		this.row = row;
 		this.column = column;
 		
-		adjList = new HashSet<BoardCell>();
+		adjList = new HashSet<>();
 	}
 	
 	// All of the getters and setters for BoardCell class	
@@ -74,10 +80,7 @@ public class BoardCell {
 	}
 	
 	public boolean isDoorway() {
-		if(doorDirection == DoorDirection.NONE) {
-			return false;
-		}
-		return true;
+		return doorDirection != DoorDirection.NONE;
 	}
 	
 	public DoorDirection getDoorDirection() {
