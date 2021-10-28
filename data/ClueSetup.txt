@@ -11,3 +11,17 @@ Room, Lounge, L
 // Other spaces on the board
 Space, Unused, X
 Space, Walkway, W
+// Character cards
+Person, Sergeant Sam, S, Red
+Person, Aurora Angel, A, Purple
+Person, Doctor Dora, D, Green
+Person, Howard Handy, H, Brown
+Person, Icky Ivan, I, Yellow
+Person, Jon-von Johnson, J, Blue
+// Weapon cards
+Weapon, Electric Fly Swatter, E
+Weapon, Nitrous Gas, N
+Weapon, Petrol Can, P
+Weapon, Quail Beak, Q
+Weapon, Rod, R
+Weapon, Violin, V
