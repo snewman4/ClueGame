@@ -12,12 +12,12 @@ Room, Lounge, L
 Space, Unused, X
 Space, Walkway, W
 // Character cards
-Person, Sergeant Sam, S, Red
-Person, Aurora Angel, A, Purple
-Person, Doctor Dora, D, Green
-Person, Howard Handy, H, Brown
-Person, Icky Ivan, I, Yellow
-Person, Jon-von Johnson, J, Blue
+Person, Sergeant Sam, S
+Person, Aurora Angel, A
+Person, Doctor Dora, D
+Person, Howard Handy, H
+Person, Icky Ivan, I
+Person, Jon-von Johnson, J
 // Weapon cards
 Weapon, Electric Fly Swatter, E
 Weapon, Nitrous Gas, N

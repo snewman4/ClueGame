@@ -29,6 +29,7 @@ public class Board {
 	private static Board theInstance = new Board(); // Private, single instance of board
 	private Set<BoardCell> targets; // Used to find the targets a certain cell has
 	private Set<BoardCell> visited; // Used to store which cells were visited in a turn
+	private Solution theAnswer; // Stores the solution
 	
 	// Board constructor, can only be accessed by this class
 	private Board() {
@@ -258,6 +259,11 @@ public class Board {
 		roomCenter.addAdjecency(cell); // Update the room's adjacency to include the cell with the door
 	}
 	
+	// Method to deal the cards to the players. Will also store three cards in solution
+	public void deal() {
+		
+	}
+	
 	// Method to get the adjacency list of a given cell
 	public Set<BoardCell> getAdjList(int row, int col) {
 		return gameBoard[row][col].getAdjList();
@@ -321,5 +327,18 @@ public class Board {
 	
 	public int getNumColumns() {
 		return numColumns;
+	}
+	
+	// The below getters are used for testing
+	public Map<Integer, Player> getPlayers() {
+		return new HashMap<>();
+	}
+	
+	public Map<Character, Card> getDeck() {
+		return new HashMap<>();
+	}
+	
+	public Solution getSolution() {
+		return theAnswer;
 	}
 }
