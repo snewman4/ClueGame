@@ -29,6 +29,8 @@ public class Board {
 	private static Board theInstance = new Board(); // Private, single instance of board
 	private Set<BoardCell> targets; // Used to find the targets a certain cell has
 	private Set<BoardCell> visited; // Used to store which cells were visited in a turn
+	private Map<Integer, Player> players; // Stores the players
+	private Map<Character, Card> deck; // The deck of cards
 	private Solution theAnswer; // Stores the solution
 	
 	// Board constructor, can only be accessed by this class
@@ -73,14 +75,30 @@ public class Board {
 			
 			// Split each line up, read out the various information
 			String[] splitRead = inRead.split(", ");
-			String cellType = splitRead[0]; // Type of cell we are creating
-			String cellName = splitRead[1]; // Name of that cell
-			Character cellInitial = splitRead[2].charAt(0); // Initial of that cell
+			String itemType = splitRead[0]; // Type of item we are creating
+			String itemName = splitRead[1]; // Name of that item
+			Character itemInitial = splitRead[2].charAt(0); // Initial of that item
 			
-			// If the cellType is a room, create a room with the name and initial
-			if(cellType.equals("Room") || cellType.equals("Space")) {
-				Room newRoom = new Room(cellInitial, cellName);
-				roomMap.put(cellInitial, newRoom); // Add to room map
+			// If the itemType is a room, create a room and card with the name and initial
+			if(itemType.equals("Room") || itemType.equals("Space")) {
+				Room newRoom = new Room(itemInitial, itemName);
+				Card newRoomCard = new Card(itemInitial, itemName, CardType.ROOM);
+				roomMap.put(itemInitial, newRoom); // Add to room map
+				deck.put(itemInitial, newRoomCard); // Add card to deck
+			}
+			// If the itemType is a person, create a card with the name and initial
+			else if(itemType.equals("Person")) {
+				// There cannot be more than 6 players
+				if(players.size() > 6) {
+					throw new BadConfigFormatException("Too many players in " + setupConfigFile);
+				}
+				Card newPersonCard = new Card(itemInitial, itemName, CardType.PERSON);
+				deck.put(itemInitial, newPersonCard);
+			}
+			// If the itemType is a weapon, create a card with the name and initial
+			else if(itemType.equals("Weapon")) {
+				Card newWeaponCard = new Card(itemInitial, itemName, CardType.WEAPON);
+				deck.put(itemInitial, newWeaponCard);
 			}
 			else {
 				throw new BadConfigFormatException("Could not evaluate type in " + setupConfigFile);
