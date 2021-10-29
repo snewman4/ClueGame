@@ -30,7 +30,8 @@ public class Board {
 	private Set<BoardCell> targets; // Used to find the targets a certain cell has
 	private Set<BoardCell> visited; // Used to store which cells were visited in a turn
 	private Map<Integer, Player> players; // Stores the players
-	private Map<Character, Card> deck; // The deck of cards
+	private Map<String, Card> cards; // A list of the card references
+	private Map<String, Card> deck; // The deck of cards
 	private Solution theAnswer; // Stores the solution
 	
 	// Board constructor, can only be accessed by this class
@@ -84,7 +85,7 @@ public class Board {
 				Room newRoom = new Room(itemInitial, itemName);
 				Card newRoomCard = new Card(itemInitial, itemName, CardType.ROOM);
 				roomMap.put(itemInitial, newRoom); // Add to room map
-				deck.put(itemInitial, newRoomCard); // Add card to deck
+				deck.put(itemName, newRoomCard); // Add card to deck
 			}
 			// If the itemType is a person, create a card with the name and initial
 			else if(itemType.equals("Person")) {
@@ -93,12 +94,12 @@ public class Board {
 					throw new BadConfigFormatException("Too many players in " + setupConfigFile);
 				}
 				Card newPersonCard = new Card(itemInitial, itemName, CardType.PERSON);
-				deck.put(itemInitial, newPersonCard);
+				deck.put(itemName, newPersonCard);
 			}
 			// If the itemType is a weapon, create a card with the name and initial
 			else if(itemType.equals("Weapon")) {
 				Card newWeaponCard = new Card(itemInitial, itemName, CardType.WEAPON);
-				deck.put(itemInitial, newWeaponCard);
+				deck.put(itemName, newWeaponCard);
 			}
 			else {
 				throw new BadConfigFormatException("Could not evaluate type in " + setupConfigFile);
@@ -347,12 +348,16 @@ public class Board {
 		return numColumns;
 	}
 	
+	public Card getCard(String name) {
+		return cards.get(name);
+	}
+	
 	// The below getters are used for testing
 	public Map<Integer, Player> getPlayers() {
 		return new HashMap<>();
 	}
 	
-	public Map<Character, Card> getDeck() {
+	public Map<String, Card> getDeck() {
 		return new HashMap<>();
 	}
 	

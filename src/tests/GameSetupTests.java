@@ -72,58 +72,58 @@ class GameSetupTests {
 	// Test to make sure the deck of cards is loaded properly
 	@Test
 	public void testCardLoad() {
-		Map<Character, Card> deck = board.getDeck();
+		Map<String, Card> deck = board.getDeck();
 		assertEquals(deck.size(), NUM_CARDS);
 		
 		// Test player cards are loaded properly
-		assertEquals("Sergeant Sam", deck.get('S').getName()); // Test player card name
-		assertEquals(CardType.PERSON, deck.get('S').getType()); // Ensure card is a person
-		assertEquals("Doctor Dora", deck.get('D').getName()); // Test player card name
-		assertEquals(CardType.PERSON, deck.get('D').getType()); // Ensure card is a person
-		assertEquals("Icky Ivan", deck.get('I').getName()); // Test player card name
-		assertEquals(CardType.PERSON, deck.get('I').getType()); // Ensure card is a person
-		assertEquals("Jon-von Johnson", deck.get('J').getName()); // Test player card name
-		assertEquals(CardType.PERSON, deck.get('J').getType()); // Ensure card is a person
+		assertEquals("Sergeant Sam", deck.get("Sergeant Sam").getName()); // Test player card name
+		assertEquals(CardType.PERSON, deck.get("Sergeant Sam").getType()); // Ensure card is a person
+		assertEquals("Doctor Dora", deck.get("Doctor Dora").getName()); // Test player card name
+		assertEquals(CardType.PERSON, deck.get("Doctor Dora").getType()); // Ensure card is a person
+		assertEquals("Icky Ivan", deck.get("Icky Ivan").getName()); // Test player card name
+		assertEquals(CardType.PERSON, deck.get("Icky Ivan").getType()); // Ensure card is a person
+		assertEquals("Jon-von Johnson", deck.get("Jon-von Johnson").getName()); // Test player card name
+		assertEquals(CardType.PERSON, deck.get("Jon-von Johnson").getType()); // Ensure card is a person
 		
 		// Test that weapon cards are loaded properly
-		assertEquals("Electric Fly Swatter", deck.get('E').getName()); // Test weapon card name
-		assertEquals(CardType.WEAPON, deck.get('E').getType()); // Ensure card is a weapon
-		assertEquals("Rod", deck.get('R').getName()); // Test weapon card name
-		assertEquals(CardType.WEAPON, deck.get('R').getType()); // Ensure card is a weapon
-		assertEquals("Quail Beak", deck.get('Q').getName()); // Test weapon card name
-		assertEquals(CardType.WEAPON, deck.get('Q').getType()); // Ensure card is a weapon
+		assertEquals("Electric Fly Swatter", deck.get("Electric Fly Swatter").getName()); // Test weapon card name
+		assertEquals(CardType.WEAPON, deck.get("Electric Fly Swatter").getType()); // Ensure card is a weapon
+		assertEquals("Rod", deck.get("Rod").getName()); // Test weapon card name
+		assertEquals(CardType.WEAPON, deck.get("Rod").getType()); // Ensure card is a weapon
+		assertEquals("Quail Beak", deck.get("Quail Beak").getName()); // Test weapon card name
+		assertEquals(CardType.WEAPON, deck.get("Quail Beak").getType()); // Ensure card is a weapon
 		
 		// Test that room cards are loaded properly
-		assertEquals("Office", deck.get('O').getName()); // Test room card name
-		assertEquals(CardType.ROOM, deck.get('O').getType()); // Ensure card is a room
-		assertEquals("Malecave", deck.get('M').getName()); // Test room card name
-		assertEquals(CardType.ROOM, deck.get('M').getType()); // Ensure card is a room
-		assertEquals("Batcave", deck.get('C').getName()); // Test room card name
-		assertEquals(CardType.ROOM, deck.get('C').getType()); // Ensure card is a room
-		assertEquals("Lounge", deck.get('L').getName()); // Test room card name
-		assertEquals(CardType.ROOM, deck.get('L').getType()); // Ensure card is a room
-		assertEquals("Guardroom", deck.get('G').getName()); // Test room card name
-		assertEquals(CardType.ROOM, deck.get('G').getType()); // Ensure card is a room
+		assertEquals("Office", deck.get("Office").getName()); // Test room card name
+		assertEquals(CardType.ROOM, deck.get("Office").getType()); // Ensure card is a room
+		assertEquals("Malecave", deck.get("Malecave").getName()); // Test room card name
+		assertEquals(CardType.ROOM, deck.get("Malecave").getType()); // Ensure card is a room
+		assertEquals("Batcave", deck.get("Batcave").getName()); // Test room card name
+		assertEquals(CardType.ROOM, deck.get("Batcave").getType()); // Ensure card is a room
+		assertEquals("Lounge", deck.get("Lounge").getName()); // Test room card name
+		assertEquals(CardType.ROOM, deck.get("Lounge").getType()); // Ensure card is a room
+		assertEquals("Guardroom", deck.get("Guardroom").getName()); // Test room card name
+		assertEquals(CardType.ROOM, deck.get("Guardroom").getType()); // Ensure card is a room
 	}
 
 	// Test to make sure the solution is drawn correctly
 	@Test
 	public void testSolutionLoad() {
-		Map<Character, Card> preDealDeck = board.getDeck(); // Save deck before dealing
+		Map<String, Card> preDealDeck = board.getDeck(); // Save deck before dealing
 		Map<Integer, Player> playerMap = board.getPlayers();
 		board.deal(); // Deal the cards
 		Solution solution = board.getSolution();
-		Map<Character, Card> deck = board.getDeck();
+		Map<String, Card> deck = board.getDeck();
 		
 		assertEquals(preDealDeck.size(), NUM_CARDS); // Check that the initial deck is of the correct size
 		// Check that the solution was drawn directly from the deck
-		assertTrue(preDealDeck.containsKey(solution.person.getInitial()));
-		assertTrue(preDealDeck.containsKey(solution.room.getInitial()));
-		assertTrue(preDealDeck.containsKey(solution.weapon.getInitial()));
+		assertTrue(preDealDeck.containsKey(solution.person.getName()));
+		assertTrue(preDealDeck.containsKey(solution.room.getName()));
+		assertTrue(preDealDeck.containsKey(solution.weapon.getName()));
 		// Check that the deck does not contain the solution cards after deal()
-		assertFalse(deck.containsKey(solution.person.getInitial()));
-		assertFalse(deck.containsKey(solution.room.getInitial()));
-		assertFalse(deck.containsKey(solution.weapon.getInitial()));
+		assertFalse(deck.containsKey(solution.person.getName()));
+		assertFalse(deck.containsKey(solution.room.getName()));
+		assertFalse(deck.containsKey(solution.weapon.getName()));
 		
 		// Check that the each solution card is the appropriate type
 		assertEquals(CardType.PERSON, solution.person.getType());
@@ -142,7 +142,7 @@ class GameSetupTests {
 	// Test to make sure cards are dealt to players properly
 	@Test
 	public void testDeal() {
-		Map<Character, Card> deck = board.getDeck();
+		Map<String, Card> deck = board.getDeck();
 		Map<Integer, Player> playerMap = board.getPlayers();
 		
 		assertEquals(deck.size(), 0); // Make sure that all cards were dealt
