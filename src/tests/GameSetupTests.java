@@ -152,6 +152,16 @@ class GameSetupTests {
 			Player player = playerMap.get(i);
 			// Ensure each player has within one card of the expected hand size
 			assertTrue(cardsPerMin <= player.getHand().size() && player.getHand().size() <= cardsPerMax);
+			// Ensure that no two players have the same card
+			for(Card card : player.getHand()) { // For each card in player's hand
+				for(int j = 0; j < playerMap.size(); j++) { // For each player
+					// If the current player is the same as the query player, skip
+					if(i == j) {
+						continue;
+					}
+					assertFalse(playerMap.get(j).getHand().contains(card));
+				}
+			}
 		}
 	}
 }
