@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 import java.awt.Color;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -32,41 +33,41 @@ class GameSetupTests {
 	// Test to make sure players load correctly
 	@Test
 	public void testPlayerLoad() {
-		Map<Integer, Player> playerMap = board.getPlayers();
-		assertEquals(playerMap.size(), 6); // There can be up to 6 players
+		List<Player> playerList = board.getPlayers();
+		assertEquals(6, playerList.size()); // There can be up to 6 players
 		// Check the human player
-		assertEquals(HumanPlayer.class, playerMap.get(0).getClass()); // Player 0 should always be the human player
-		assertEquals("Sergeant Sam", playerMap.get(0).getName()); // Test player name
-		assertEquals(Color.RED, playerMap.get(0).getColor()); // Test player color
+		assertEquals(HumanPlayer.class, playerList.get(0).getClass()); // Player 0 should always be the human player
+		assertEquals("Sergeant Sam", playerList.get(0).getName()); // Test player name
+		assertEquals(Color.RED, playerList.get(0).getColor()); // Test player color
 		// Test start location of human player
-		assertEquals(0, playerMap.get(0).getRow());
-		assertEquals(8, playerMap.get(0).getColumn());
+		assertEquals(0, playerList.get(0).getRow());
+		assertEquals(8, playerList.get(0).getColumn());
 		// Rest of the players should be computer players. Also test respective locations
-		assertTrue(playerMap.get(1).getClass() == ComputerPlayer.class);
-		assertEquals("Aurora Angel", playerMap.get(1).getName()); // Test player name
-		assertEquals(Color.PINK, playerMap.get(1).getColor()); // Test player color
-		assertEquals(0, playerMap.get(1).getRow());
-		assertEquals(16, playerMap.get(1).getColumn());
-		assertTrue(playerMap.get(2).getClass() == ComputerPlayer.class);
-		assertEquals("Doctor Dora", playerMap.get(2).getName()); // Test player name
-		assertEquals(Color.GREEN, playerMap.get(2).getColor()); // Test player color
-		assertEquals(12, playerMap.get(2).getRow());
-		assertEquals(24, playerMap.get(2).getColumn());
-		assertTrue(playerMap.get(3).getClass() == ComputerPlayer.class);
-		assertEquals("Howard Handy", playerMap.get(3).getName()); // Test player name
-		assertEquals(Color.BLACK, playerMap.get(3).getColor()); // Test player color
-		assertEquals(24, playerMap.get(3).getRow());
-		assertEquals(16, playerMap.get(3).getColumn());
-		assertTrue(playerMap.get(4).getClass() == ComputerPlayer.class);
-		assertEquals("Icky Ivan", playerMap.get(4).getName()); // Test player name
-		assertEquals(Color.YELLOW, playerMap.get(4).getColor()); // Test player color
-		assertEquals(24, playerMap.get(4).getRow());
-		assertEquals(8, playerMap.get(4).getColumn());
-		assertTrue(playerMap.get(5).getClass() == ComputerPlayer.class);
-		assertEquals("Jon-von Johnson", playerMap.get(5).getName()); // Test player name
-		assertEquals(Color.BLUE, playerMap.get(5).getColor()); // Test player color
-		assertEquals(12, playerMap.get(5).getRow());
-		assertEquals(0, playerMap.get(5).getColumn());
+		assertTrue(playerList.get(1).getClass() == ComputerPlayer.class);
+		assertEquals("Aurora Angel", playerList.get(1).getName()); // Test player name
+		assertEquals(Color.PINK, playerList.get(1).getColor()); // Test player color
+		assertEquals(0, playerList.get(1).getRow());
+		assertEquals(16, playerList.get(1).getColumn());
+		assertTrue(playerList.get(2).getClass() == ComputerPlayer.class);
+		assertEquals("Doctor Dora", playerList.get(2).getName()); // Test player name
+		assertEquals(Color.GREEN, playerList.get(2).getColor()); // Test player color
+		assertEquals(12, playerList.get(2).getRow());
+		assertEquals(24, playerList.get(2).getColumn());
+		assertTrue(playerList.get(3).getClass() == ComputerPlayer.class);
+		assertEquals("Howard Handy", playerList.get(3).getName()); // Test player name
+		assertEquals(Color.BLACK, playerList.get(3).getColor()); // Test player color
+		assertEquals(24, playerList.get(3).getRow());
+		assertEquals(16, playerList.get(3).getColumn());
+		assertTrue(playerList.get(4).getClass() == ComputerPlayer.class);
+		assertEquals("Icky Ivan", playerList.get(4).getName()); // Test player name
+		assertEquals(Color.YELLOW, playerList.get(4).getColor()); // Test player color
+		assertEquals(24, playerList.get(4).getRow());
+		assertEquals(8, playerList.get(4).getColumn());
+		assertTrue(playerList.get(5).getClass() == ComputerPlayer.class);
+		assertEquals("Jon-von Johnson", playerList.get(5).getName()); // Test player name
+		assertEquals(Color.BLUE, playerList.get(5).getColor()); // Test player color
+		assertEquals(12, playerList.get(5).getRow());
+		assertEquals(0, playerList.get(5).getColumn());
 	}
 	
 	// Test to make sure the deck of cards is loaded properly
@@ -110,12 +111,12 @@ class GameSetupTests {
 	@Test
 	public void testSolutionLoad() {
 		Map<String, Card> preDealDeck = board.getDeck(); // Save deck before dealing
-		Map<Integer, Player> playerMap = board.getPlayers();
+		List<Player> playerList = board.getPlayers();
 		board.deal(); // Deal the cards
 		Solution solution = board.getSolution();
 		Map<String, Card> deck = board.getDeck();
 		
-		assertEquals(preDealDeck.size(), NUM_CARDS); // Check that the initial deck is of the correct size
+		assertEquals(NUM_CARDS, preDealDeck.size()); // Check that the initial deck is of the correct size
 		// Check that the solution was drawn directly from the deck
 		assertTrue(preDealDeck.containsKey(solution.person.getName()));
 		assertTrue(preDealDeck.containsKey(solution.room.getName()));
@@ -132,7 +133,7 @@ class GameSetupTests {
 		
 		// Check that none of the players have the solution cards
 		for(int i = 0; i < 6; i++) {
-			Player player = playerMap.get(i);
+			Player player = playerList.get(i);
 			assertFalse(player.getHand().contains(solution.person));
 			assertFalse(player.getHand().contains(solution.room));
 			assertFalse(player.getHand().contains(solution.weapon));
@@ -143,23 +144,23 @@ class GameSetupTests {
 	@Test
 	public void testDeal() {
 		Map<String, Card> deck = board.getDeck();
-		Map<Integer, Player> playerMap = board.getPlayers();
+		List<Player> playerList = board.getPlayers();
 		
-		assertEquals(deck.size(), 0); // Make sure that all cards were dealt
-		assertEquals(playerMap.size(), 6); // Make sure all players are loaded
+		assertEquals(0, deck.size()); // Make sure that all cards were dealt
+		assertEquals(6, playerList.size()); // Make sure all players are loaded
 		// For each player:
-		for(int i = 0; i < playerMap.size(); i++) {
-			Player player = playerMap.get(i);
+		for(int i = 0; i < playerList.size(); i++) {
+			Player player = playerList.get(i);
 			// Ensure each player has within one card of the expected hand size
 			assertTrue(cardsPerMin <= player.getHand().size() && player.getHand().size() <= cardsPerMax);
 			// Ensure that no two players have the same card
 			for(Card card : player.getHand()) { // For each card in player's hand
-				for(int j = 0; j < playerMap.size(); j++) { // For each player
+				for(int j = 0; j < playerList.size(); j++) { // For each player
 					// If the current player is the same as the query player, skip
 					if(i == j) {
 						continue;
 					}
-					assertFalse(playerMap.get(j).getHand().contains(card));
+					assertFalse(playerList.get(j).getHand().contains(card));
 				}
 			}
 		}

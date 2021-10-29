@@ -15,6 +15,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
@@ -29,7 +30,7 @@ public class Board {
 	private static Board theInstance = new Board(); // Private, single instance of board
 	private Set<BoardCell> targets; // Used to find the targets a certain cell has
 	private Set<BoardCell> visited; // Used to store which cells were visited in a turn
-	private Map<Integer, Player> players; // Stores the players
+	private ArrayList<Player> players; // Stores the players
 	private Map<String, Card> cards; // A list of the card references
 	private Map<String, Card> deck; // The deck of cards
 	private Solution theAnswer; // Stores the solution
@@ -45,7 +46,7 @@ public class Board {
 			loadSetupConfig();
 			loadLayoutConfig();
 		} catch (Exception e) {
-			e.getMessage();
+			System.out.println(e.getMessage());
 		}
 		generateAdjLists();
 	}
@@ -62,6 +63,8 @@ public class Board {
 	
 	// Method to read in the setup from the setup config file
 	public void loadSetupConfig() throws FileNotFoundException, BadConfigFormatException {
+		players = new ArrayList<>();
+		cards = new HashMap<>();
 		roomMap = new HashMap<>();
 		FileReader reader = new FileReader(setupConfigFile);
 		Scanner in = new Scanner(reader);
@@ -85,21 +88,33 @@ public class Board {
 				Room newRoom = new Room(itemInitial, itemName);
 				Card newRoomCard = new Card(itemInitial, itemName, CardType.ROOM);
 				roomMap.put(itemInitial, newRoom); // Add to room map
-				deck.put(itemName, newRoomCard); // Add card to deck
+				cards.put(itemName, newRoomCard); // Add card to deck
 			}
 			// If the itemType is a person, create a card with the name and initial
 			else if(itemType.equals("Person")) {
+				// Create a new player object, determine if it is human or computer
+				Player newPlayer;
+				// Player 0 should always be human player
+				if(players.isEmpty()) {
+					newPlayer = new HumanPlayer(itemName);
+				}
+				// All other players are computer players
+				else {
+					newPlayer = new ComputerPlayer(itemName);
+				}
+				players.add(newPlayer);
 				// There cannot be more than 6 players
 				if(players.size() > 6) {
-					throw new BadConfigFormatException("Too many players in " + setupConfigFile);
+					throw new BadConfigFormatException("Too many players defined in " + setupConfigFile);
 				}
+				// Create a card for the person
 				Card newPersonCard = new Card(itemInitial, itemName, CardType.PERSON);
-				deck.put(itemName, newPersonCard);
+				cards.put(itemName, newPersonCard);
 			}
 			// If the itemType is a weapon, create a card with the name and initial
 			else if(itemType.equals("Weapon")) {
 				Card newWeaponCard = new Card(itemInitial, itemName, CardType.WEAPON);
-				deck.put(itemName, newWeaponCard);
+				cards.put(itemName, newWeaponCard);
 			}
 			else {
 				throw new BadConfigFormatException("Could not evaluate type in " + setupConfigFile);
@@ -353,8 +368,8 @@ public class Board {
 	}
 	
 	// The below getters are used for testing
-	public Map<Integer, Player> getPlayers() {
-		return new HashMap<>();
+	public List<Player> getPlayers() {
+		return players;
 	}
 	
 	public Map<String, Card> getDeck() {

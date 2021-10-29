@@ -1,1 +1,1 @@
-Could not evaluate type in data/ClueSetup.txt
+Could not evaluate type in data/ClueSetupBadFormat306.txt
