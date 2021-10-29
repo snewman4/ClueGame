@@ -36,14 +36,26 @@ class GameSetupTests {
 	public void testPlayerLoad() {
 		Map<Integer, Player> playerMap = board.getPlayers();
 		assertEquals(playerMap.size(), 6); // There can be up to 6 players
-		// Player 0 should always be the human player
-		assertTrue(playerMap.get(0).getClass() == HumanPlayer.class);
-		// Rest of the players should be computer players
+		assertTrue(playerMap.get(0).getClass() == HumanPlayer.class); // Player 0 should always be the human player
+		// Test start location of human player
+		assertEquals(0, playerMap.get(0).getRow());
+		assertEquals(8, playerMap.get(0).getColumn());
+		// Rest of the players should be computer players. Also test respective locations
 		assertTrue(playerMap.get(1).getClass() == ComputerPlayer.class);
+		assertEquals(0, playerMap.get(1).getRow());
+		assertEquals(16, playerMap.get(1).getColumn());
 		assertTrue(playerMap.get(2).getClass() == ComputerPlayer.class);
+		assertEquals(12, playerMap.get(2).getRow());
+		assertEquals(24, playerMap.get(2).getColumn());
 		assertTrue(playerMap.get(3).getClass() == ComputerPlayer.class);
+		assertEquals(24, playerMap.get(3).getRow());
+		assertEquals(16, playerMap.get(3).getColumn());
 		assertTrue(playerMap.get(4).getClass() == ComputerPlayer.class);
+		assertEquals(24, playerMap.get(4).getRow());
+		assertEquals(8, playerMap.get(4).getColumn());
 		assertTrue(playerMap.get(5).getClass() == ComputerPlayer.class);
+		assertEquals(12, playerMap.get(5).getRow());
+		assertEquals(0, playerMap.get(5).getColumn());
 	}
 	
 	// Test to make sure the deck of cards is loaded properly
