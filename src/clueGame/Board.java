@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -32,6 +33,10 @@ public class Board {
 	private Set<BoardCell> visited; // Used to store which cells were visited in a turn
 	private ArrayList<Player> players; // Stores the players
 	private Map<String, Card> cards; // A list of the card references
+	// Three temporary lists to independently store each type of card, to be chosen by solution
+	private ArrayList<Card> persons;
+	private ArrayList<Card> rooms;
+	private ArrayList<Card> weapons;
 	private Map<String, Card> deck; // The deck of cards
 	private Solution theAnswer; // Stores the solution
 	
@@ -65,6 +70,9 @@ public class Board {
 	public void loadSetupConfig() throws FileNotFoundException, BadConfigFormatException {
 		players = new ArrayList<>();
 		cards = new HashMap<>();
+		persons = new ArrayList<>();
+		rooms = new ArrayList<>();
+		weapons = new ArrayList<>();
 		roomMap = new HashMap<>();
 		FileReader reader = new FileReader(setupConfigFile);
 		Scanner in = new Scanner(reader);
@@ -84,11 +92,17 @@ public class Board {
 			Character itemInitial = splitRead[2].charAt(0); // Initial of that item
 			
 			// If the itemType is a room, create a room and card with the name and initial
-			if(itemType.equals("Room") || itemType.equals("Space")) {
+			if(itemType.equals("Room")) {
 				Room newRoom = new Room(itemInitial, itemName);
 				Card newRoomCard = new Card(itemInitial, itemName, CardType.ROOM);
 				roomMap.put(itemInitial, newRoom); // Add to room map
 				cards.put(itemName, newRoomCard); // Add card to deck
+				rooms.add(newRoomCard); // Add card to room card list
+			}
+			// If the itemType is a space, it needs to be created as a room, but not made a card
+			else if(itemType.equals("Space")) {
+				Room newRoom = new Room(itemInitial, itemName);
+				roomMap.put(itemInitial, newRoom);
 			}
 			// If the itemType is a person, create a card with the name and initial
 			else if(itemType.equals("Person")) {
@@ -110,11 +124,13 @@ public class Board {
 				// Create a card for the person
 				Card newPersonCard = new Card(itemInitial, itemName, CardType.PERSON);
 				cards.put(itemName, newPersonCard);
+				persons.add(newPersonCard); // Add card to person card list
 			}
 			// If the itemType is a weapon, create a card with the name and initial
 			else if(itemType.equals("Weapon")) {
 				Card newWeaponCard = new Card(itemInitial, itemName, CardType.WEAPON);
 				cards.put(itemName, newWeaponCard);
+				weapons.add(newWeaponCard); // Add card to weapon card list
 			}
 			else {
 				throw new BadConfigFormatException("Could not evaluate type in " + setupConfigFile);
@@ -295,7 +311,13 @@ public class Board {
 	
 	// Method to deal the cards to the players. Will also store three cards in solution
 	public void deal() {
+		Random r = new Random();
+		// Choose the solution randomly
+		Card personSol = persons.get(r.nextInt(persons.size()));
+		Card roomSol = rooms.get(r.nextInt(rooms.size()));
+		Card weaponSol = weapons.get(r.nextInt(weapons.size()));
 		
+		theAnswer = new Solution(personSol, roomSol, weaponSol);
 	}
 	
 	// Method to get the adjacency list of a given cell
@@ -370,6 +392,10 @@ public class Board {
 	// The below getters are used for testing
 	public List<Player> getPlayers() {
 		return players;
+	}
+	
+	public Map<String, Card> getCards() {
+		return cards;
 	}
 	
 	public Map<String, Card> getDeck() {

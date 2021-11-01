@@ -50,6 +50,6 @@ public abstract class Player {
 	}
 	
 	public Set<Card> getHand() {
-		return new HashSet<Card>();
+		return new HashSet<>();
 	}
 }
