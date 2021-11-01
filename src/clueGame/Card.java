@@ -12,10 +12,6 @@ public class Card {
 		this.type = type;
 	}
 	
-	public boolean equals(Card target) {
-		return false;
-	}
-	
 	public String getName() {
 		return cardName;
 	}

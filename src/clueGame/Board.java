@@ -35,9 +35,9 @@ public class Board {
 	private ArrayList<Player> players; // Stores the players
 	private Map<String, Card> cards; // A list of the card references
 	// Three temporary lists to independently store each type of card, to be chosen by solution
-	private ArrayList<Card> persons;
-	private ArrayList<Card> rooms;
-	private ArrayList<Card> weapons;
+	private ArrayList<Card> personCards;
+	private ArrayList<Card> roomCards;
+	private ArrayList<Card> weaponCards;
 	private ArrayList<Card> deck; // The deck of cards
 	private Solution theAnswer; // Stores the solution
 	
@@ -71,9 +71,9 @@ public class Board {
 	public void loadSetupConfig() throws FileNotFoundException, BadConfigFormatException {
 		players = new ArrayList<>();
 		cards = new HashMap<>();
-		persons = new ArrayList<>();
-		rooms = new ArrayList<>();
-		weapons = new ArrayList<>();
+		personCards = new ArrayList<>();
+		roomCards = new ArrayList<>();
+		weaponCards = new ArrayList<>();
 		roomMap = new HashMap<>();
 		FileReader reader = new FileReader(setupConfigFile);
 		Scanner in = new Scanner(reader);
@@ -92,52 +92,67 @@ public class Board {
 			String itemName = splitRead[1]; // Name of that item
 			Character itemInitial = splitRead[2].charAt(0); // Initial of that item
 			
-			// If the itemType is a room, create a room and card with the name and initial
-			if(itemType.equals("Room")) {
-				Room newRoom = new Room(itemInitial, itemName);
-				Card newRoomCard = new Card(itemInitial, itemName, CardType.ROOM);
-				roomMap.put(itemInitial, newRoom); // Add to room map
-				cards.put(itemName, newRoomCard); // Add card to deck
-				rooms.add(newRoomCard); // Add card to room card list
-			}
-			// If the itemType is a space, it needs to be created as a room, but not made a card
-			else if(itemType.equals("Space")) {
-				Room newRoom = new Room(itemInitial, itemName);
-				roomMap.put(itemInitial, newRoom);
-			}
-			// If the itemType is a person, create a card with the name and initial
-			else if(itemType.equals("Person")) {
-				// Create a new player object, determine if it is human or computer
-				Player newPlayer;
-				// Player 0 should always be human player
-				if(players.isEmpty()) {
-					newPlayer = new HumanPlayer(itemName);
-				}
-				// All other players are computer players
-				else {
-					newPlayer = new ComputerPlayer(itemName);
-				}
-				players.add(newPlayer);
-				// There cannot be more than 6 players
-				if(players.size() > NUM_PLAYERS) {
-					throw new BadConfigFormatException("Too many players defined in " + setupConfigFile);
-				}
-				// Create a card for the person
-				Card newPersonCard = new Card(itemInitial, itemName, CardType.PERSON);
-				cards.put(itemName, newPersonCard);
-				persons.add(newPersonCard); // Add card to person card list
-			}
-			// If the itemType is a weapon, create a card with the name and initial
-			else if(itemType.equals("Weapon")) {
-				Card newWeaponCard = new Card(itemInitial, itemName, CardType.WEAPON);
-				cards.put(itemName, newWeaponCard);
-				weapons.add(newWeaponCard); // Add card to weapon card list
-			}
-			else {
-				throw new BadConfigFormatException("Could not evaluate type in " + setupConfigFile);
+			switch(itemType) {
+				// If the itemType is a room, create a room and card with the name and initial
+				case "Room":
+					Room newRoom = new Room(itemInitial, itemName);
+					roomMap.put(itemInitial, newRoom); // Add to room map
+					addCard(itemName, itemInitial, CardType.ROOM);
+					break;
+				// If the itemType is a space, it needs to be created as a room, but not made a card
+				case "Space":
+					Room newSpace = new Room(itemInitial, itemName);
+					roomMap.put(itemInitial, newSpace);
+					break;
+				// If the itemType is a person, create a card with the name and initial
+				case "Person":
+					// Create a new player object, determine if it is human or computer
+					Player newPlayer;
+					// Player 0 should always be human player
+					if(players.isEmpty()) {
+						newPlayer = new HumanPlayer(itemName);
+					}
+					// All other players are computer players
+					else {
+						newPlayer = new ComputerPlayer(itemName);
+					}
+					players.add(newPlayer);
+					// There cannot be more than 6 players
+					if(players.size() > NUM_PLAYERS) {
+						throw new BadConfigFormatException("Too many players defined in " + setupConfigFile);
+					}
+					// Create a card for the person
+					addCard(itemName, itemInitial, CardType.PERSON);
+					break;
+				// If the itemType is a weapon, create a card with the name and initial
+				case "Weapon":
+					addCard(itemName, itemInitial, CardType.WEAPON);
+					break;
+				default:
+					throw new BadConfigFormatException("Could not evaluate type in " + setupConfigFile);
 			}
 		}
 		in.close();
+	}
+
+	// Method to add cards to the appropriate data sets
+	private void addCard(String itemName, Character itemInitial, CardType type) {
+		Card newCard = new Card(itemInitial, itemName, type);
+		cards.put(itemName, newCard); // Add card to deck
+		// Split the cards up based on type
+		switch(type) {
+			case ROOM:
+				roomCards.add(newCard); // Add card to room card list
+				break;
+			case PERSON:
+				personCards.add(newCard); // Add card to person card list
+				break;
+			case WEAPON:
+				weaponCards.add(newCard); // Add card to weapon card list
+				break;
+			default:
+				break;
+		}
 	}
 	
 	// Method to read in the layout from the layout config file
@@ -312,26 +327,27 @@ public class Board {
 	
 	// Method to deal the cards to the players. Will also store three cards in solution
 	public void deal() {
-		Random r = new Random();
+		Random rand = new Random();
 		deck = new ArrayList<>();
 		// Choose the solution randomly
-		Card personSol = persons.get(r.nextInt(persons.size()));
-		Card roomSol = rooms.get(r.nextInt(rooms.size()));
-		Card weaponSol = weapons.get(r.nextInt(weapons.size()));
+		Card personSol = personCards.get(rand.nextInt(personCards.size()));
+		Card roomSol = roomCards.get(rand.nextInt(roomCards.size()));
+		Card weaponSol = weaponCards.get(rand.nextInt(weaponCards.size()));
 		theAnswer = new Solution(personSol, roomSol, weaponSol);
 		
 		// Iterate through each card. If it is not in the solution, add it to the deck
-		for(Map.Entry<String, Card> entry : cards.entrySet()) {
-			if(entry.getValue() != personSol && entry.getValue() != roomSol && entry.getValue() != weaponSol) {
-				deck.add(entry.getValue());
+		for(Map.Entry<String, Card> card : cards.entrySet()) {
+			if(card.getValue() != personSol && card.getValue() != roomSol && card.getValue() != weaponSol) {
+				deck.add(card.getValue());
 			}
 		}
 		
 		// Deal to the players sequentially
 		int playerCounter = 0; // Tracks which player is receiving the card
 		while(!deck.isEmpty()) { // Make sure all cards are dealt
-			Card randCard = deck.get(r.nextInt(deck.size())); // Pick a random card from the deck
-			players.get(playerCounter).updateHand(randCard); // Give card to player
+			Card randCard = deck.get(rand.nextInt(deck.size())); // Pick a random card from the deck
+			Player currPlayer = players.get(playerCounter); // Current player
+			currPlayer.updateHand(randCard); // Give card to player
 			deck.remove(randCard); // Remove card from deck
 			playerCounter++; // Move on to next player
 			// Cycle back from last to first player
@@ -410,7 +426,9 @@ public class Board {
 		return cards.get(name);
 	}
 	
-	// The below getters are used for testing
+	/*
+	 * The below getters are used for testing
+	 */
 	public List<Player> getPlayers() {
 		return players;
 	}
@@ -419,7 +437,7 @@ public class Board {
 		return cards;
 	}
 	
-	public ArrayList<Card> getDeck() {
+	public List<Card> getDeck() {
 		return deck;
 	}
 	

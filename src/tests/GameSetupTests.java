@@ -115,7 +115,7 @@ class GameSetupTests {
 		Map<String, Card> preDealDeck = board.getCards(); // Save deck w/ references to all cards
 		List<Player> playerList = board.getPlayers();
 		Solution solution = board.getSolution();
-		ArrayList<Card> deck = board.getDeck();
+		List<Card> deck = board.getDeck();
 		
 		assertEquals(NUM_CARDS, preDealDeck.size()); // Check that the initial deck is of the correct size
 		// Check that the solution was drawn directly from the deck
@@ -144,7 +144,7 @@ class GameSetupTests {
 	// Test to make sure cards are dealt to players properly
 	@Test
 	public void testDeal() {
-		ArrayList<Card> deck = board.getDeck();
+		List<Card> deck = board.getDeck();
 		List<Player> playerList = board.getPlayers();
 		
 		assertEquals(0, deck.size()); // Make sure that all cards were dealt
