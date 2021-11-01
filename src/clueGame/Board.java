@@ -37,7 +37,7 @@ public class Board {
 	private ArrayList<Card> persons;
 	private ArrayList<Card> rooms;
 	private ArrayList<Card> weapons;
-	private Map<String, Card> deck; // The deck of cards
+	private ArrayList<Card> deck; // The deck of cards
 	private Solution theAnswer; // Stores the solution
 	
 	// Board constructor, can only be accessed by this class
@@ -312,12 +312,19 @@ public class Board {
 	// Method to deal the cards to the players. Will also store three cards in solution
 	public void deal() {
 		Random r = new Random();
+		deck = new ArrayList<>();
 		// Choose the solution randomly
 		Card personSol = persons.get(r.nextInt(persons.size()));
 		Card roomSol = rooms.get(r.nextInt(rooms.size()));
 		Card weaponSol = weapons.get(r.nextInt(weapons.size()));
 		
 		theAnswer = new Solution(personSol, roomSol, weaponSol);
+		
+		for(Map.Entry<String, Card> entry : cards.entrySet()) {
+			if(entry.getValue() != personSol && entry.getValue() != roomSol && entry.getValue() != weaponSol) {
+				deck.add(entry.getValue());
+			}
+		}
 	}
 	
 	// Method to get the adjacency list of a given cell
@@ -398,8 +405,8 @@ public class Board {
 		return cards;
 	}
 	
-	public Map<String, Card> getDeck() {
-		return new HashMap<>();
+	public ArrayList<Card> getDeck() {
+		return deck;
 	}
 	
 	public Solution getSolution() {

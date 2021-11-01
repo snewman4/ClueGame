@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeAll;
@@ -114,7 +115,7 @@ class GameSetupTests {
 		Map<String, Card> preDealDeck = board.getCards(); // Save deck w/ references to all cards
 		List<Player> playerList = board.getPlayers();
 		Solution solution = board.getSolution();
-		Map<String, Card> deck = board.getDeck();
+		ArrayList<Card> deck = board.getDeck();
 		
 		assertEquals(NUM_CARDS, preDealDeck.size()); // Check that the initial deck is of the correct size
 		// Check that the solution was drawn directly from the deck
@@ -122,9 +123,9 @@ class GameSetupTests {
 		assertTrue(preDealDeck.containsKey(solution.getRoom().getName()));
 		assertTrue(preDealDeck.containsKey(solution.getWeapon().getName()));
 		// Check that the deck does not contain the solution cards after deal()
-		assertFalse(deck.containsKey(solution.getPerson().getName()));
-		assertFalse(deck.containsKey(solution.getRoom().getName()));
-		assertFalse(deck.containsKey(solution.getWeapon().getName()));
+		assertFalse(deck.contains(solution.getPerson()));
+		assertFalse(deck.contains(solution.getRoom()));
+		assertFalse(deck.contains(solution.getWeapon()));
 		
 		// Check that the each solution card is the appropriate type
 		assertEquals(CardType.PERSON, solution.getPerson().getType());
@@ -143,7 +144,7 @@ class GameSetupTests {
 	// Test to make sure cards are dealt to players properly
 	@Test
 	public void testDeal() {
-		Map<String, Card> deck = board.getDeck();
+		ArrayList<Card> deck = board.getDeck();
 		List<Player> playerList = board.getPlayers();
 		
 		assertEquals(0, deck.size()); // Make sure that all cards were dealt
