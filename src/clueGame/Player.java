@@ -15,11 +15,12 @@ public abstract class Player {
 	private Color color;
 	protected int row;
 	protected int column;
-	private Set<Card> hand;
+	protected Set<Card> hand;
 	
 	protected Player(String name) {
 		super();
 		this.name = name;
+		this.hand = new HashSet<>();
 		// Use the pre-set arrays to define individual players' starting locations and colors
 		this.color = playerColors[currPlayerNum];
 		this.row = startLocation[currPlayerNum][0];
@@ -50,6 +51,6 @@ public abstract class Player {
 	}
 	
 	public Set<Card> getHand() {
-		return new HashSet<>();
+		return hand;
 	}
 }

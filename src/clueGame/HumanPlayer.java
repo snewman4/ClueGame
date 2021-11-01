@@ -6,6 +6,6 @@ public class HumanPlayer extends Player {
 	}
 	@Override
 	public void updateHand(Card card) {
-		
+		this.hand.add(card);
 	}
 }

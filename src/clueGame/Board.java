@@ -22,6 +22,7 @@ import java.util.Scanner;
 import java.util.Set;
 
 public class Board {
+	private static final int NUM_PLAYERS = 6;
 	private int numRows;
 	private int numColumns;
 	private BoardCell[][] gameBoard;
@@ -118,7 +119,7 @@ public class Board {
 				}
 				players.add(newPlayer);
 				// There cannot be more than 6 players
-				if(players.size() > 6) {
+				if(players.size() > NUM_PLAYERS) {
 					throw new BadConfigFormatException("Too many players defined in " + setupConfigFile);
 				}
 				// Create a card for the person
@@ -317,12 +318,25 @@ public class Board {
 		Card personSol = persons.get(r.nextInt(persons.size()));
 		Card roomSol = rooms.get(r.nextInt(rooms.size()));
 		Card weaponSol = weapons.get(r.nextInt(weapons.size()));
-		
 		theAnswer = new Solution(personSol, roomSol, weaponSol);
 		
+		// Iterate through each card. If it is not in the solution, add it to the deck
 		for(Map.Entry<String, Card> entry : cards.entrySet()) {
 			if(entry.getValue() != personSol && entry.getValue() != roomSol && entry.getValue() != weaponSol) {
 				deck.add(entry.getValue());
+			}
+		}
+		
+		// Deal to the players sequentially
+		int playerCounter = 0; // Tracks which player is receiving the card
+		while(!deck.isEmpty()) { // Make sure all cards are dealt
+			Card randCard = deck.get(r.nextInt(deck.size())); // Pick a random card from the deck
+			players.get(playerCounter).updateHand(randCard); // Give card to player
+			deck.remove(randCard); // Remove card from deck
+			playerCounter++; // Move on to next player
+			// Cycle back from last to first player
+			if(playerCounter == NUM_PLAYERS) {
+				playerCounter = 0;
 			}
 		}
 	}
