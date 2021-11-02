@@ -1,3 +1,12 @@
+/**
+ * Solution Class
+ * 
+ * @author Sam Newman
+ * @section CSCI 306A
+ * 
+ * This class holds the solution to the game.
+ */
+
 package clueGame;
 
 public class Solution {

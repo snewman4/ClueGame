@@ -1,3 +1,13 @@
+/**
+ * Card Class
+ * 
+ * @author Sam Newman
+ * @section CSCI 306A
+ * 
+ * This class represents a single card in the deck,
+ * storing the name and type of card.
+ */
+
 package clueGame;
 
 public class Card {

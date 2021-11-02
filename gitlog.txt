@@ -1,131 +1,74 @@
-Author: Sam Newman
-Section: CSCI 306A
-Before and After Refactoring my best code snippet:
+commit 158ce2d7a7bcb5157503d54b91847ffe39538dfa
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Sun Oct 31 19:41:27 2021 -0600
 
-BEFORE:
-// Handle walkway adjacencies
-if(cellType == 'W') {
-	if((row - 1) >= 0) {
-		BoardCell nextCell = board[row-1][column];
-		Character nextCellType = nextCell.getInitial();
-		if(nextCellType == 'W') {
-			cell.addAdjecency(nextCell);
-		}
-	}
-	if((row + 1) < numRows) {
-		BoardCell nextCell = board[row+1][column];
-		Character nextCellType = nextCell.getInitial();
-		if(nextCellType == 'W') {
-			cell.addAdjecency(nextCell);
-		}
-	}
-	if((column - 1) >= 0) {
-		BoardCell nextCell = board[row][column-1];
-		Character nextCellType = nextCell.getInitial();
-		if(nextCellType == 'W') {
-			cell.addAdjecency(nextCell);
-		}
-	}
-	if((column + 1) < numColumns) {
-		BoardCell nextCell = board[row][column+1];
-		Character nextCellType = nextCell.getInitial();
-		if(nextCellType == 'W') {
-			cell.addAdjecency(nextCell);
-		}
-	}
-					
-	// If the cell is a doorway, add the room as an adjacency
-	if(cell.isDoorway()) {
-		DoorDirection cellDirection = cell.getDoorDirection(); // See where door faces
-		switch(cellDirection) {
-			case UP:
-				BoardCell nextCellUP = board[row-1][column]; // Directly adjacent cell
-				Character nextCellTypeUP = nextCellUP.getInitial(); // Room type
-				BoardCell roomCenterUP = roomMap.get(nextCellTypeUP).getCenterCell(); // Room's center
-				cell.addAdjecency(roomCenterUP);
-				roomCenterUP.addAdjecency(cell); // Update the room's adjacency to include the cell with the door
-				break;
-			case DOWN:
-				BoardCell nextCellDOWN = board[row+1][column]; // Directly adjacent cell
-				Character nextCellTypeDOWN = nextCellDOWN.getInitial(); // Room type
-				BoardCell roomCenterDOWN = roomMap.get(nextCellTypeDOWN).getCenterCell(); // Room's center
-				cell.addAdjecency(roomCenterDOWN);
-				roomCenterDOWN.addAdjecency(cell); // Update the room's adjacency to include the cell with the door
-				break;
-			case RIGHT:
-				BoardCell nextCellRIGHT = board[row][column+1]; // Directly adjacent cell
-				Character nextCellTypeRIGHT = nextCellRIGHT.getInitial(); // Room type
-				BoardCell roomCenterRIGHT = roomMap.get(nextCellTypeRIGHT).getCenterCell(); // Room's center
-				cell.addAdjecency(roomCenterRIGHT);
-				roomCenterRIGHT.addAdjecency(cell); // Update the room's adjacency to include the cell with the door
-				break;
-			case LEFT:
-				BoardCell nextCellLEFT = board[row][column-1]; // Directly adjacent cell
-				Character nextCellTypeLEFT = nextCellLEFT.getInitial(); // Room type
-				BoardCell roomCenterLEFT = roomMap.get(nextCellTypeLEFT).getCenterCell(); // Room's center
-				cell.addAdjecency(roomCenterLEFT);
-				roomCenterLEFT.addAdjecency(cell); // Update the room's adjacency to include the cell with the door
-				break;
-		}
-	}
-}
+    Refactored several parts of Board(), mainly the handling of different types of setup read-ins
 
-AFTER:
-	// Handle walkway adjacencies
-	if(cellType == 'W') {
-		if((row - 1) >= 0) {
-			addWalkwayAdjacency(row - 1, column, cell);
-		}
-		if((row + 1) < numRows) {
-			addWalkwayAdjacency(row + 1, column, cell);
-		}
-		if((column - 1) >= 0) {
-			addWalkwayAdjacency(row, column - 1, cell);
-		}
-		if((column + 1) < numColumns) {
-			addWalkwayAdjacency(row, column + 1, cell);
-		}
-					
-		// If the cell is a doorway, add the room as an adjacency
-		if(cell.isDoorway()) {
-			DoorDirection cellDirection = cell.getDoorDirection(); // See where door faces
-			switch(cellDirection) {
-				case UP:
-					addDoorAdjacency(row - 1, column, cell);
-					break;
-				case DOWN:
-					addDoorAdjacency(row + 1, column, cell);
-					break;
-				case RIGHT:
-					addDoorAdjacency(row, column + 1, cell);
-					break;
-				case LEFT:
-					addDoorAdjacency(row, column - 1, cell);
-					break;
-				default: break;
-			}
-		}
-	}
+commit a1b31c213a75aca0579b40261812d0c6d437f11d
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Sun Oct 31 19:17:50 2021 -0600
 
-	// Method to set up adjacencies for walkways
-	private void addWalkwayAdjacency(int row, int column, BoardCell cell) {
-		BoardCell nextCell = gameBoard[row][column];
-		Character nextCellType = nextCell.getInitial();
-		if(nextCellType == 'W') {
-			cell.addAdjecency(nextCell);
-		}
-	}
+    Implemented dealing, so that all players are fairly dealt cards. Updated Player classes to allow accepting of card. All tests pass.
 
-	// Method to set up adjacencies when there is a door
-	private void addDoorAdjacency(int row, int column, BoardCell cell) {
-		BoardCell nextCell = gameBoard[row][column]; // Directly adjacent cell
-		Character nextCellType = nextCell.getInitial(); // Room type
-		BoardCell roomCenter = roomMap.get(nextCellType).getCenterCell(); // Room's center
-		cell.addAdjecency(roomCenter);
-		roomCenter.addAdjecency(cell); // Update the room's adjacency to include the cell with the door
-	}
+commit 65edb047655a5309c8b3d8d7e82bc1ba152e5fd1
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Sun Oct 31 19:07:34 2021 -0600
 
-Git Log:
+    Changed deck data structure from Map to ArrayList. Updated appropriate fields.
+
+commit 17e48523a731fdf6d7cfa3887d3cdcb26e385faa
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Sun Oct 31 18:52:32 2021 -0600
+
+    Implemented solution handling so that testSolutionLoad passes.Also updated adding cards to deck so that testCardLoad passes.
+
+commit 26a652573ed778738d7a01cb64423e7e0a8d2e0a
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Fri Oct 29 13:46:18 2021 -0600
+
+    Implemented player loading so that first test passes. Fixed bug where currPlayerNum would not restart for a new test
+
+commit 2224338eaa5d8172112444865423434607ee777c
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Fri Oct 29 11:46:56 2021 -0600
+
+    Added test to ensure no two players share a card
+
+commit fd3fce25fadb93b13b652151eb965c10f0e99bfc
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Fri Oct 29 11:41:15 2021 -0600
+
+    Changed deck to be held in map of <String, Card> instead of <Character, Card>. Updated all relevant tests and methods.
+
+commit 4932f1b69da43de807ce10970619b9ff27d166d9
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Thu Oct 28 19:42:24 2021 -0600
+
+    Added deck creation and card creation to Board class
+
+commit a359980dd66cf5106e0829976d5f512137fb0c09
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Thu Oct 28 19:26:54 2021 -0600
+
+    Added Card, CardType, ComputerPlayer, HumanPlayer, Player, and Solution classes. Updated skeletons so all tests fail, not error.
+
+commit 054c7d534e2663351623ad46d23bf256667b16c4
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Thu Oct 28 18:41:41 2021 -0600
+
+    Added tests to check player start locations
+
+commit f0055e96603b79815a357733d0758186cd453730
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Thu Oct 28 18:23:28 2021 -0600
+
+    Completed test cases for GameSetup
+
+commit 0225b4d8b90c311fe07f1b1b4ee43271270472a8
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Thu Oct 28 12:12:06 2021 -0600
+
+    Updated ClueSetup.txt to include Player and Weapon, began creation of setupTests
 
 commit 38553936836801dac96b14b0affad336a4b2d7fa
 Author: Sam Newman <snewman1@mines.edu>

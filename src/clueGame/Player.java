@@ -1,3 +1,14 @@
+/**
+ * Player Class
+ * 
+ * @author Sam Newman
+ * @section CSCI 306A
+ * 
+ * This class represents a player, and is an abstract
+ * class with children HumanPlayer and ComputerPlayer.
+ * It holds information necessary to every player.
+ */
+
 package clueGame;
 
 import java.awt.Color;
