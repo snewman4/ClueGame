@@ -41,6 +41,7 @@ public abstract class Player {
 		this.hand = new HashSet<>();
 		this.seen = new HashSet<>();
 		this.allCards = new HashMap<>();
+		this.roomMap = new HashMap<>();
 		// Use the pre-set arrays to define individual players' starting locations and colors
 		this.color = playerColors[currPlayerNum];
 		this.row = startLocation[currPlayerNum][0];
@@ -90,14 +91,22 @@ public abstract class Player {
 		return null;
 	}
 	
+	// Method to reset the currPlayerNum
+	public static void reset() {
+		currPlayerNum = 0;
+	}
+	
+	// Method to pass the player the references to all cards
 	public void giveAllCards(Map<String, Card> allCards) {
 		this.allCards = allCards;
 	}
 	
+	// Method to pass the player the references to all rooms
 	public void giveAllRooms(Map<Character, Room> roomMap) {
 		this.roomMap = roomMap;
 	}
 	
+	// Getters and Setters
 	public void updateHand(Card card) {
 		hand.add(card);
 	}
@@ -140,9 +149,5 @@ public abstract class Player {
 	}
 	public void removeCard(Card card) {
 		hand.remove(card);
-	}
-	
-	public static void reset() {
-		currPlayerNum = 0;
 	}
 }

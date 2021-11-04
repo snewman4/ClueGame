@@ -68,6 +68,7 @@ public class ComputerPlayer extends Player {
 				case WEAPON:
 					unseenWeapon.add(card);
 					break;
+				// We don't need to worry about room cards, as it must suggest the room it is in
 				default:
 					break;
 			}

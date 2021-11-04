@@ -380,6 +380,7 @@ public class Board {
 			}
 			// Let each sequential player attempt to disprove
 			Card disproveAttempt = players.get(currPlayerNum).disproveSuggestion(suggestion);
+			// Return the first card that disproves the suggestion
 			if(disproveAttempt != null) {
 				return disproveAttempt;
 			}
@@ -388,7 +389,7 @@ public class Board {
 	
 	// Method to check an accusation against the solution
 	public boolean checkAccusation(Solution accusation) {
-		return theAnswer.equals(accusation);
+		return theAnswer.isEqual(accusation);
 	}
 	
 	// Method to get the adjacency list of a given cell
@@ -464,9 +465,7 @@ public class Board {
 		return cards.get(name);
 	}
 	
-	/*
-	 * The below getters are used for testing
-	 */
+	// The below getters are used for testing
 	public List<Player> getPlayers() {
 		return players;
 	}

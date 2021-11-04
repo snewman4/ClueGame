@@ -21,7 +21,7 @@ public class Solution {
 		this.weapon = weapon;
 	}
 	
-	public boolean equals(Solution target) {
+	public boolean isEqual(Solution target) {
 		return (this.person == target.person && this.room == target.room && this.weapon == target.weapon);
 	}
 	
