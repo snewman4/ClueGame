@@ -359,18 +359,21 @@ public class Board {
 	
 	// Method to handle a suggestion provided by a player
 	public Card handleSuggestion(Player suggestor, Solution suggestion) {
+		// Get indexes to track the suggestor and the one attempting to disprove
 		int suggestorNumber = players.indexOf(suggestor);
 		int currPlayerNum = suggestorNumber;
 		
 		while(true) {
-			currPlayerNum++;
-			
+			currPlayerNum++; // Move on to next player
+			// Loop back around to player 0
 			if(currPlayerNum == players.size()) {
 				currPlayerNum = 0;
 			}
+			// If it gets back to the suggestor, no one can disprove
 			if(currPlayerNum == suggestorNumber) {
 				return null;
 			}
+			// Let each sequential player attempt to disprove
 			Card disproveAttempt = players.get(currPlayerNum).disproveSuggestion(suggestion);
 			if(disproveAttempt != null) {
 				return disproveAttempt;
