@@ -79,9 +79,9 @@ class GameSolutionTest {
 		Card roomSol = solution.getRoom();
 		Card weaponSol = solution.getWeapon();
 		// Get cards that aren't solution to test against
-		Card notPerson;
-		Card notRoom;
-		Card notWeapon;
+		Card notPerson = new Card('T', "Test", CardType.PERSON);
+		Card notRoom = new Card('T', "Test", CardType.ROOM);
+		Card notWeapon = new Card('T', "Test", CardType.WEAPON);
 		// Loop through deck of all cards. Select one card from each type that is not solution.
 		for(Map.Entry<String, Card> card : preDealDeck.entrySet()) {
 			if(card.getValue().getType() == CardType.PERSON && card.getValue() != personSol) {
@@ -186,12 +186,12 @@ class GameSolutionTest {
 		player3.updateHand(preDealDeck.get("Nitrous Gas"));
 		// Should not be able to return a card
 		Solution testSuggestion = new Solution(suggPerson, suggRoom, suggWeapon);
-		assertEquals(null, board.handleSuggestion(player1, testSuggestion));
+		assertNull(board.handleSuggestion(player1, testSuggestion));
 		
 		// Update hand so that only player1, the suggestor, can disprove the suggestion
 		player1.updateHand(suggPerson);
 		// The suggestor should not disprove his own suggestion
-		assertEquals(null, board.handleSuggestion(player1, testSuggestion));
+		assertNull(board.handleSuggestion(player1, testSuggestion));
 		
 		// Check that the human player returns the correct card
 		assertEquals(suggPerson, board.handleSuggestion(player2, testSuggestion));

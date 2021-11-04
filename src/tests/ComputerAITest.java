@@ -28,7 +28,7 @@ class ComputerAITest {
 	 */
 	@Test
 	public void testComputerSuggestion() {
-		Player testPlayer = new ComputerPlayer("Test");
+		ComputerPlayer testPlayer = new ComputerPlayer("Test");
 		Map<String, Card> preDealDeck = board.getCards();
 		// Set the player to location (4, 2), which is the center of the Batcave room
 		testPlayer.setRow(4);
@@ -55,7 +55,7 @@ class ComputerAITest {
 		Card testWeapon1 = preDealDeck.get("Petrol Can");
 		Card testWeapon2 = preDealDeck.get("Quail Beak");
 		// Counters for each card
-		int person1Ct, person2Ct, knownRoomCt, weapon1Ct, weapon2Ct, seenPersonCt, seenWeaponCt, handPersonCt, handWeaponCt;
+		int person1Ct = 0, person2Ct = 0, knownRoomCt = 0, weapon1Ct = 0, weapon2Ct = 0, seenPersonCt = 0, seenWeaponCt = 0, handPersonCt = 0, handWeaponCt = 0;
 		// Generate a suggestion from the computer
 		Solution suggestion = testPlayer.createSuggestion();
 		
@@ -105,7 +105,7 @@ class ComputerAITest {
 	 */
 	@Test
 	public void testComputerTarget() {
-		Player testPlayer = new ComputerPlayer("Test");
+		ComputerPlayer testPlayer = new ComputerPlayer("Test");
 		Map<String, Card> preDealDeck = board.getCards();
 		// Set the player location to (12, 18), which is in the middle of a walkway
 		testPlayer.setRow(12);
@@ -117,7 +117,7 @@ class ComputerAITest {
 		BoardCell currCell = board.getCell(12, 18); // Reference to the cell where the player is
 		
 		// Test a roll of 1 (there should be four options, ensure each is selected once
-		int cellA, cellB, cellC, cellD;
+		int cellA = 0, cellB = 0, cellC = 0, cellD = 0;
 		BoardCell target;
 		for(int i = 0; i < 20; i++) {
 			target = testPlayer.selectTarget(currCell, 1);

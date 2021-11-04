@@ -18,6 +18,7 @@ class GameSetupTests {
 	
 	@BeforeAll
 	public static void setUp() {
+		Player.reset();
 		// Board is singleton, get the only instance
 		board = Board.getInstance();
 		// set the file names to use my config files

@@ -12,13 +12,16 @@
 package clueGame;
 
 public class ComputerPlayer extends Player {
+	
 	public ComputerPlayer(String name) {
 		super(name);
 	}
 	
-	@Override
-	public void updateHand(Card card) {
-		this.hand.add(card);
+	public BoardCell selectTarget(BoardCell currCell, int roll) {
+		return currCell;
 	}
-
+	
+	public Solution createSuggestion() {
+		return new Solution(new Card('T', "Test", CardType.PERSON), new Card('T', "Test", CardType.PERSON), new Card('T', "Test", CardType.PERSON));
+	}
 }

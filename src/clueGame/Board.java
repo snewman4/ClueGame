@@ -357,6 +357,16 @@ public class Board {
 		}
 	}
 	
+	// Method to handle a suggestion provided by a player
+	public Card handleSuggestion(Player suggestor, Solution suggestion) {
+		return null;
+	}
+	
+	// Method to check an accusation against the solution
+	public boolean checkAccusation(Solution accusation) {
+		return false;
+	}
+	
 	// Method to get the adjacency list of a given cell
 	public Set<BoardCell> getAdjList(int row, int col) {
 		return gameBoard[row][col].getAdjList();

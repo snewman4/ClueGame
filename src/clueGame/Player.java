@@ -41,11 +41,21 @@ public abstract class Player {
 		currPlayerNum++; // Update playerNum so next instance uses makes appropriate player
 		// Cycle back through indexes, don't go out of bounds
 		if(currPlayerNum == 6) {
-			currPlayerNum = 0;
+			reset();
 		}
 	}
 	
-	public abstract void updateHand(Card card);
+	public Card disproveSuggestion(Solution suggestion) {
+		return null;
+	}
+	
+	public void updateHand(Card card) {
+		hand.add(card);
+	}
+	
+	public void updateSeen(Card card) {
+		seen.add(card);
+	}
 	
 	public String getName() {
 		return name;
@@ -73,5 +83,14 @@ public abstract class Player {
 	
 	public Set<Card> getHand() {
 		return hand;
+	}
+	
+	// This is used for testing only
+	public void removeCard(Card card) {
+		hand.remove(card);
+	}
+	
+	public static void reset() {
+		currPlayerNum = 0;
 	}
 }
