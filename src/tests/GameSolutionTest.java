@@ -169,10 +169,19 @@ class GameSolutionTest {
 	@Test
 	public void testHandleSuggestion() {
 		Map<String, Card> preDealDeck = board.getCards();
-		// Small sample of players
-		Player player1 = new HumanPlayer("1");
-		Player player2 = new ComputerPlayer("2");
-		Player player3 = new ComputerPlayer("3");
+		// Take all players, clear their hands so they don't interfere
+		Player player1 = board.getPlayers().get(0);
+		player1.clearHand();
+		Player player2 = board.getPlayers().get(1);
+		player2.clearHand();
+		Player player3 = board.getPlayers().get(2);
+		player3.clearHand();
+		Player player4 = board.getPlayers().get(3);
+		player4.clearHand();
+		Player player5 = board.getPlayers().get(4);
+		player5.clearHand();
+		Player player6 = board.getPlayers().get(5);
+		player6.clearHand();
 		// Pre-set suggestion cards
 		Card suggPerson = preDealDeck.get("Sergeant Sam");
 		Card suggRoom = preDealDeck.get("Office");

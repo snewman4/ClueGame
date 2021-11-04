@@ -359,12 +359,28 @@ public class Board {
 	
 	// Method to handle a suggestion provided by a player
 	public Card handleSuggestion(Player suggestor, Solution suggestion) {
-		return null;
+		int suggestorNumber = players.indexOf(suggestor);
+		int currPlayerNum = suggestorNumber;
+		
+		while(true) {
+			currPlayerNum++;
+			
+			if(currPlayerNum == players.size()) {
+				currPlayerNum = 0;
+			}
+			if(currPlayerNum == suggestorNumber) {
+				return null;
+			}
+			Card disproveAttempt = players.get(currPlayerNum).disproveSuggestion(suggestion);
+			if(disproveAttempt != null) {
+				return disproveAttempt;
+			}
+		}
 	}
 	
 	// Method to check an accusation against the solution
 	public boolean checkAccusation(Solution accusation) {
-		return false;
+		return theAnswer.equals(accusation);
 	}
 	
 	// Method to get the adjacency list of a given cell

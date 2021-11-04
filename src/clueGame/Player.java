@@ -12,7 +12,9 @@
 package clueGame;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 public abstract class Player {
@@ -46,7 +48,27 @@ public abstract class Player {
 	}
 	
 	public Card disproveSuggestion(Solution suggestion) {
-		return null;
+		Random rand = new Random();
+		// Get suggested cards
+		Card suggPerson = suggestion.getPerson();
+		Card suggRoom = suggestion.getRoom();
+		Card suggWeapon = suggestion.getWeapon();
+		Card returnCard = null;
+		ArrayList<Card> matching = new ArrayList<>(); // List of cards that are in both suggestion and hand
+		
+		// Add matching cards to the list
+		if(hand.contains(suggPerson))
+			matching.add(suggPerson);
+		if(hand.contains(suggRoom))
+			matching.add(suggRoom);
+		if(hand.contains(suggWeapon))
+			matching.add(suggWeapon);
+		
+		// Randomly select one of the matching cards
+		if(!matching.isEmpty()) {
+			returnCard = matching.get(rand.nextInt(matching.size()));
+		}
+		return returnCard;
 	}
 	
 	public void updateHand(Card card) {
@@ -86,6 +108,9 @@ public abstract class Player {
 	}
 	
 	// This is used for testing only
+	public void clearHand() {
+		hand.clear();
+	}
 	public void removeCard(Card card) {
 		hand.remove(card);
 	}

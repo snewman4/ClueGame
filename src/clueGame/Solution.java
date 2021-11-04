@@ -21,6 +21,10 @@ public class Solution {
 		this.weapon = weapon;
 	}
 	
+	public boolean equals(Solution target) {
+		return (this.person == target.person && this.room == target.room && this.weapon == target.weapon);
+	}
+	
 	public Card getPerson() {
 		return person;
 	}
