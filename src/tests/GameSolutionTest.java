@@ -96,12 +96,12 @@ class GameSolutionTest {
 		}
 
 		// Tests on checkAccusation
-		assertTrue(board.checkAccusation(personSol, roomSol, weaponSol)); // Check that an accusation w/ correct cards is true
-		assertFalse(board.checkAccusation(personSol, roomSol, personSol)); // Check that one incorrect card of wrong type returns false
-		assertFalse(board.checkAccusation(notPerson, notRoom, notWeapon)); // Check that all incorrect cards returns false
-		assertFalse(board.checkAccusation(notPerson, roomSol, weaponSol)); // Check that the wrong person returns false
-		assertFalse(board.checkAccusation(personSol, notRoom, weaponSol)); // Check that the wrong room returns false
-		assertFalse(board.checkAccusation(personSol, roomSol, notWeapon)); // Check that the wrong weapon returns false
+		assertTrue(board.checkAccusation(new Solution(personSol, roomSol, weaponSol))); // Check that an accusation w/ correct cards is true
+		assertFalse(board.checkAccusation(new Solution(personSol, roomSol, personSol))); // Check that one incorrect card of wrong type returns false
+		assertFalse(board.checkAccusation(new Solution(notPerson, notRoom, notWeapon))); // Check that all incorrect cards returns false
+		assertFalse(board.checkAccusation(new Solution(notPerson, roomSol, weaponSol))); // Check that the wrong person returns false
+		assertFalse(board.checkAccusation(new Solution(personSol, notRoom, weaponSol))); // Check that the wrong room returns false
+		assertFalse(board.checkAccusation(new Solution(personSol, roomSol, notWeapon))); // Check that the wrong weapon returns false
 	}
 
 	/*
@@ -123,14 +123,15 @@ class GameSolutionTest {
 		testPlayer.updateHand(handRoom);
 		testPlayer.updateHand(handWeapon);
 		
-		assertEquals(null, testPlayer.disproveSuggestion(suggPerson, suggRoom, suggWeapon));
+		Solution suggestion = new Solution(suggPerson, suggRoom, suggWeapon);
+		assertEquals(null, testPlayer.disproveSuggestion(suggestion));
 		
 		// Pre-set cards with one match suggestion
 		testPlayer.removeCard(handPerson);
 		handPerson = suggPerson;
 		testPlayer.updateHand(handPerson);
 		
-		assertEquals(handPerson, testPlayer.disproveSuggestion(suggPerson, suggRoom, suggWeapon));
+		assertEquals(handPerson, testPlayer.disproveSuggestion(suggestion));
 		
 		// Pre-set cards with all matching suggestions
 		testPlayer.removeCard(handRoom);
@@ -145,7 +146,7 @@ class GameSolutionTest {
 		int weaponCount = 0;
 		// Disprove suggestion 30 times, which should be enough to have each card shown at least once
 		for(int i = 0; i < 30; i++) {
-			Card suggResult = testPlayer.disproveSuggestion(suggPerson, suggRoom, suggWeapon);
+			Card suggResult = testPlayer.disproveSuggestion(suggestion);
 			if(suggResult == handPerson) {
 				personCount++;
 			}
@@ -184,24 +185,28 @@ class GameSolutionTest {
 		player3.updateHand(preDealDeck.get("Howard Handy"));
 		player3.updateHand(preDealDeck.get("Nitrous Gas"));
 		// Should not be able to return a card
-		assertEquals(null, board.handleSuggestion(player1, suggPerson, suggRoom, suggWeapon));
+		Solution testSuggestion = new Solution(suggPerson, suggRoom, suggWeapon);
+		assertEquals(null, board.handleSuggestion(player1, testSuggestion));
 		
 		// Update hand so that only player1, the suggestor, can disprove the suggestion
 		player1.updateHand(suggPerson);
 		// The suggestor should not disprove his own suggestion
-		assertEquals(null, board.handleSuggestion(player1, suggPerson, suggRoom, suggWeapon));
+		assertEquals(null, board.handleSuggestion(player1, testSuggestion));
+		
+		// Check that the human player returns the correct card
+		assertEquals(suggPerson, board.handleSuggestion(player2, testSuggestion));
 		
 		// Update hand so that player3 can disprove suggestion
 		player3.updateHand(suggWeapon);
 		// Should return only suggWeapon
-		assertEquals(suggWeapon, board.handleSuggestion(player1, suggPerson, suggRoom, suggWeapon));
-		assertNotEquals(suggPerson, board.handleSuggestion(player1, suggPerson, suggRoom, suggWeapon));
+		assertEquals(suggWeapon, board.handleSuggestion(player1, testSuggestion));
+		assertNotEquals(suggPerson, board.handleSuggestion(player1, testSuggestion));
 		
 		// Update hand so that both player2 and player3 can disprove the suggestion
 		player2.updateHand(suggRoom);
 		// Should return only suggRoom, as that is the one that player2, the next in line, has
-		assertEquals(suggRoom, board.handleSuggestion(player1, suggPerson, suggRoom, suggWeapon));
-		assertNotEquals(suggPerson, board.handleSuggestion(player1, suggPerson, suggRoom, suggWeapon));
-		assertNotEquals(suggWeapon, board.handleSuggestion(player1, suggPerson, suggRoom, suggWeapon));
+		assertEquals(suggRoom, board.handleSuggestion(player1, testSuggestion));
+		assertNotEquals(suggPerson, board.handleSuggestion(player1, testSuggestion));
+		assertNotEquals(suggWeapon, board.handleSuggestion(player1, testSuggestion));
 	}
 }
