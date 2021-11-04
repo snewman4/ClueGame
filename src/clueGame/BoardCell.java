@@ -34,7 +34,15 @@ public class BoardCell {
 		adjList = new HashSet<>();
 	}
 	
-	// All of the getters and setters for BoardCell class	
+	// All of the getters and setters for BoardCell class
+	public int getRow() {
+		return row;
+	}
+	
+	public int getColumn() {
+		return column;
+	}
+	
 	public void addAdjecency(BoardCell cell) {
 		adjList.add(cell);
 	}

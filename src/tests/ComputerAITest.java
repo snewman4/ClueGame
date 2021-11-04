@@ -30,6 +30,9 @@ class ComputerAITest {
 	public void testComputerSuggestion() {
 		ComputerPlayer testPlayer = new ComputerPlayer("Test");
 		Map<String, Card> preDealDeck = board.getCards();
+		Map<Character, Room> roomMap = board.getRoomMap();
+		testPlayer.giveAllCards(preDealDeck);
+		testPlayer.giveAllRooms(roomMap);
 		// Set the player to location (4, 2), which is the center of the Batcave room
 		testPlayer.setRow(4);
 		testPlayer.setColumn(2);
@@ -107,6 +110,9 @@ class ComputerAITest {
 	public void testComputerTarget() {
 		ComputerPlayer testPlayer = new ComputerPlayer("Test");
 		Map<String, Card> preDealDeck = board.getCards();
+		Map<Character, Room> roomMap = board.getRoomMap();
+		testPlayer.giveAllCards(preDealDeck);
+		testPlayer.giveAllRooms(roomMap);
 		// Set the player location to (12, 18), which is in the middle of a walkway
 		testPlayer.setRow(12);
 		testPlayer.setColumn(18);
@@ -119,8 +125,9 @@ class ComputerAITest {
 		// Test a roll of 1 (there should be four options, ensure each is selected once
 		int cellA = 0, cellB = 0, cellC = 0, cellD = 0;
 		BoardCell target;
-		for(int i = 0; i < 20; i++) {
-			target = testPlayer.selectTarget(currCell, 1);
+		for(int i = 0; i < 50; i++) {
+			board.calcTargets(currCell, 1);
+			target = testPlayer.selectTarget(board.getTargets());
 			if(target == board.getCell(11, 18))
 				cellA++;
 			if(target == board.getCell(13, 18))
@@ -140,7 +147,8 @@ class ComputerAITest {
 		BoardCell notTargetCell = board.getRoom('T').getCenterCell();
 		// Check a few times to ensure that Malecave is always selected, and toilet never is
 		for(int i = 0; i < 10; i++) {
-			target = testPlayer.selectTarget(currCell, 6);
+			board.calcTargets(currCell, 6);
+			target = testPlayer.selectTarget(board.getTargets());
 			assertEquals(targetRoomCell, target);
 			assertNotEquals(notTargetCell, target);
 		}
@@ -152,8 +160,9 @@ class ComputerAITest {
 		cellC = 0;
 		cellD = 0;
 		
-		for(int i = 0; i < 50; i++) {
-			target = testPlayer.selectTarget(currCell, 6);
+		for(int i = 0; i < 1000; i++) {
+			board.calcTargets(currCell, 6);
+			target = testPlayer.selectTarget(board.getTargets());
 			if(target == board.getCell(11, 23))
 				cellA++;
 			if(target == board.getCell(8, 16))

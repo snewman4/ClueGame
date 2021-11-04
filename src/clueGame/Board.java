@@ -355,6 +355,11 @@ public class Board {
 				playerCounter = 0;
 			}
 		}
+		// Make sure all players can see all card references
+		for(Player player : players) {
+			player.giveAllCards(cards);
+			player.giveAllRooms(roomMap);
+		}
 	}
 	
 	// Method to handle a suggestion provided by a player
@@ -433,6 +438,10 @@ public class Board {
 	
 	public BoardCell getCell(int row, int col) {
 		return gameBoard[row][col];
+	}
+	
+	public Map<Character, Room> getRoomMap() {
+		return roomMap;
 	}
 	
 	public Room getRoom(Character initial) {

@@ -13,7 +13,9 @@ package clueGame;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -30,12 +32,15 @@ public abstract class Player {
 	protected int column;
 	protected Set<Card> hand;
 	protected Set<Card> seen;
+	protected Map<String, Card> allCards;
+	protected Map<Character, Room> roomMap;
 	
 	protected Player(String name) {
 		super();
 		this.name = name;
 		this.hand = new HashSet<>();
 		this.seen = new HashSet<>();
+		this.allCards = new HashMap<>();
 		// Use the pre-set arrays to define individual players' starting locations and colors
 		this.color = playerColors[currPlayerNum];
 		this.row = startLocation[currPlayerNum][0];
@@ -47,6 +52,7 @@ public abstract class Player {
 		}
 	}
 	
+	// Method to disprove a suggestion made by another player
 	public Card disproveSuggestion(Solution suggestion) {
 		Random rand = new Random();
 		// Get suggested cards
@@ -69,6 +75,27 @@ public abstract class Player {
 			returnCard = matching.get(rand.nextInt(matching.size()));
 		}
 		return returnCard;
+	}
+	
+	// Method to identify which room the player is in. If not in a room, returns null
+	public Room findCurrentRoom() {
+		// Check each room in the roomMap
+		for(Map.Entry<Character, Room> entry : roomMap.entrySet()) {
+			BoardCell checkRoomCell = entry.getValue().getCenterCell();
+			// If the player is in the current check room, return the room
+			if(checkRoomCell.getRow() == row && checkRoomCell.getColumn() == column) {
+				return entry.getValue();
+			}
+		}
+		return null;
+	}
+	
+	public void giveAllCards(Map<String, Card> allCards) {
+		this.allCards = allCards;
+	}
+	
+	public void giveAllRooms(Map<Character, Room> roomMap) {
+		this.roomMap = roomMap;
 	}
 	
 	public void updateHand(Card card) {
