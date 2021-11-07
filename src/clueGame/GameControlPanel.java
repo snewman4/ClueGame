@@ -30,7 +30,7 @@ public class GameControlPanel extends JPanel {
 		JPanel turnPanel = new JPanel();
 		JLabel whoseTurn = new JLabel("Whose turn?");
 		currPlayer = new JTextField(15);
-		currPlayer.setEditable(false);
+		currPlayer.setEditable(false); // Make it so user can't edit
 		turnPanel.add(whoseTurn);
 		turnPanel.add(currPlayer);
 		upperHalf.add(turnPanel);
@@ -39,7 +39,7 @@ public class GameControlPanel extends JPanel {
 		JPanel rollPanel = new JPanel();
 		JLabel roll = new JLabel("Roll:");
 		currRoll = new JTextField(5);
-		currRoll.setEditable(false);
+		currRoll.setEditable(false); // Make it so user can't edit
 		rollPanel.add(roll);
 		rollPanel.add(currRoll);
 		upperHalf.add(rollPanel);
@@ -60,7 +60,7 @@ public class GameControlPanel extends JPanel {
 		JPanel guessPanel = new JPanel();
 		guessPanel.setLayout(new GridLayout(1, 0));
 		guess = new JTextField(30);
-		guess.setEditable(false);
+		guess.setEditable(false); // Make it so user can't edit
 		guessPanel.add(guess);
 		guessPanel.setBorder(new TitledBorder(new EtchedBorder(), "Guess"));
 		lowerHalf.add(guessPanel);
@@ -69,7 +69,7 @@ public class GameControlPanel extends JPanel {
 		JPanel guessResult = new JPanel();
 		guessResult.setLayout(new GridLayout(1, 0));
 		result = new JTextField(30);
-		result.setEditable(false);
+		result.setEditable(false); // Make it so user can't edit
 		guessResult.add(result);
 		guessResult.setBorder(new TitledBorder(new EtchedBorder(), "Guess Result"));
 		lowerHalf.add(guessResult);
@@ -78,20 +78,23 @@ public class GameControlPanel extends JPanel {
 		add(lowerHalf, BorderLayout.SOUTH);
 	}
 	
+	// Method to display the current player and the current roll
 	public void setTurn(Player player, int roll) {
 		currPlayer.setText(player.getName());
 		currPlayer.setBackground(player.getColor());
 		currRoll.setText(String.valueOf(roll));
 	}
-	
+	 // Method to display the player's guess
 	public void setGuess(String guess) {
 		this.guess.setText(guess);
 	}
 	
+	// Method to display the result of the guess
 	public void setGuessResult(String guessResult) {
 		result.setText(guessResult);
 	}
 	
+	// Main method for testing
 	public static void main(String[] args) {
 		GameControlPanel panel = new GameControlPanel(); // Create the panel
 		JFrame frame = new JFrame(); // Create the frame
