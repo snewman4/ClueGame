@@ -1,3 +1,51 @@
+commit 2d2da901054641cea4fb2e2d86b9190ac5a0d142
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Thu Nov 4 17:42:57 2021 -0600
+
+    Refactored minor variables, added comments
+
+commit 106fbd7d46494324dfa6589727245f0c6b0f91c3
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Thu Nov 4 12:16:49 2021 -0600
+
+    Implemented AI target selection and suggestion creation. All tests pass
+
+commit 0d0be93da5d42d6edf8a94a5a6d5bb7f8ba067fe
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Wed Nov 3 22:43:41 2021 -0600
+
+    Added comments to previous commit
+
+commit 7c72720bdc0187814e645ed1e9e1210adbe96688
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Wed Nov 3 22:40:08 2021 -0600
+
+    Implemented all methods so that GameSolutionTests pass
+
+commit 3c5cbbe03fc794d4668a34c462f26cf0793f1f6f
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Wed Nov 3 21:59:09 2021 -0600
+
+    All tests fail, not error
+
+commit 5602daf55ec44268eb7ca66f604a51843bb14a42
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Wed Nov 3 21:32:35 2021 -0600
+
+    Created tests for ComputerAITest
+
+commit bdf095d8a57c160f4da7610331af0bd59379b712
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Tue Nov 2 11:39:35 2021 -0600
+
+    Created all tests for GameSolutionTest
+
+commit ee9adb69924d6eda47b4c7665e17d3417fad0575
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Tue Nov 2 10:14:34 2021 -0600
+
+    Added GameSolutionTest and ComputerAITest. Also added descriptions to classes.
+
 commit 158ce2d7a7bcb5157503d54b91847ffe39538dfa
 Author: Sam Newman <snewman1@mines.edu>
 Date:   Sun Oct 31 19:41:27 2021 -0600
