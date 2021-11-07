@@ -56,7 +56,7 @@ class GameSetupTests {
 		assertEquals(24, playerList.get(2).getColumn());
 		assertTrue(playerList.get(3).getClass() == ComputerPlayer.class);
 		assertEquals("Howard Handy", playerList.get(3).getName()); // Test player name
-		assertEquals(Color.BLACK, playerList.get(3).getColor()); // Test player color
+		assertEquals(Color.CYAN, playerList.get(3).getColor()); // Test player color
 		assertEquals(24, playerList.get(3).getRow());
 		assertEquals(16, playerList.get(3).getColumn());
 		assertTrue(playerList.get(4).getClass() == ComputerPlayer.class);

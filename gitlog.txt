@@ -1,3 +1,15 @@
+commit d4b74d13ba733042b2111281cb4adc8a8d4ac7d4
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Sun Nov 7 13:39:36 2021 -0700
+
+    Refactored, added comments
+
+commit 263e786e11cd08d3089eaff4a5408344cc45afac
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Sun Nov 7 13:37:07 2021 -0700
+
+    Created GameControlPanel GUI class. Displays expected GUI.
+
 commit 2d2da901054641cea4fb2e2d86b9190ac5a0d142
 Author: Sam Newman <snewman1@mines.edu>
 Date:   Thu Nov 4 17:42:57 2021 -0600

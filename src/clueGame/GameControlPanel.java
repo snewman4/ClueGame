@@ -18,10 +18,11 @@ public class GameControlPanel extends JPanel {
 	private JTextField result;
 	/*
 	 * Constructor for the control panel. Most of the
-	 * action happense here
+	 * action happens here
 	 */
 	public GameControlPanel() {
 		setLayout(new GridLayout(2, 0));
+		
 		// Set up the upper half of the control panel
 		JPanel upperHalf = new JPanel();
 		upperHalf.setLayout(new GridLayout(1, 4));
@@ -74,6 +75,7 @@ public class GameControlPanel extends JPanel {
 		guessResult.setBorder(new TitledBorder(new EtchedBorder(), "Guess Result"));
 		lowerHalf.add(guessResult);
 		
+		// Add both halves to the final layout
 		add(upperHalf, BorderLayout.NORTH);
 		add(lowerHalf, BorderLayout.SOUTH);
 	}
