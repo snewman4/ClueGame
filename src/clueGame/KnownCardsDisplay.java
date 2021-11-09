@@ -13,13 +13,16 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 public class KnownCardsDisplay extends JPanel {
+	private static final String SEEN = "Seen:";
+	private static final String IN_HAND = "In Hand:";
 	// Variables for each type of card, which will be updated throughout game
-	private JPanel peopleHand;
-	private JPanel peopleSeen;
-	private JPanel roomHand;
-	private JPanel roomSeen;
-	private JPanel weaponHand;
-	private JPanel weaponSeen;
+	private JPanel peoplePanel;
+	private JPanel roomsPanel;
+	private JPanel weaponsPanel;
+	// Text fields that will store the first card of that type seen. Starts as none.
+	private JTextField peopleFirstSeen;
+	private JTextField roomsFirstSeen;
+	private JTextField weaponsFirstSeen;
 	
 	/*
 	 * Constructor for the display. Most of the
@@ -30,53 +33,26 @@ public class KnownCardsDisplay extends JPanel {
 		setBorder(new TitledBorder(new EtchedBorder(), "Known Cards"));
 
 		// Create the known people display
-		JPanel peoplePanel = new JPanel();
-		peoplePanel.setLayout(new GridLayout(2, 1));
+		peoplePanel = new JPanel();
+		peoplePanel.setLayout(new GridLayout(0, 1));
 		peoplePanel.setBorder(new TitledBorder(new EtchedBorder(), "People"));
-		
-		peopleHand = new JPanel();
-		peopleHand.setLayout(new GridLayout(0, 1));
-		peopleHand.add(new JLabel("In Hand:"));
-		peoplePanel.add(peopleHand);
-		
-		peopleSeen = new JPanel();
-		peopleSeen.setLayout(new GridLayout(0, 1));
-		peopleSeen.add(new JLabel("Seen:"));
-		peoplePanel.add(peopleSeen);
+		peoplePanel.add(new JLabel(IN_HAND));
 		
 		add(peoplePanel);
 
 		// Create the known people display
-		JPanel roomsPanel = new JPanel();
-		roomsPanel.setLayout(new GridLayout(2, 1));
+		roomsPanel = new JPanel();
+		roomsPanel.setLayout(new GridLayout(0, 1));
 		roomsPanel.setBorder(new TitledBorder(new EtchedBorder(), "Rooms"));
-		
-		roomHand = new JPanel();
-		roomHand.setLayout(new GridLayout(0, 1));
-		roomHand.add(new JLabel("In Hand:"));
-		roomsPanel.add(roomHand);
-		
-		roomSeen = new JPanel();
-		roomSeen.setLayout(new GridLayout(0, 1));
-		roomSeen.add(new JLabel("Seen:"));
-		roomsPanel.add(roomSeen);
+		roomsPanel.add(new JLabel(IN_HAND));
 		
 		add(roomsPanel);
 
 		// Create the known people display
-		JPanel weaponsPanel = new JPanel();
-		weaponsPanel.setLayout(new GridLayout(2, 1));
+		weaponsPanel = new JPanel();
+		weaponsPanel.setLayout(new GridLayout(0, 1));
 		weaponsPanel.setBorder(new TitledBorder(new EtchedBorder(), "Weapons"));
-		
-		weaponHand = new JPanel();
-		weaponHand.setLayout(new GridLayout(0, 1));
-		weaponHand.add(new JLabel("In Hand:"));
-		weaponsPanel.add(weaponHand);
-		
-		weaponSeen = new JPanel();
-		weaponSeen.setLayout(new GridLayout(0, 1));
-		weaponSeen.add(new JLabel("Seen:"));
-		weaponsPanel.add(weaponSeen);
+		weaponsPanel.add(new JLabel(IN_HAND));
 		
 		add(weaponsPanel);
 	}
@@ -90,38 +66,90 @@ public class KnownCardsDisplay extends JPanel {
 			field.setBackground(Color.WHITE);
 			switch(card.getType()) {
 				case PERSON:
-					peopleHand.add(field);
+					peoplePanel.add(field);
 					break;
 				case ROOM:
-					roomHand.add(field);
+					roomsPanel.add(field);
 					break;
 				case WEAPON:
-					weaponHand.add(field);
+					weaponsPanel.add(field);
 					break;
 				default:
 					break;
 			}
 		}
+		// If no cards were read in for a certain field, update it so that it shows none
+		if(peoplePanel.getComponentCount() == 1) {
+			JTextField noneField = new JTextField();
+			setNoneField(noneField);
+			peoplePanel.add(noneField);
+		}
+		if(roomsPanel.getComponentCount() == 1) {
+			JTextField noneField = new JTextField();
+			setNoneField(noneField);
+			roomsPanel.add(noneField);
+		}
+		if(weaponsPanel.getComponentCount() == 1) {
+			JTextField noneField = new JTextField();
+			setNoneField(noneField);
+			weaponsPanel.add(noneField);
+		}
+		// Add the seen labels
+		peoplePanel.add(new JLabel(SEEN));
+		roomsPanel.add(new JLabel(SEEN));
+		weaponsPanel.add(new JLabel(SEEN));
+		// Set the seen fields to "None" (the player will always start without seeing anything)
+		peopleFirstSeen = new JTextField();
+		roomsFirstSeen = new JTextField();
+		weaponsFirstSeen = new JTextField();
+		
+		setNoneField(peopleFirstSeen);
+		peoplePanel.add(peopleFirstSeen);
+		setNoneField(roomsFirstSeen);
+		roomsPanel.add(roomsFirstSeen);
+		setNoneField(weaponsFirstSeen);
+		weaponsPanel.add(weaponsFirstSeen);
 	}
 	
-	// Method to add a new card to those seen by the player
+	// Method to set up a "None"-valued text field
+	private JTextField setNoneField(JTextField currField) {
+		currField.setText("None");
+		currField.setEditable(false);
+		currField.setBackground(Color.WHITE);
+		return currField;
+	}
+	
+	// Method to determine where to add a seen card
 	public void updateSeen(Card card, Player cardHolder) {
-		JTextField field = new JTextField();
-		field.setEditable(false);
-		field.setText(card.getName());
-		field.setBackground(cardHolder.getColor());
 		switch(card.getType()) {
 			case PERSON:
-				peopleSeen.add(field);
+				addCardSeen(peopleFirstSeen, peoplePanel, card, cardHolder);
 				break;
 			case ROOM:
-				roomSeen.add(field);
+				addCardSeen(roomsFirstSeen, roomsPanel, card, cardHolder);
 				break;
 			case WEAPON:
-				weaponSeen.add(field);
+				addCardSeen(weaponsFirstSeen, weaponsPanel, card, cardHolder);
 				break;
 			default:
 				break;
+		}
+	}
+
+	// Method to add a card to the specified seen field, using appropriate coloring
+	private void addCardSeen(JTextField firstSeen, JPanel activePanel, Card card, Player cardHolder) {
+		// If the current panel still has a none field, this is the first card of that type seen
+		if(firstSeen.getText().equals("None")) {
+			firstSeen.setText(card.getName());
+			firstSeen.setBackground(cardHolder.getColor());
+		}
+		// If it doesn't have a none field, then a new field must be added
+		else {
+			JTextField newField = new JTextField();
+			newField.setText(card.getName());
+			newField.setBackground(cardHolder.getColor());
+			newField.setEditable(false);
+			activePanel.add(newField);
 		}
 	}
 
@@ -142,8 +170,8 @@ public class KnownCardsDisplay extends JPanel {
 		display.loadHand(hand);
 		
 		/*
-		 * To test without seeing any cards, remove // from line 148 and line 150
-		 * To test with seeing cards, add // to line 148 and line 150
+		 * To test without seeing any cards, remove // from line 172 and line 174
+		 * To test with seeing cards, add // to line 172 and line 174
 		 */
 		//frame.setVisible(true); // Make it visible
 		
