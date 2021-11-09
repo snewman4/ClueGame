@@ -170,8 +170,8 @@ public class KnownCardsDisplay extends JPanel {
 		display.loadHand(hand);
 		
 		/*
-		 * To test without seeing any cards, remove // from line 172 and line 174
-		 * To test with seeing cards, add // to line 172 and line 174
+		 * To test without seeing any cards, remove // from line 176 and line 178
+		 * To test with seeing cards, add // to line 176 and line 178
 		 */
 		//frame.setVisible(true); // Make it visible
 		

@@ -1,3 +1,15 @@
+commit 58c3cad4d11dc629487df9b6e4a5eb67bdc979ad
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Mon Nov 8 17:46:07 2021 -0700
+
+    Updated KnownCardsDisplay with appropriate sizing. Completely reworked how each panel is handled.
+
+commit 45edd960f6773264c7f3410b438e62e8908683d2
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Sun Nov 7 14:45:17 2021 -0700
+
+    Created KnownCardDisplay GUI class, implemented most of it. Still need to fix sizing of fields.
+
 commit d4b74d13ba733042b2111281cb4adc8a8d4ac7d4
 Author: Sam Newman <snewman1@mines.edu>
 Date:   Sun Nov 7 13:39:36 2021 -0700
