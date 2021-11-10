@@ -445,10 +445,26 @@ public class Board extends JPanel {
 		// Determine how big each cell should be based on the size of the board
 		int cellWidth = getWidth() / numColumns;
 		int cellHeight = getHeight() / numRows;
+		
 		// Tell each cell to draw itself, giving it expected height and width
 		for(int i = 0; i < numRows; i++) {
 			for(int j = 0; j < numColumns; j++) {
 				gameBoard[i][j].draw(g, cellWidth, cellHeight);
+			}
+		}
+		
+		// Tell each label cell to draw its label
+		for(int i = 0; i < numRows; i++) {
+			for(int j = 0; j < numColumns; j++) {
+				BoardCell currCell = gameBoard[i][j];
+				if(currCell.isLabel()) {
+					// Get the name of the room of the cell
+					Room currRoom = roomMap.get(currCell.getInitial());
+					currCell.drawLabel(g, currRoom.getName(), cellWidth, cellHeight);
+				}
+				if(currCell.isDoorway()) {
+					currCell.drawDoor(g, cellWidth, cellHeight);
+				}
 			}
 		}
 	}

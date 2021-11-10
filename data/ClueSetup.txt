@@ -3,7 +3,7 @@ Room, Office, O
 Room, Bedroom, B
 Room, Kitchen, K
 Room, Toilet, T
-Room, Guardroom, G
+Room, Guardery, G
 Room, Malecave, M
 Room, Femalecave, F
 Room, Batcave, C
