@@ -1,3 +1,21 @@
+commit b3883f0fd8eb52d424f27641734ae1538276a96d
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Wed Nov 10 15:54:30 2021 -0700
+
+    Implemented drawing of players. Updated tests to account for a change in the default setup file. Basic GUI is complete.
+
+commit 23e38dca1e799caaf8e694949f14fc4970160c7c
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Wed Nov 10 15:34:30 2021 -0700
+
+    Added methods to draw labels and doors for rooms. Layout of board is now complete.
+
+commit 40e739f74a60f757b452fb5d980b035917b8df79
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Wed Nov 10 15:06:49 2021 -0700
+
+    Created ClueGame class with main. Implemented basic cell drawing so that the layout for the board is drawn.
+
 commit 8f1c2e28a824baaee6517dac1f9dae86180d2bec
 Author: Sam Newman <snewman1@mines.edu>
 Date:   Mon Nov 8 17:49:10 2021 -0700

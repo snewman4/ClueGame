@@ -52,7 +52,7 @@ public class BoardCell {
 				g.fillRect(x, y, cellWidth, cellHeight);
 				break;
 			case 'W': // If the cell is a walkway
-				g.setColor(Color.YELLOW);
+				g.setColor(Color.PINK);
 				g.fillRect(x, y, cellWidth, cellHeight);
 				g.setColor(Color.BLACK);
 				g.drawRect(x, y, cellWidth, cellHeight);

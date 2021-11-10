@@ -46,7 +46,7 @@ class GameSetupTests {
 		// Rest of the players should be computer players. Also test respective locations
 		assertTrue(playerList.get(1).getClass() == ComputerPlayer.class);
 		assertEquals("Aurora Angel", playerList.get(1).getName()); // Test player name
-		assertEquals(Color.PINK, playerList.get(1).getColor()); // Test player color
+		assertEquals(Color.YELLOW, playerList.get(1).getColor()); // Test player color
 		assertEquals(0, playerList.get(1).getRow());
 		assertEquals(16, playerList.get(1).getColumn());
 		assertTrue(playerList.get(2).getClass() == ComputerPlayer.class);
