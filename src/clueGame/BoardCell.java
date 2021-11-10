@@ -10,6 +10,8 @@
 
 package clueGame;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,6 +34,30 @@ public class BoardCell {
 		this.column = column;
 		
 		adjList = new HashSet<>();
+	}
+	
+	// Method to for each cell to draw itself
+	public void draw(Graphics g, int cellWidth, int cellHeight) {
+		// Determine where to draw the cell based on cell sizes and its row and column
+		int x = column * cellWidth;
+		int y = row * cellHeight;
+		// Determine what color to draw the cell based on the type of cell
+		switch(initial) {
+			case 'X': // If the cell is inaccessible
+				g.setColor(Color.BLACK);
+				g.fillRect(x, y, cellWidth, cellHeight);
+				break;
+			case 'W': // If the cell is a walkway
+				g.setColor(Color.YELLOW);
+				g.fillRect(x, y, cellWidth, cellHeight);
+				g.setColor(Color.BLACK);
+				g.drawRect(x, y, cellWidth, cellHeight);
+				break;
+			default: // If the cell is a room
+				g.setColor(Color.GRAY);
+				g.fillRect(x, y, cellWidth, cellHeight);
+				break;
+		}
 	}
 	
 	// All of the getters and setters for BoardCell class

@@ -10,6 +10,8 @@
 
 package clueGame;
 
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -21,7 +23,9 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
-public class Board {
+import javax.swing.JPanel;
+
+public class Board extends JPanel {
 	private static final int NUM_PLAYERS = 6;
 	private int numRows;
 	private int numColumns;
@@ -44,6 +48,8 @@ public class Board {
 	// Board constructor, can only be accessed by this class
 	private Board() {
 		super();
+		// Set how big the gameboard wants to be
+		setPreferredSize(new Dimension(700, 700));
 	}
 	
 	// Initialize the board
@@ -430,6 +436,20 @@ public class Board {
 				findAllTargets(cell, pathLength - 1);
 			}
 			visited.remove(cell); // Cleanup
+		}
+	}
+	
+	// Method to cause the gameboard to be drawn
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		// Determine how big each cell should be based on the size of the board
+		int cellWidth = getWidth() / numColumns;
+		int cellHeight = getHeight() / numRows;
+		// Tell each cell to draw itself, giving it expected height and width
+		for(int i = 0; i < numRows; i++) {
+			for(int j = 0; j < numColumns; j++) {
+				gameBoard[i][j].draw(g, cellWidth, cellHeight);
+			}
 		}
 	}
 
