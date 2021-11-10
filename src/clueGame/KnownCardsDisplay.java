@@ -1,6 +1,7 @@
 package clueGame;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.HashSet;
 import java.util.Set;
@@ -29,6 +30,7 @@ public class KnownCardsDisplay extends JPanel {
 	 * action happens here
 	 */
 	public KnownCardsDisplay() {
+		setPreferredSize(new Dimension(200, 700));
 		setLayout(new GridLayout(3, 1));
 		setBorder(new TitledBorder(new EtchedBorder(), "Known Cards"));
 

@@ -1,6 +1,7 @@
 package clueGame;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
@@ -21,6 +22,7 @@ public class GameControlPanel extends JPanel {
 	 * action happens here
 	 */
 	public GameControlPanel() {
+		setPreferredSize(new Dimension(1000, 200));
 		setLayout(new GridLayout(2, 0));
 		
 		// Set up the upper half of the control panel

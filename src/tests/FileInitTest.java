@@ -50,7 +50,7 @@ class FileInitTest {
 		// from the hash, including the first and last in the file and a few others
 		assertEquals("Office", board.getRoom('O').getName() );
 		assertEquals("Bedroom", board.getRoom('B').getName() );
-		assertEquals("Guardroom", board.getRoom('G').getName() );
+		assertEquals("Guardery", board.getRoom('G').getName() );
 		assertEquals("Malecave", board.getRoom('M').getName() );
 		assertEquals("Lounge", board.getRoom('L').getName() );
 		assertEquals("Walkway", board.getRoom('W').getName() );

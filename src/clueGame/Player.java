@@ -12,6 +12,7 @@
 package clueGame;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,7 +24,7 @@ public abstract class Player {
 	// Array of pre-set starting locations
 	private static final int[][] startLocation = {{0, 8}, {0, 16}, {12, 24}, {24, 16}, {24, 8}, {12, 0}};
 	// Array of pre-set colors
-	private static final Color[] playerColors = {Color.RED, Color.PINK, Color.GREEN, Color.CYAN, Color.YELLOW, Color.BLUE};
+	private static final Color[] playerColors = {Color.RED, Color.PINK, Color.GREEN, Color.CYAN, Color.MAGENTA, Color.BLUE};
 	private static int currPlayerNum = 0; // Which player is currently being made, used to access correct starting location
 	
 	private String name;
@@ -94,6 +95,16 @@ public abstract class Player {
 	// Method to reset the currPlayerNum
 	public static void reset() {
 		currPlayerNum = 0;
+	}
+	
+	// Method to allow the player to draw itself
+	public void draw(Graphics g, int cellWidth, int cellHeight) {
+		// Determine where to draw the player based on cell sizes and row and column
+		int x = column * cellWidth;
+		int y = row * cellHeight;
+		
+		g.setColor(color);
+		g.fillOval(x, y, cellWidth, cellHeight);
 	}
 	
 	// Method to pass the player the references to all cards

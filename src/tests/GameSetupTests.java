@@ -61,7 +61,7 @@ class GameSetupTests {
 		assertEquals(16, playerList.get(3).getColumn());
 		assertTrue(playerList.get(4).getClass() == ComputerPlayer.class);
 		assertEquals("Icky Ivan", playerList.get(4).getName()); // Test player name
-		assertEquals(Color.YELLOW, playerList.get(4).getColor()); // Test player color
+		assertEquals(Color.MAGENTA, playerList.get(4).getColor()); // Test player color
 		assertEquals(24, playerList.get(4).getRow());
 		assertEquals(8, playerList.get(4).getColumn());
 		assertTrue(playerList.get(5).getClass() == ComputerPlayer.class);
@@ -104,8 +104,8 @@ class GameSetupTests {
 		assertEquals(CardType.ROOM, cardMap.get("Batcave").getType()); // Ensure card is a room
 		assertEquals("Lounge", cardMap.get("Lounge").getName()); // Test room card name
 		assertEquals(CardType.ROOM, cardMap.get("Lounge").getType()); // Ensure card is a room
-		assertEquals("Guardroom", cardMap.get("Guardroom").getName()); // Test room card name
-		assertEquals(CardType.ROOM, cardMap.get("Guardroom").getType()); // Ensure card is a room
+		assertEquals("Guardery", cardMap.get("Guardery").getName()); // Test room card name
+		assertEquals(CardType.ROOM, cardMap.get("Guardery").getType()); // Ensure card is a room
 	}
 
 	// Test to make sure the solution is drawn correctly

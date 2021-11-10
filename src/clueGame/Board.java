@@ -453,19 +453,26 @@ public class Board extends JPanel {
 			}
 		}
 		
-		// Tell each label cell to draw its label
+		// Tell each label cell to draw its label, and each door cell to draw its door
 		for(int i = 0; i < numRows; i++) {
 			for(int j = 0; j < numColumns; j++) {
 				BoardCell currCell = gameBoard[i][j];
+				// If it is a label cell
 				if(currCell.isLabel()) {
 					// Get the name of the room of the cell
 					Room currRoom = roomMap.get(currCell.getInitial());
 					currCell.drawLabel(g, currRoom.getName(), cellWidth, cellHeight);
 				}
+				// If it is a door cell
 				if(currCell.isDoorway()) {
 					currCell.drawDoor(g, cellWidth, cellHeight);
 				}
 			}
+		}
+		
+		// Tell each player to draw themselves
+		for(Player player : players) {
+			player.draw(g, cellWidth, cellHeight);
 		}
 	}
 
