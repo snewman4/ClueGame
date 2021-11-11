@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.util.Set;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class ClueGame extends JFrame {
 	
@@ -26,9 +27,14 @@ public class ClueGame extends JFrame {
 		// Get the game started by dealing the cards
 		gameboard.deal();
 		// Update the display
-		Set<Card> humanPlayerHand = gameboard.getPlayers().get(0).getHand();
+		Player humanPlayer = gameboard.getPlayers().get(0);
+		Set<Card> humanPlayerHand = humanPlayer.getHand();
 		cardsDisplay.loadHand(humanPlayerHand);
 		// Show the board
+		frame.setLocationRelativeTo(null); // Makes it so app launches at center of screen
 		frame.setVisible(true);
+		// Display a brief introduction to the game
+		JOptionPane.showMessageDialog(null, "You are playing as " + humanPlayer.getName() + "!\n Find out"
+				+ " who the killer is\nbefore the other players can!");
 	}
 }
