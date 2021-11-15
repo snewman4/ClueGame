@@ -3,16 +3,20 @@ package clueGame;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 public class GameControlPanel extends JPanel {
+	private Board gameboard;
 	private JTextField currPlayer;
 	private JTextField currRoll;
 	private JTextField guess;
@@ -22,6 +26,8 @@ public class GameControlPanel extends JPanel {
 	 * action happens here
 	 */
 	public GameControlPanel() {
+		// Get a reference to the board so that we can control logic from here
+		gameboard = Board.getInstance();
 		setPreferredSize(new Dimension(1000, 200));
 		setLayout(new GridLayout(2, 0));
 		
@@ -53,6 +59,7 @@ public class GameControlPanel extends JPanel {
 		
 		// Next button allows the player to move on to the next turn
 		JButton nextButton = new JButton("Next Turn");
+		nextButton.addActionListener(new NextListener());
 		upperHalf.add(nextButton);
 		
 		// Set up the lower half of the control panel
@@ -82,13 +89,40 @@ public class GameControlPanel extends JPanel {
 		add(lowerHalf, BorderLayout.SOUTH);
 	}
 	
+	class NextListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(gameboard.playerDone()) {
+				// Load up the next player's turn
+				Player nextPlayer = gameboard.getNextPlayer();
+				int roll = gameboard.diceRoll();
+				setTurn(nextPlayer, roll); // Update the display
+				gameboard.newPlayerTurn(roll); // Move on to the next turn
+				// If the new player is a human player:
+				if(nextPlayer.getClass() == HumanPlayer.class) {
+					//gameboard.displayTargets();
+					gameboard.setPlayerDone(false);
+				}
+				// If the new player is a computer player
+				else {
+					
+				}
+			}
+			else {
+				// If the player is not done, give them an error
+				JOptionPane.showMessageDialog(null, "Please complete your turn");
+			}
+		}
+	}
+	
 	// Method to display the current player and the current roll
 	public void setTurn(Player player, int roll) {
 		currPlayer.setText(player.getName());
 		currPlayer.setBackground(player.getColor());
 		currRoll.setText(String.valueOf(roll));
 	}
-	 // Method to display the player's guess
+	
+	// Method to display the player's guess
 	public void setGuess(String guess) {
 		this.guess.setText(guess);
 	}

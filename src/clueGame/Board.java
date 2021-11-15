@@ -27,22 +27,29 @@ import javax.swing.JPanel;
 
 public class Board extends JPanel {
 	private static final int NUM_PLAYERS = 6;
+	// Game board variables
 	private int numRows;
 	private int numColumns;
 	private BoardCell[][] gameBoard;
+	private static Board theInstance = new Board(); // Private, single instance of board
+	// Initialization variables
 	private String layoutConfigFile;
 	private String setupConfigFile;
+	// Movement variables
 	private Map<Character, Room> roomMap;
-	private static Board theInstance = new Board(); // Private, single instance of board
 	private Set<BoardCell> targets; // Used to find the targets a certain cell has
 	private Set<BoardCell> visited; // Used to store which cells were visited in a turn
+	// Player and card variables
 	private ArrayList<Player> players; // Stores the players
+	private int currPlayer; // Used to determine who is currently taking their turn
+	private boolean playerIsDone; // Used to determine if the human player has completed their turn
 	private Map<String, Card> cards; // A list of the card references
 	// Three temporary lists to independently store each type of card, to be chosen by solution
 	private ArrayList<Card> personCards;
 	private ArrayList<Card> roomCards;
 	private ArrayList<Card> weaponCards;
 	private ArrayList<Card> deck; // The deck of cards
+	
 	private Solution theAnswer; // Stores the solution
 	
 	// Board constructor, can only be accessed by this class
@@ -61,6 +68,8 @@ public class Board extends JPanel {
 			System.out.println(e.getMessage());
 		}
 		generateAdjLists();
+		playerIsDone = false; // The human player always starts, and will not have completed turn
+		currPlayer = 0;
 	}
 	
 	// Return the only board
@@ -474,6 +483,37 @@ public class Board extends JPanel {
 		for(Player player : players) {
 			player.draw(g, cellWidth, cellHeight);
 		}
+	}
+	
+	public boolean playerDone() {
+		return playerIsDone;
+	}
+	
+	public void setPlayerDone(boolean playerIsDone) {
+		this.playerIsDone = playerIsDone;
+	}
+	
+	// Method to move on to the next player's turn, and return that player
+	public Player getNextPlayer() {
+		// Move on to the next player. Loop back around to 0
+		currPlayer++;
+		currPlayer = currPlayer % 6;
+		
+		return players.get(currPlayer);
+	}
+	
+	// Method to handle a new turn
+	public void newPlayerTurn(int diceRoll) {
+		Player activePlayer = players.get(currPlayer);
+		BoardCell cell = getCell(activePlayer.getRow(), activePlayer.getColumn()); // Get where the player is currently
+		
+		calcTargets(cell, diceRoll);
+	}
+	
+	// Method to roll the dice for the new player
+	public int diceRoll() {
+		Random dice = new Random();
+		return dice.nextInt(7);
 	}
 
 	public Set<BoardCell> getTargets() {
