@@ -11,9 +11,27 @@
 
 package clueGame;
 
+import java.util.Set;
+
 public class HumanPlayer extends Player {
 	
 	public HumanPlayer(String name) {
 		super(name);
+	}
+
+	// TODO: Write the following three methods
+	@Override
+	protected Solution createAccusation() {
+		return null;
+	}
+
+	//@Override
+	protected BoardCell selectTarget(Set<BoardCell> targets) {
+		return null;
+	}
+
+	@Override
+	protected Solution createSuggestion() {
+		return null;
 	}
 }

@@ -82,4 +82,10 @@ public class ComputerPlayer extends Player {
 		// Create and return the suggestion
 		return new Solution(suggPersonCard, currRoomCard, suggWeaponCard);
 	}
+	
+	// TODO: Write the createAccusation method
+	// Method to generate an accusation if possible. If not, return null
+	public Solution createAccusation() {
+		return null;
+	}
 }

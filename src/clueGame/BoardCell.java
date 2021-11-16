@@ -15,6 +15,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,6 +24,8 @@ public class BoardCell {
 	private static final int FONT_SIZE = 20;
 	private int row;
 	private int column;
+	private int cellWidth;
+	private int cellHeight;
 	private char initial;
 	private char secretPassage;
 	private DoorDirection doorDirection;
@@ -41,7 +45,9 @@ public class BoardCell {
 	}
 	
 	// Method to for each cell to draw itself
-	public void draw(Graphics g, int cellWidth, int cellHeight) {
+	public void draw(Graphics g, int cellWidth, int cellHeight, Set<BoardCell> targets) {
+		this.cellWidth = cellWidth;
+		this.cellHeight = cellHeight;
 		// Determine where to draw the cell based on cell sizes and its row and column
 		int x = column * cellWidth;
 		int y = row * cellHeight;
@@ -52,13 +58,21 @@ public class BoardCell {
 				g.fillRect(x, y, cellWidth, cellHeight);
 				break;
 			case 'W': // If the cell is a walkway
-				g.setColor(Color.PINK);
+				// If the cell is a target, make it blue
+				if(targets.contains(this))
+					g.setColor(Color.CYAN);
+				else
+					g.setColor(Color.PINK);
 				g.fillRect(x, y, cellWidth, cellHeight);
 				g.setColor(Color.BLACK);
 				g.drawRect(x, y, cellWidth, cellHeight);
 				break;
 			default: // If the cell is a room
-				g.setColor(Color.GRAY);
+				// If the room is a target, make it blue
+				if(targets.contains(this))
+					g.setColor(Color.CYAN);
+				else
+					g.setColor(Color.GRAY);
 				g.fillRect(x, y, cellWidth, cellHeight);
 				break;
 		}
@@ -66,6 +80,8 @@ public class BoardCell {
 	
 	// Method for boardcells that are labels to draw their label
 	public void drawLabel(Graphics g, String label, int cellWidth, int cellHeight) {
+		this.cellWidth = cellWidth;
+		this.cellHeight = cellHeight;
 		// Try to position the center of the text in the center of the cell
 		int x = (column * cellWidth) - (cellWidth / 2);
 		int y = (row * cellHeight) + (cellHeight / 2);
@@ -76,6 +92,8 @@ public class BoardCell {
 	
 	// Method to draw a doorway
 	public void drawDoor(Graphics g, int cellWidth, int cellHeight) {
+		this.cellWidth = cellWidth;
+		this.cellHeight = cellHeight;
 		Graphics2D g2 = (Graphics2D) g; // Convert to 2D graphics so we can change size of line
 		int x1 = 0;
 		int x2 = 0;
@@ -114,6 +132,14 @@ public class BoardCell {
 		g2.setColor(Color.BLUE);
 		g2.setStroke(new BasicStroke(5));
 		g2.drawLine(x1, y1, x2, y2);
+	}
+	
+	// Method to determine if a click was within the cell
+	public boolean containsClick(int mouseX, int mouseY) {
+		int x = column * cellWidth;
+		int y = row * cellHeight;
+		Rectangle rect = new Rectangle(x, y, cellWidth, cellHeight);
+		return rect.contains(new Point(mouseX, mouseY));
 	}
 	
 	// All of the getters and setters for BoardCell class

@@ -54,6 +54,11 @@ public abstract class Player {
 		}
 	}
 	
+	public void setCurrentCell(BoardCell cell) {
+		row = cell.getRow();
+		column = cell.getColumn();
+	}
+	
 	// Method to disprove a suggestion made by another player
 	public Card disproveSuggestion(Solution suggestion) {
 		Random rand = new Random();
@@ -83,6 +88,9 @@ public abstract class Player {
 	public Room findCurrentRoom() {
 		// Check each room in the roomMap
 		for(Map.Entry<Character, Room> entry : roomMap.entrySet()) {
+			// Don't check walkways or closets
+			if(entry.getValue().getInitial() == 'W' || entry.getValue().getInitial() == 'X')
+				continue;
 			BoardCell checkRoomCell = entry.getValue().getCenterCell();
 			// If the player is in the current check room, return the room
 			if(checkRoomCell.getRow() == row && checkRoomCell.getColumn() == column) {
@@ -161,4 +169,8 @@ public abstract class Player {
 	public void removeCard(Card card) {
 		hand.remove(card);
 	}
+
+	protected abstract Solution createAccusation();
+	protected abstract BoardCell selectTarget(Set<BoardCell> targets);
+	protected abstract Solution createSuggestion();
 }

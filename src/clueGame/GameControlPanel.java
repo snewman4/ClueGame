@@ -40,6 +40,7 @@ public class GameControlPanel extends JPanel {
 		JLabel whoseTurn = new JLabel("Whose turn?");
 		currPlayer = new JTextField(15);
 		currPlayer.setEditable(false); // Make it so user can't edit
+		Player firstPlayer = gameboard.getPlayers().get(0);
 		turnPanel.add(whoseTurn);
 		turnPanel.add(currPlayer);
 		upperHalf.add(turnPanel);
@@ -89,9 +90,11 @@ public class GameControlPanel extends JPanel {
 		add(lowerHalf, BorderLayout.SOUTH);
 	}
 	
+	// Listens for when the next button is pressed
 	class NextListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			// If the player is done:
 			if(gameboard.playerDone()) {
 				// Load up the next player's turn
 				Player nextPlayer = gameboard.getNextPlayer();
@@ -100,12 +103,39 @@ public class GameControlPanel extends JPanel {
 				gameboard.newPlayerTurn(roll); // Move on to the next turn
 				// If the new player is a human player:
 				if(nextPlayer.getClass() == HumanPlayer.class) {
-					//gameboard.displayTargets();
+					gameboard.displayTargets();
 					gameboard.setPlayerDone(false);
 				}
 				// If the new player is a computer player
 				else {
+					// Try to make an accusation
+					Solution accusation = nextPlayer.createAccusation();
+					// If an accusation was made:
+					if(accusation != null) {
+						if(gameboard.checkAccusation(accusation)) {
+							// TODO: Handle a correct accusation
+						}
+						else {
+							// TODO: Handle an incorrect accusation
+						}
+					}
 					
+					// Tell the board to have the player move
+					gameboard.doComputerMove();
+					// Check if the player moved to a room
+					if(nextPlayer.findCurrentRoom() != null) {
+						// Generate a suggestion from that room
+						accusation = nextPlayer.createSuggestion();
+						guess.setText(accusation.getPerson().getName() + ", " + accusation.getRoom().getName() + ", " + accusation.getWeapon().getName()); // Update control panel
+						guess.setBackground(nextPlayer.getColor());
+						Card disprover = gameboard.handleSuggestion(nextPlayer, accusation); // Try to disprove
+						nextPlayer.updateSeen(disprover); // Add the disproving card to the player's hand
+						// Because this will always be for the computer player, don't display the disprover
+						if(disprover != null)
+							result.setText(nextPlayer.getName() + "'s guess was disproven");
+						else
+							result.setText("No one can disprove that suggestion");
+					}
 				}
 			}
 			else {

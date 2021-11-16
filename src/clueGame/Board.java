@@ -12,6 +12,8 @@ package clueGame;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -23,9 +25,10 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class Board extends JPanel {
+public class Board extends JPanel implements MouseListener {
 	private static final int NUM_PLAYERS = 6;
 	// Game board variables
 	private int numRows;
@@ -57,6 +60,7 @@ public class Board extends JPanel {
 		super();
 		// Set how big the gameboard wants to be
 		setPreferredSize(new Dimension(700, 700));
+		addMouseListener(this);
 	}
 	
 	// Initialize the board
@@ -68,7 +72,6 @@ public class Board extends JPanel {
 			System.out.println(e.getMessage());
 		}
 		generateAdjLists();
-		playerIsDone = false; // The human player always starts, and will not have completed turn
 		currPlayer = 0;
 	}
 	
@@ -90,6 +93,8 @@ public class Board extends JPanel {
 		roomCards = new ArrayList<>();
 		weaponCards = new ArrayList<>();
 		roomMap = new HashMap<>();
+		targets = new HashSet<>();
+		visited = new HashSet<>();
 		FileReader reader = new FileReader(setupConfigFile);
 		Scanner in = new Scanner(reader);
 		
@@ -361,8 +366,8 @@ public class Board extends JPanel {
 		int playerCounter = 0; // Tracks which player is receiving the card
 		while(!deck.isEmpty()) { // Make sure all cards are dealt
 			Card randCard = deck.get(rand.nextInt(deck.size())); // Pick a random card from the deck
-			Player currPlayer = players.get(playerCounter); // Current player
-			currPlayer.updateHand(randCard); // Give card to player
+			Player activePlayer = players.get(playerCounter); // Current player
+			activePlayer.updateHand(randCard); // Give card to player
 			deck.remove(randCard); // Remove card from deck
 			playerCounter++; // Move on to next player
 			// Cycle back from last to first player
@@ -417,8 +422,8 @@ public class Board extends JPanel {
 	 * will send them into the private function findAllTargets
 	 */
 	public void calcTargets(BoardCell startCell, int roll) {
-		visited = new HashSet<>();
-		targets = new HashSet<>();
+		visited.clear();
+		targets.clear();
 		visited.add(startCell); // The current cell cannot be returned to
 		findAllTargets(startCell, roll);
 	}
@@ -449,6 +454,7 @@ public class Board extends JPanel {
 	}
 	
 	// Method to cause the gameboard to be drawn
+	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		// Determine how big each cell should be based on the size of the board
@@ -458,7 +464,7 @@ public class Board extends JPanel {
 		// Tell each cell to draw itself, giving it expected height and width
 		for(int i = 0; i < numRows; i++) {
 			for(int j = 0; j < numColumns; j++) {
-				gameBoard[i][j].draw(g, cellWidth, cellHeight);
+				gameBoard[i][j].draw(g, cellWidth, cellHeight, targets);
 			}
 		}
 		
@@ -513,7 +519,31 @@ public class Board extends JPanel {
 	// Method to roll the dice for the new player
 	public int diceRoll() {
 		Random dice = new Random();
-		return dice.nextInt(7);
+		return (dice.nextInt(6) + 1);
+	}
+	
+	// Method to redraw the board so that the targets can be seen
+	public void displayTargets() {
+		repaint();
+	}
+	
+	// Method to tell a computer player to move
+	public void doComputerMove() {
+		Player activePlayer = players.get(currPlayer);
+		BoardCell newCell = activePlayer.selectTarget(targets);
+		
+		activePlayer.setCurrentCell(newCell);
+		targets.clear();
+		repaint();
+	}
+	
+	// Method to move the human player based on their target
+	public void doHumanMove(BoardCell target) {
+		Player activePlayer = players.get(currPlayer);
+		activePlayer.setCurrentCell(target);
+		targets.clear();
+		repaint();
+		playerIsDone = true;
 	}
 
 	public Set<BoardCell> getTargets() {
@@ -564,4 +594,42 @@ public class Board extends JPanel {
 	public Solution getSolution() {
 		return theAnswer;
 	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {}
+	
+	// Method to handle the mouse being clicked
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// If it is not the player's turn, do nothing
+		if(currPlayer == 0) {
+			// Figure out where the player clicked
+			BoardCell whichCell = null;
+			for(int i = 0; i < numRows; i++) {
+				for(int j = 0; j < numColumns; j++) {
+					if(gameBoard[i][j].containsClick(e.getX(), e.getY())) {
+						whichCell = gameBoard[i][j];
+						break;
+					}
+				}
+			}
+			
+			// Handle whether the box was a target or not
+			if(targets.contains(whichCell)) {
+				doHumanMove(whichCell);
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "Please select a valid target.");
+			}
+		}
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+
+	@Override
+	public void mouseExited(MouseEvent e) {}
 }
