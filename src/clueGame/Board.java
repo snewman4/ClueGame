@@ -10,8 +10,12 @@
 
 package clueGame;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.FileNotFoundException;
@@ -25,11 +29,18 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Board extends JPanel implements MouseListener {
 	private static final int NUM_PLAYERS = 6;
+	// GUI variables
+	private GameControlPanel controlPanel;
+	private KnownCardsDisplay cardsDisplay;
 	// Game board variables
 	private int numRows;
 	private int numColumns;
@@ -52,8 +63,9 @@ public class Board extends JPanel implements MouseListener {
 	private ArrayList<Card> roomCards;
 	private ArrayList<Card> weaponCards;
 	private ArrayList<Card> deck; // The deck of cards
-	
+	// Solution and accusation variables
 	private Solution theAnswer; // Stores the solution
+	private SuggestionDialog suggestionDialog;
 	
 	// Board constructor, can only be accessed by this class
 	private Board() {
@@ -83,6 +95,14 @@ public class Board extends JPanel implements MouseListener {
 	public void setConfigFiles(String layoutConfigFile, String setupConfigFile) {
 		this.layoutConfigFile = "data/" + layoutConfigFile;
 		this.setupConfigFile = "data/" + setupConfigFile;
+	}
+	
+	public void setControlPanel(GameControlPanel controlPanel) {
+		this.controlPanel = controlPanel;
+	}
+	
+	public void setCardsDisplay(KnownCardsDisplay cardsDisplay) {
+		this.cardsDisplay = cardsDisplay;
 	}
 	
 	// Method to read in the setup from the setup config file
@@ -367,6 +387,7 @@ public class Board extends JPanel implements MouseListener {
 		while(!deck.isEmpty()) { // Make sure all cards are dealt
 			Card randCard = deck.get(rand.nextInt(deck.size())); // Pick a random card from the deck
 			Player activePlayer = players.get(playerCounter); // Current player
+			randCard.setHolder(activePlayer);
 			activePlayer.updateHand(randCard); // Give card to player
 			deck.remove(randCard); // Remove card from deck
 			playerCounter++; // Move on to next player
@@ -543,7 +564,80 @@ public class Board extends JPanel implements MouseListener {
 		activePlayer.setCurrentCell(target);
 		targets.clear();
 		repaint();
+		// If the player moved to a room
+		if(activePlayer.findCurrentRoom() != null) {
+			suggestionDialog = new SuggestionDialog(activePlayer.findCurrentRoom());
+			suggestionDialog.setVisible(true);
+		}
+		// Flag that the player's turn is done
 		playerIsDone = true;
+	}
+	
+	// Class to allow for suggestions
+	public class SuggestionDialog extends JDialog {
+		private JComboBox<String> person;
+		private JComboBox<String> weapon;
+		private JLabel room;
+		
+		public SuggestionDialog(Room room) {
+			setTitle("Make a Suggestion");
+			setSize(300, 300);
+			setLayout(new GridLayout(4, 2));
+			// The only allowed suggestion is the current room
+			JLabel roomLabel = new JLabel("Room:");
+			this.room = new JLabel(room.getName());
+			add(roomLabel);
+			add(this.room);
+			// Generate persons from person cards
+			JLabel personLabel = new JLabel("Person:");
+			person = new JComboBox<>();
+			for(Card personCard : personCards) {
+				person.addItem(personCard.getName());
+			}
+			add(personLabel);
+			add(person);
+			// Generate weapons from weapon cards
+			JLabel weaponLabel = new JLabel("Weapon:");
+			weapon = new JComboBox<>();
+			for(Card weaponCard : weaponCards) {
+				weapon.addItem(weaponCard.getName());
+			}
+			add(weaponLabel);
+			add(weapon);
+			// Button to submit suggestion
+			JButton submitButton = new JButton("Submit");
+			submitButton.addActionListener(new SubmitListener());
+			add(submitButton);
+			
+			setLocationRelativeTo(null); // Makes it so dialog launches at center of screen
+		}
+		
+		class SubmitListener implements ActionListener {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				// Generate a suggestion based on the selected values
+				Card selectedPerson = cards.get(person.getSelectedItem().toString());
+				Card selectedRoom = cards.get(room.getText());
+				Card selectedWeapon = cards.get(weapon.getSelectedItem().toString());
+				Solution suggestion = new Solution(selectedPerson, selectedRoom, selectedWeapon);
+				// Update the control panel to show the guess
+				Player humanPlayer = players.get(0);
+				controlPanel.setGuess(selectedPerson.getName() + ", " + selectedRoom.getName() + ", " + selectedWeapon.getName(), humanPlayer.getColor());
+				// Attempt to disprove the suggestion
+				Card disprover = handleSuggestion(humanPlayer, suggestion);
+				if(disprover != null) {
+					controlPanel.setGuessResult("Your suggestion was disproven by " + disprover.getHolder().getName() + " with " + disprover.getName(), disprover.getHolder().getColor());
+					if(!humanPlayer.getSeen().contains(disprover)) {
+						cardsDisplay.updateSeen(disprover, disprover.getHolder());
+					}
+					humanPlayer.updateSeen(disprover);
+				}
+				else {
+					controlPanel.setGuessResult("Your suggestion could not be disproven.", Color.WHITE);
+				}
+			}
+		}
 	}
 
 	public Set<BoardCell> getTargets() {
@@ -578,23 +672,6 @@ public class Board extends JPanel implements MouseListener {
 		return cards.get(name);
 	}
 	
-	// The below getters are used for testing
-	public List<Player> getPlayers() {
-		return players;
-	}
-	
-	public Map<String, Card> getCards() {
-		return cards;
-	}
-	
-	public List<Card> getDeck() {
-		return deck;
-	}
-	
-	public Solution getSolution() {
-		return theAnswer;
-	}
-
 	@Override
 	public void mouseClicked(MouseEvent e) {}
 	
@@ -632,4 +709,21 @@ public class Board extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseExited(MouseEvent e) {}
+	
+	// The below getters are used for testing
+	public List<Player> getPlayers() {
+		return players;
+	}
+	
+	public Map<String, Card> getCards() {
+		return cards;
+	}
+	
+	public List<Card> getDeck() {
+		return deck;
+	}
+	
+	public Solution getSolution() {
+		return theAnswer;
+	}
 }

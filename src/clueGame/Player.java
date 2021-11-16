@@ -162,6 +162,10 @@ public abstract class Player {
 		return hand;
 	}
 	
+	public Set<Card> getSeen() {
+		return seen;
+	}
+	
 	// This is used for testing only
 	public void clearHand() {
 		hand.clear();

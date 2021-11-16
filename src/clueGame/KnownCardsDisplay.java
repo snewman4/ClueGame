@@ -152,6 +152,8 @@ public class KnownCardsDisplay extends JPanel {
 			newField.setBackground(cardHolder.getColor());
 			newField.setEditable(false);
 			activePanel.add(newField);
+			activePanel.revalidate();
+			activePanel.repaint();
 		}
 	}
 

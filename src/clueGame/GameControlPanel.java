@@ -1,6 +1,7 @@
 package clueGame;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -126,15 +127,15 @@ public class GameControlPanel extends JPanel {
 					if(nextPlayer.findCurrentRoom() != null) {
 						// Generate a suggestion from that room
 						accusation = nextPlayer.createSuggestion();
-						guess.setText(accusation.getPerson().getName() + ", " + accusation.getRoom().getName() + ", " + accusation.getWeapon().getName()); // Update control panel
+						setGuess(accusation.getPerson().getName() + ", " + accusation.getRoom().getName() + ", " + accusation.getWeapon().getName(), nextPlayer.getColor()); // Update control panel
 						guess.setBackground(nextPlayer.getColor());
 						Card disprover = gameboard.handleSuggestion(nextPlayer, accusation); // Try to disprove
 						nextPlayer.updateSeen(disprover); // Add the disproving card to the player's hand
 						// Because this will always be for the computer player, don't display the disprover
 						if(disprover != null)
-							result.setText(nextPlayer.getName() + "'s guess was disproven");
+							setGuessResult(nextPlayer.getName() + "'s guess was disproven", Color.WHITE);
 						else
-							result.setText("No one can disprove that suggestion");
+							setGuessResult("No one can disprove that suggestion", Color.WHITE);
 					}
 				}
 			}
@@ -153,13 +154,15 @@ public class GameControlPanel extends JPanel {
 	}
 	
 	// Method to display the player's guess
-	public void setGuess(String guess) {
+	public void setGuess(String guess, Color color) {
 		this.guess.setText(guess);
+		this.guess.setBackground(color);
 	}
 	
 	// Method to display the result of the guess
-	public void setGuessResult(String guessResult) {
+	public void setGuessResult(String guessResult, Color color) {
 		result.setText(guessResult);
+		result.setBackground(color);
 	}
 	
 	// Main method for testing
@@ -174,7 +177,7 @@ public class GameControlPanel extends JPanel {
 		// Test filling in the data
 		Player mustard = new ComputerPlayer("Col. Mustard");
 		panel.setTurn(mustard, 5);
-		panel.setGuess("I have no guess!");
-		panel.setGuessResult("So you have nothing?");
+		panel.setGuess("I have no guess!", Color.WHITE);
+		panel.setGuessResult("So you have nothing?", Color.WHITE);
 	}
 }

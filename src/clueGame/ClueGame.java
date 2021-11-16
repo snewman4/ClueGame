@@ -26,6 +26,8 @@ public class ClueGame extends JFrame {
 		add(controlPanel, BorderLayout.SOUTH);
 		cardsDisplay = new KnownCardsDisplay();
 		add(cardsDisplay, BorderLayout.EAST);
+		gameboard.setControlPanel(controlPanel);
+		gameboard.setCardsDisplay(cardsDisplay);
 		// Set the window to be an appropriate size
 		pack();
 		// Get the game started by dealing the cards

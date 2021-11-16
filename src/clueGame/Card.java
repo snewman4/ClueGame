@@ -14,6 +14,7 @@ public class Card {
 	private String cardName;
 	private char cardInitial;
 	private CardType type;
+	private Player holder; // Stores which player holds the card
 	
 	public Card(char cardInitial, String cardName, CardType type) {
 		super();
@@ -31,5 +32,13 @@ public class Card {
 	}
 	public CardType getType() {
 		return type;
+	}
+	
+	public void setHolder(Player holder) {
+		this.holder = holder;
+	}
+	
+	public Player getHolder() {
+		return holder;
 	}
 }
