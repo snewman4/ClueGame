@@ -110,9 +110,9 @@ public abstract class Player {
 	}
 	
 	// Method to allow the player to draw itself
-	public void draw(Graphics g, int cellWidth, int cellHeight) {
+	public void draw(Graphics g, int cellWidth, int cellHeight, int offset) {
 		// Determine where to draw the player based on cell sizes and row and column
-		int x = column * cellWidth;
+		int x = column * cellWidth + offset;
 		int y = row * cellHeight;
 		
 		g.setColor(color);

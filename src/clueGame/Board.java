@@ -413,16 +413,12 @@ public class Board extends JPanel implements MouseListener {
 		for(int i = 0; i < NUM_PLAYERS; i++) {
 			if(players.get(i).getName().equals(suggestion.getPerson().getName())) {
 				suggestedPlayer = players.get(i);
+				break;
 			}
 		}
 		
-		try {
-			suggestedPlayer.setCurrentCell(suggestor.getCurrentCell()); // Move the player the the room
-		} catch(NullPointerException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		
+		suggestedPlayer.setCurrentCell(suggestor.getCurrentCell()); // Move the player the the room
+		repaint();
 		while(true) {
 			currPlayerNum++; // Move on to next player
 			// Loop back around to player 0
@@ -529,8 +525,16 @@ public class Board extends JPanel implements MouseListener {
 		}
 		
 		// Tell each player to draw themselves
+		int offset = cellWidth / 2;
+		int currOffset = 0;
 		for(Player player : players) {
-			player.draw(g, cellWidth, cellHeight);
+			BoardCell playerCell = getCell(player.getRow(), player.getColumn());
+			
+			player.draw(g, cellWidth, cellHeight, currOffset);
+			
+			if(playerCell.getNumOccupied() > 1) {
+				currOffset += offset;
+			}
 		}
 	}
 	

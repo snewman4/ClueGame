@@ -33,6 +33,7 @@ public class BoardCell {
 	private boolean roomCenter;
 	private boolean isRoom;
 	private boolean isOccupied;
+	private int numOccupied;
 	private boolean isSecretPassage;
 	private Set<BoardCell> adjList;
 	
@@ -168,11 +169,21 @@ public class BoardCell {
 	}
 	
 	public void setOccupied(boolean isOccupied) {
+		if(isOccupied) {
+			numOccupied++;
+		}
+		else {
+			numOccupied--;
+		}
 		this.isOccupied = isOccupied;
 	}
 	
 	public boolean isOccupied() {
 		return isOccupied;
+	}
+	
+	public int getNumOccupied() {
+		return numOccupied;
 	}
 	
 	public void setLabel(boolean roomLabel) {
