@@ -54,6 +54,10 @@ public abstract class Player {
 		}
 	}
 	
+	public BoardCell getCurrentCell() {
+		return new BoardCell(row, column);
+	}
+	
 	public void setCurrentCell(BoardCell cell) {
 		row = cell.getRow();
 		column = cell.getColumn();

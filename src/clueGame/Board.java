@@ -408,6 +408,20 @@ public class Board extends JPanel implements MouseListener {
 		// Get indexes to track the suggestor and the one attempting to disprove
 		int suggestorNumber = players.indexOf(suggestor);
 		int currPlayerNum = suggestorNumber;
+		// Find which player was suggested so that they can be moved
+		Player suggestedPlayer = null;
+		for(int i = 0; i < NUM_PLAYERS; i++) {
+			if(players.get(i).getName().equals(suggestion.getPerson().getName())) {
+				suggestedPlayer = players.get(i);
+			}
+		}
+		
+		try {
+			suggestedPlayer.setCurrentCell(suggestor.getCurrentCell()); // Move the player the the room
+		} catch(NullPointerException e) {
+			System.out.println(e.getMessage());
+		}
+		
 		
 		while(true) {
 			currPlayerNum++; // Move on to next player
@@ -485,7 +499,15 @@ public class Board extends JPanel implements MouseListener {
 		// Tell each cell to draw itself, giving it expected height and width
 		for(int i = 0; i < numRows; i++) {
 			for(int j = 0; j < numColumns; j++) {
-				gameBoard[i][j].draw(g, cellWidth, cellHeight, targets);
+				boolean flag = false;
+				BoardCell cell = gameBoard[i][j];
+				if(targets.contains(getRoomCellCenter(cell))) {
+					flag = true;
+				}
+				if(targets.contains(cell)) {
+					flag = true;
+				}
+				cell.draw(g, cellWidth, cellHeight, flag);
 			}
 		}
 		
@@ -551,9 +573,12 @@ public class Board extends JPanel implements MouseListener {
 	// Method to tell a computer player to move
 	public void doComputerMove() {
 		Player activePlayer = players.get(currPlayer);
+		BoardCell oldCell = gameBoard[activePlayer.getRow()][activePlayer.getColumn()];
 		BoardCell newCell = activePlayer.selectTarget(targets);
 		
 		activePlayer.setCurrentCell(newCell);
+		newCell.setOccupied(true);
+		oldCell.setOccupied(false);
 		targets.clear();
 		repaint();
 	}
@@ -695,10 +720,19 @@ public class Board extends JPanel implements MouseListener {
 			if(targets.contains(whichCell)) {
 				doHumanMove(whichCell);
 			}
+			// If the clicked cell is a cell in an allowed room
+			else if(targets.contains(getRoomCellCenter(whichCell))) {
+				doHumanMove(getRoomCellCenter(whichCell));
+			}
 			else {
 				JOptionPane.showMessageDialog(null, "Please select a valid target.");
 			}
 		}
+	}
+
+	// Method to find the center of a room based on any room cell
+	private BoardCell getRoomCellCenter(BoardCell roomCell) {
+		return roomMap.get(roomCell.getInitial()).getCenterCell();
 	}
 
 	@Override

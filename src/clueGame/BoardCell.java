@@ -45,7 +45,7 @@ public class BoardCell {
 	}
 	
 	// Method to for each cell to draw itself
-	public void draw(Graphics g, int cellWidth, int cellHeight, Set<BoardCell> targets) {
+	public void draw(Graphics g, int cellWidth, int cellHeight, boolean flag) {
 		this.cellWidth = cellWidth;
 		this.cellHeight = cellHeight;
 		// Determine where to draw the cell based on cell sizes and its row and column
@@ -59,7 +59,7 @@ public class BoardCell {
 				break;
 			case 'W': // If the cell is a walkway
 				// If the cell is a target, make it blue
-				if(targets.contains(this))
+				if(flag)
 					g.setColor(Color.CYAN);
 				else
 					g.setColor(Color.PINK);
@@ -69,7 +69,7 @@ public class BoardCell {
 				break;
 			default: // If the cell is a room
 				// If the room is a target, make it blue
-				if(targets.contains(this))
+				if(flag)
 					g.setColor(Color.CYAN);
 				else
 					g.setColor(Color.GRAY);
