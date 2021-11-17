@@ -78,7 +78,7 @@ public class GameEngine {
 
 	// Method that is run when it is the human player's turn
 	public void humanTurn() {
-		gameboard.displayTargets();
+		gameboard.repaint(); // Repaint to display targets
 		playerIsDone = false;
 	}
 	

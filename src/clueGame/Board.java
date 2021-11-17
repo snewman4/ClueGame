@@ -499,12 +499,8 @@ public class Board extends JPanel implements MouseListener {
 			for(int j = 0; j < numColumns; j++) {
 				boolean flag = false;
 				BoardCell cell = gameBoard[i][j];
-				if(targets.contains(getRoomCellCenter(cell))) {
+				if(targets.contains(getRoomCellCenter(cell)) || targets.contains(cell))
 					flag = true;
-				}
-				if(targets.contains(cell)) {
-					flag = true;
-				}
 				cell.draw(g, cellWidth, cellHeight, flag);
 			}
 		}
@@ -520,12 +516,12 @@ public class Board extends JPanel implements MouseListener {
 					currCell.drawLabel(g, currRoom.getName(), cellWidth, cellHeight);
 				}
 				// If it is a door cell
-				if(currCell.isDoorway()) {
+				if(currCell.isDoorway())
 					currCell.drawDoor(g, cellWidth, cellHeight);
-				}
 			}
 		}
 		
+		// TODO: Fix the player offset drawing
 		// Tell each player to draw themselves
 		int offset = cellWidth / 2;
 		int currOffset = 0;
@@ -534,15 +530,9 @@ public class Board extends JPanel implements MouseListener {
 			
 			player.draw(g, cellWidth, cellHeight, currOffset);
 			
-			if(playerCell.getNumOccupied() > 1) {
+			if(playerCell.getNumOccupied() > 1)
 				currOffset += offset;
-			}
 		}
-	}
-	
-	// Method to redraw the board so that the targets can be seen
-	public void displayTargets() {
-		repaint();
 	}
 	
 	public void generateSuggestionDialog(Room currRoom) {
@@ -605,14 +595,12 @@ public class Board extends JPanel implements MouseListener {
 				Card disprover = handleSuggestion(humanPlayer, suggestion);
 				if(disprover != null) {
 					controlPanel.setGuessResult("Your suggestion was disproven by " + disprover.getHolder().getName() + " with " + disprover.getName(), disprover.getHolder().getColor());
-					if(!humanPlayer.getSeen().contains(disprover)) {
+					if(!humanPlayer.getSeen().contains(disprover))
 						cardsDisplay.updateSeen(disprover, disprover.getHolder());
-					}
 					humanPlayer.updateSeen(disprover);
 				}
-				else {
+				else
 					controlPanel.setGuessResult("Your suggestion could not be disproven.", Color.WHITE);
-				}
 			}
 		}
 	}
@@ -673,16 +661,13 @@ public class Board extends JPanel implements MouseListener {
 			}
 			
 			// Handle whether the box was a target or not
-			if(targets.contains(whichCell)) {
+			if(targets.contains(whichCell))
 				engine.humanMove(whichCell);
-			}
 			// If the clicked cell is a cell in an allowed room
-			else if(targets.contains(getRoomCellCenter(whichCell))) {
+			else if(targets.contains(getRoomCellCenter(whichCell)))
 				engine.humanMove(getRoomCellCenter(whichCell));
-			}
-			else {
+			else
 				JOptionPane.showMessageDialog(null, "Please select a valid target.");
-			}
 		}
 	}
 

@@ -97,13 +97,11 @@ public class GameControlPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// If the human player is done with their turn:
-			if(engine.playerIsDone()) {
+			if(engine.playerIsDone())
 				engine.newTurn();
-			}
-			else {
-				// If the player is not done, give them an error
+			// If the player is not done, give them an error
+			else
 				JOptionPane.showMessageDialog(null, "Please complete your turn");
-			}
 		}
 	}
 	
