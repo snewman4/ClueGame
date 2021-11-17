@@ -38,14 +38,15 @@ import javax.swing.JPanel;
 
 public class Board extends JPanel implements MouseListener {
 	private static final int NUM_PLAYERS = 6;
+	private GameEngine engine;
 	// GUI variables
 	private GameControlPanel controlPanel;
 	private KnownCardsDisplay cardsDisplay;
 	// Game board variables
+	private static Board theInstance = new Board(); // Private, single instance of board
 	private int numRows;
 	private int numColumns;
 	private BoardCell[][] gameBoard;
-	private static Board theInstance = new Board(); // Private, single instance of board
 	// Initialization variables
 	private String layoutConfigFile;
 	private String setupConfigFile;
@@ -55,8 +56,6 @@ public class Board extends JPanel implements MouseListener {
 	private Set<BoardCell> visited; // Used to store which cells were visited in a turn
 	// Player and card variables
 	private ArrayList<Player> players; // Stores the players
-	private int currPlayer; // Used to determine who is currently taking their turn
-	private boolean playerIsDone; // Used to determine if the human player has completed their turn
 	private Map<String, Card> cards; // A list of the card references
 	// Three temporary lists to independently store each type of card, to be chosen by solution
 	private ArrayList<Card> personCards;
@@ -84,7 +83,6 @@ public class Board extends JPanel implements MouseListener {
 			System.out.println(e.getMessage());
 		}
 		generateAdjLists();
-		currPlayer = 0;
 	}
 	
 	// Return the only board
@@ -95,6 +93,10 @@ public class Board extends JPanel implements MouseListener {
 	public void setConfigFiles(String layoutConfigFile, String setupConfigFile) {
 		this.layoutConfigFile = "data/" + layoutConfigFile;
 		this.setupConfigFile = "data/" + setupConfigFile;
+	}
+	
+	public void setEngine(GameEngine engine) {
+		this.engine = engine;
 	}
 	
 	public void setControlPanel(GameControlPanel controlPanel) {
@@ -538,68 +540,14 @@ public class Board extends JPanel implements MouseListener {
 		}
 	}
 	
-	public boolean playerDone() {
-		return playerIsDone;
-	}
-	
-	public void setPlayerDone(boolean playerIsDone) {
-		this.playerIsDone = playerIsDone;
-	}
-	
-	// Method to move on to the next player's turn, and return that player
-	public Player getNextPlayer() {
-		// Move on to the next player. Loop back around to 0
-		currPlayer++;
-		currPlayer = currPlayer % 6;
-		
-		return players.get(currPlayer);
-	}
-	
-	// Method to handle a new turn
-	public void newPlayerTurn(int diceRoll) {
-		Player activePlayer = players.get(currPlayer);
-		BoardCell cell = getCell(activePlayer.getRow(), activePlayer.getColumn()); // Get where the player is currently
-		
-		calcTargets(cell, diceRoll);
-	}
-	
-	// Method to roll the dice for the new player
-	public int diceRoll() {
-		Random dice = new Random();
-		return (dice.nextInt(6) + 1);
-	}
-	
 	// Method to redraw the board so that the targets can be seen
 	public void displayTargets() {
 		repaint();
 	}
 	
-	// Method to tell a computer player to move
-	public void doComputerMove() {
-		Player activePlayer = players.get(currPlayer);
-		BoardCell oldCell = gameBoard[activePlayer.getRow()][activePlayer.getColumn()];
-		BoardCell newCell = activePlayer.selectTarget(targets);
-		
-		activePlayer.setCurrentCell(newCell);
-		newCell.setOccupied(true);
-		oldCell.setOccupied(false);
-		targets.clear();
-		repaint();
-	}
-	
-	// Method to move the human player based on their target
-	public void doHumanMove(BoardCell target) {
-		Player activePlayer = players.get(currPlayer);
-		activePlayer.setCurrentCell(target);
-		targets.clear();
-		repaint();
-		// If the player moved to a room
-		if(activePlayer.findCurrentRoom() != null) {
-			suggestionDialog = new SuggestionDialog(activePlayer.findCurrentRoom());
-			suggestionDialog.setVisible(true);
-		}
-		// Flag that the player's turn is done
-		playerIsDone = true;
+	public void generateSuggestionDialog(Room currRoom) {
+		suggestionDialog = new SuggestionDialog(currRoom);
+		suggestionDialog.setVisible(true);
 	}
 	
 	// Class to allow for suggestions
@@ -697,6 +645,10 @@ public class Board extends JPanel implements MouseListener {
 		return numColumns;
 	}
 	
+	public Player getPlayer(int playerNum) {
+		return players.get(playerNum);
+	}
+	
 	public Card getCard(String name) {
 		return cards.get(name);
 	}
@@ -708,7 +660,7 @@ public class Board extends JPanel implements MouseListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// If it is not the player's turn, do nothing
-		if(currPlayer == 0) {
+		if(engine.getCurrPlayer() == 0) {
 			// Figure out where the player clicked
 			BoardCell whichCell = null;
 			for(int i = 0; i < numRows; i++) {
@@ -722,11 +674,11 @@ public class Board extends JPanel implements MouseListener {
 			
 			// Handle whether the box was a target or not
 			if(targets.contains(whichCell)) {
-				doHumanMove(whichCell);
+				engine.humanMove(whichCell);
 			}
 			// If the clicked cell is a cell in an allowed room
 			else if(targets.contains(getRoomCellCenter(whichCell))) {
-				doHumanMove(getRoomCellCenter(whichCell));
+				engine.humanMove(getRoomCellCenter(whichCell));
 			}
 			else {
 				JOptionPane.showMessageDialog(null, "Please select a valid target.");

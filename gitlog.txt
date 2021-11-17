@@ -1,3 +1,33 @@
+commit 1a384eb010d8a8012ee0c22357c5a3ce186d98c4
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Mon Nov 15 20:18:56 2021 -0700
+
+    Implemented human player moving and suggestions.
+
+commit 231dd9988dc00eb14882b2bfff93c449bde60e09
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Mon Nov 15 18:47:00 2021 -0700
+
+    Implemented sequential turns and computer player movement. Started human player movement.
+
+commit 2475432387056f1646721395022b04800f4f8218
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Mon Nov 15 16:16:36 2021 -0700
+
+    Began work on logic of Next button hit. Added simple features like roll dice and next player
+
+commit 713c934f64314f762cb18be507062fc9bbf8e86b
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Thu Nov 11 12:00:07 2021 -0700
+
+    Added intro message to the game. Made it so application will launch in center of screen.
+
+commit d79e529313a08116a09e9db98e36ad0211bfa741
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Wed Nov 10 16:03:12 2021 -0700
+
+    Updated board and player colors to match my girlfriend's request. Updated appropriate tests.
+
 commit b3883f0fd8eb52d424f27641734ae1538276a96d
 Author: Sam Newman <snewman1@mines.edu>
 Date:   Wed Nov 10 15:54:30 2021 -0700

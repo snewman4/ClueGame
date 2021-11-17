@@ -18,6 +18,7 @@ import javax.swing.border.TitledBorder;
 
 public class GameControlPanel extends JPanel {
 	private Board gameboard;
+	private GameEngine engine;
 	private JTextField currPlayer;
 	private JTextField currRoll;
 	private JTextField guess;
@@ -95,49 +96,9 @@ public class GameControlPanel extends JPanel {
 	class NextListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// If the player is done:
-			if(gameboard.playerDone()) {
-				// Load up the next player's turn
-				Player nextPlayer = gameboard.getNextPlayer();
-				int roll = gameboard.diceRoll();
-				setTurn(nextPlayer, roll); // Update the display
-				gameboard.newPlayerTurn(roll); // Move on to the next turn
-				// If the new player is a human player:
-				if(nextPlayer.getClass() == HumanPlayer.class) {
-					gameboard.displayTargets();
-					gameboard.setPlayerDone(false);
-				}
-				// If the new player is a computer player
-				else {
-					// Try to make an accusation
-					Solution accusation = nextPlayer.createAccusation();
-					// If an accusation was made:
-					if(accusation != null) {
-						if(gameboard.checkAccusation(accusation)) {
-							// TODO: Handle a correct accusation
-						}
-						else {
-							// TODO: Handle an incorrect accusation
-						}
-					}
-					
-					// Tell the board to have the player move
-					gameboard.doComputerMove();
-					// Check if the player moved to a room
-					if(nextPlayer.findCurrentRoom() != null) {
-						// Generate a suggestion from that room
-						accusation = nextPlayer.createSuggestion();
-						setGuess(accusation.getPerson().getName() + ", " + accusation.getRoom().getName() + ", " + accusation.getWeapon().getName(), nextPlayer.getColor()); // Update control panel
-						guess.setBackground(nextPlayer.getColor());
-						Card disprover = gameboard.handleSuggestion(nextPlayer, accusation); // Try to disprove
-						nextPlayer.updateSeen(disprover); // Add the disproving card to the player's hand
-						// Because this will always be for the computer player, don't display the disprover
-						if(disprover != null)
-							setGuessResult(nextPlayer.getName() + "'s guess was disproven", Color.WHITE);
-						else
-							setGuessResult("No one can disprove that suggestion", Color.WHITE);
-					}
-				}
+			// If the human player is done with their turn:
+			if(engine.playerIsDone()) {
+				engine.newTurn();
 			}
 			else {
 				// If the player is not done, give them an error
@@ -179,5 +140,9 @@ public class GameControlPanel extends JPanel {
 		panel.setTurn(mustard, 5);
 		panel.setGuess("I have no guess!", Color.WHITE);
 		panel.setGuessResult("So you have nothing?", Color.WHITE);
+	}
+	
+	public void setEngine(GameEngine engine) {
+		this.engine = engine;
 	}
 }

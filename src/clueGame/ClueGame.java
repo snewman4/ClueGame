@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class ClueGame extends JFrame {
+	private GameEngine engine;
 	private Player humanPlayer;
 	private Board gameboard;
 	private GameControlPanel controlPanel;
@@ -16,39 +17,28 @@ public class ClueGame extends JFrame {
 		// The entire window
 		setTitle("Clue Game");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// Visuals for the gameboard itself
-		gameboard = Board.getInstance();
-		gameboard.setConfigFiles("ClueLayout.csv", "ClueSetup.txt");
-		gameboard.initialize();
+		// Set up the game engine, which runs most of the logic of the game
+		engine = new GameEngine();
+		// Get the UI elements from the engine
+		gameboard = engine.getGameboard();
+		controlPanel = engine.getControlPanel();
+		cardsDisplay = engine.getCardsDisplay();
+		// Launch the game
+		engine.launchGame();
+		// Set up the UI panels
 		add(gameboard, BorderLayout.CENTER);
-		// Other UI panels
-		controlPanel = new GameControlPanel();
 		add(controlPanel, BorderLayout.SOUTH);
-		cardsDisplay = new KnownCardsDisplay();
 		add(cardsDisplay, BorderLayout.EAST);
-		gameboard.setControlPanel(controlPanel);
-		gameboard.setCardsDisplay(cardsDisplay);
 		// Set the window to be an appropriate size
 		pack();
-		// Get the game started by dealing the cards
-		gameboard.deal();
-		// Update the display
-		humanPlayer = gameboard.getPlayers().get(0);
-		Set<Card> humanPlayerHand = humanPlayer.getHand();
-		cardsDisplay.loadHand(humanPlayerHand);
-		// Show the board
+		humanPlayer = engine.getHumanPlayer();
 		setLocationRelativeTo(null); // Makes it so app launches at center of screen
 	}
-	
-	// Method to start the game
-	public void startGame() {
-		int roll = gameboard.diceRoll();
-		controlPanel.setTurn(humanPlayer, roll);
-		gameboard.newPlayerTurn(roll);
-		gameboard.displayTargets();
-		gameboard.setPlayerDone(false);
-	}
 
+	public GameEngine getEngine() {
+		return engine;
+	}
+	
 	public Player getHumanPlayer() {
 		return humanPlayer;
 	}
@@ -61,6 +51,7 @@ public class ClueGame extends JFrame {
 		JOptionPane.showMessageDialog(null, "You are playing as " + game.getHumanPlayer().getName() + "!\n Find out"
 				+ " who the killer is\nbefore the other players can!");
 		
-		game.startGame();
+		GameEngine engine = game.getEngine();
+		engine.newTurn(); // It becomes the human's turn once the dialog is closed
 	}
 }

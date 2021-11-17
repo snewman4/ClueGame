@@ -168,13 +168,13 @@ public class BoardCell {
 		return isRoom;
 	}
 	
+	// Method to update whether the cell is occupied
 	public void setOccupied(boolean isOccupied) {
-		if(isOccupied) {
+		// The counter is used for rooms that can be occupied by multiple players
+		if(isOccupied)
 			numOccupied++;
-		}
-		else {
+		else
 			numOccupied--;
-		}
 		this.isOccupied = isOccupied;
 	}
 	
