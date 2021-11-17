@@ -73,7 +73,7 @@ public class BoardCell {
 				if(flag)
 					g.setColor(Color.CYAN);
 				else
-					g.setColor(Color.GRAY);
+					g.setColor(Color.YELLOW);
 				g.fillRect(x, y, cellWidth, cellHeight);
 				break;
 		}

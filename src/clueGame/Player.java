@@ -24,7 +24,7 @@ public abstract class Player {
 	// Array of pre-set starting locations
 	private static final int[][] startLocation = {{0, 8}, {0, 16}, {12, 24}, {24, 16}, {24, 8}, {12, 0}};
 	// Array of pre-set colors
-	private static final Color[] playerColors = {Color.RED, Color.YELLOW, Color.GREEN, Color.CYAN, Color.MAGENTA, Color.ORANGE};
+	private static final Color[] playerColors = {Color.RED, Color.GRAY, Color.GREEN, Color.CYAN, Color.MAGENTA, Color.ORANGE};
 	private static int currPlayerNum = 0; // Which player is currently being made, used to access correct starting location
 	
 	private String name;
