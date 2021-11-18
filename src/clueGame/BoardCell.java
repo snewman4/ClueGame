@@ -45,6 +45,10 @@ public class BoardCell {
 		adjList = new HashSet<>();
 	}
 	
+	public boolean equals(BoardCell target) {
+		return (target.row == this.row && target.column == this.column);
+	}
+	
 	// Method to for each cell to draw itself
 	public void draw(Graphics g, int cellWidth, int cellHeight, boolean flag) {
 		this.cellWidth = cellWidth;

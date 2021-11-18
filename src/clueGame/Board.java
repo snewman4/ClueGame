@@ -10,7 +10,6 @@
 
 package clueGame;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
@@ -28,7 +27,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -39,9 +37,6 @@ import javax.swing.JPanel;
 public class Board extends JPanel implements MouseListener {
 	private static final int NUM_PLAYERS = 6;
 	private GameEngine engine;
-	// GUI variables
-	private GameControlPanel controlPanel;
-	private KnownCardsDisplay cardsDisplay;
 	// Game board variables
 	private static Board theInstance = new Board(); // Private, single instance of board
 	private int numRows;
@@ -97,14 +92,6 @@ public class Board extends JPanel implements MouseListener {
 	
 	public void setEngine(GameEngine engine) {
 		this.engine = engine;
-	}
-	
-	public void setControlPanel(GameControlPanel controlPanel) {
-		this.controlPanel = controlPanel;
-	}
-	
-	public void setCardsDisplay(KnownCardsDisplay cardsDisplay) {
-		this.cardsDisplay = cardsDisplay;
 	}
 	
 	// Method to read in the setup from the setup config file
@@ -521,17 +508,20 @@ public class Board extends JPanel implements MouseListener {
 			}
 		}
 		
-		// TODO: Fix the player offset drawing
-		// Tell each player to draw themselves
-		int offset = cellWidth / 2;
-		int currOffset = 0;
-		for(Player player : players) {
-			BoardCell playerCell = getCell(player.getRow(), player.getColumn());
-			
-			player.draw(g, cellWidth, cellHeight, currOffset);
-			
-			if(playerCell.getNumOccupied() > 1)
-				currOffset += offset;
+		// Tell each player to draw themselves, with offset if necessary
+		int offset = cellWidth / 2; // Amount to be offset by
+		for(int i = 0; i < NUM_PLAYERS; i++) {
+			int currOffset = 0; // Initial offset
+			Player currPlayer = players.get(i);
+			// Check only players prior, adding one offset for each player in the same cell
+			for(int j = 0; j < i; j++) {
+				Player comparePlayer = players.get(j);
+				if(currPlayer.getCurrentCell().equals(comparePlayer.getCurrentCell())) {
+					currOffset += offset;
+				}
+			}
+			// Draw themselves
+			currPlayer.draw(g, cellWidth, cellHeight, currOffset);
 		}
 	}
 	
@@ -630,7 +620,7 @@ public class Board extends JPanel implements MouseListener {
 	}
 	
 	@Override
-	public void mouseClicked(MouseEvent e) {}
+	public void mouseClicked(MouseEvent e) { /* Not needed function */ }
 	
 	// Method to handle the mouse being clicked
 	@Override
@@ -665,13 +655,13 @@ public class Board extends JPanel implements MouseListener {
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) { /* Not needed function */ }
 
 	@Override
-	public void mouseEntered(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) { /* Not needed function */ }
 
 	@Override
-	public void mouseExited(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) { /* Not needed function */ }
 	
 	// The below getters are used for testing
 	public List<Player> getPlayers() {

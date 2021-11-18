@@ -35,9 +35,6 @@ public class GameEngine {
 
 	// Method to get the game running
 	public void launchGame() {
-		// Initialize the board with necessary elements
-		gameboard.setControlPanel(controlPanel);
-		gameboard.setCardsDisplay(cardsDisplay);
 		// Deal the cards
 		gameboard.deal();
 		// Set up the human's known card display
