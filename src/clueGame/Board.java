@@ -629,6 +629,7 @@ public class Board extends JPanel implements MouseListener {
 			add(submitButton);
 			// Button to cancel accusation
 			JButton cancelButton = new JButton("Cancel");
+			cancelButton.addActionListener(e -> setVisible(false)); // Close the dialog if canceled
 			add(cancelButton);
 			
 			setLocationRelativeTo(null); // Makes it so dialog launches at center of screen
