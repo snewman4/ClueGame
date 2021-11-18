@@ -33,7 +33,6 @@ public class BoardCell {
 	private boolean roomCenter;
 	private boolean isRoom;
 	private boolean isOccupied;
-	private int numOccupied;
 	private boolean isSecretPassage;
 	private Set<BoardCell> adjList;
 	
@@ -172,22 +171,12 @@ public class BoardCell {
 		return isRoom;
 	}
 	
-	// Method to update whether the cell is occupied
 	public void setOccupied(boolean isOccupied) {
-		// The counter is used for rooms that can be occupied by multiple players
-		if(isOccupied)
-			numOccupied++;
-		else
-			numOccupied--;
 		this.isOccupied = isOccupied;
 	}
 	
 	public boolean isOccupied() {
 		return isOccupied;
-	}
-	
-	public int getNumOccupied() {
-		return numOccupied;
 	}
 	
 	public void setLabel(boolean roomLabel) {

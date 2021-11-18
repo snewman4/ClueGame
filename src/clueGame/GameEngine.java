@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.util.Random;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
+
 public class GameEngine {
 	// UI variables
 	private Board gameboard;
@@ -78,10 +80,13 @@ public class GameEngine {
 		gameboard.repaint(); // Repaint to display targets
 		playerIsDone = false;
 	}
-	
+
 	// Method to allow the human to move
 	public void humanMove(BoardCell target) {
+		BoardCell oldCell = gameboard.getCell(humanPlayer.getRow(), humanPlayer.getColumn());
 		humanPlayer.setCurrentCell(target); // Update player's location
+		oldCell.setOccupied(false); // Mark previous cell as unoccupied
+		target.setOccupied(true); // Mark new cell as occupied
 		gameboard.getTargets().clear();
 		gameboard.repaint();
 		// Determine if the player moved to a room
@@ -91,7 +96,7 @@ public class GameEngine {
 		// Flag that the player's turn is done
 		playerIsDone = true;
 	}
-	
+
 	// Method to handle the human making a suggestion
 	public void humanSuggestion(Card personCard, Card roomCard, Card weaponCard) {
 		Solution suggestion = new Solution(personCard, roomCard, weaponCard); // Generate a solution object
@@ -111,18 +116,37 @@ public class GameEngine {
 			controlPanel.setGuessResult("Your suggestion could not be disproven.", Color.WHITE);
 	}
 
+	// Method to handle the human making an accusation
+	public void humanAccusation(Card accusedPerson, Card accusedRoom, Card accusedWeapon) {
+		Solution accusation = new Solution(accusedPerson, accusedRoom, accusedWeapon); // Create a solution object
+		if(gameboard.checkAccusation(accusation)) {
+			// If the accusation is correct, print it and congratulate the player
+			JOptionPane.showMessageDialog(null, "You have correctly guessed the killer. It was " + accusation.getPerson().getName() +
+					" with the " + accusation.getWeapon().getName() + " in the " + accusation.getRoom().getName() + "! Good job!");
+			// Close the game
+			System.exit(0);
+		}
+		// If the human does not correctly guess, the game ends with a 'sorry' message
+		else {
+			Solution actualSolution = gameboard.getSolution();
+			JOptionPane.showMessageDialog(null, "Your guess was incorrect. It was " + actualSolution.getPerson().getName() +
+					" with the " + actualSolution.getWeapon().getName() + " in the " + actualSolution.getRoom().getName() + "! Better luck next time.");
+			// Close the game
+			System.exit(0);
+		}
+	}
+
 	// Method that is run when it is a computer's turn
 	public void computerTurn(Player activePlayer) {
 		// Computer will always start by trying to make an accusation
 		Solution accusation = activePlayer.createAccusation();
 		// The accusation will be null if one cannot be made, skip
 		if(accusation != null) {
-			if(gameboard.checkAccusation(accusation)) {
-				// TODO: Handle a correct accusation
-			}
-			else {
-				// TODO: Handle an incorrect accusation
-			}
+			// Computer player will only return a correct answer, so end the game if an accusation is made
+			JOptionPane.showMessageDialog(null, activePlayer.getName() + " has correctly guessed the killer. It was " + accusation.getPerson().getName() +
+					" with the " + accusation.getWeapon().getName() + " in the " + accusation.getRoom().getName() + "!");
+			// Close the game
+			System.exit(0);
 		}
 		// If the computer doesn't make an accusation, it must move
 		BoardCell oldCell = gameboard.getCell(activePlayer.getRow(), activePlayer.getColumn()); // Where the player currently is
@@ -170,7 +194,7 @@ public class GameEngine {
 	public boolean playerIsDone() {
 		return playerIsDone;
 	}
-	
+
 	public int getCurrPlayer() {
 		return currPlayer;
 	}

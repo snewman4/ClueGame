@@ -83,9 +83,37 @@ public class ComputerPlayer extends Player {
 		return new Solution(suggPersonCard, currRoomCard, suggWeaponCard);
 	}
 	
-	// TODO: Write the createAccusation method
 	// Method to generate an accusation if possible. If not, return null
 	public Solution createAccusation() {
-		return null;
+		int numKnownCards = hand.size() + seen.size(); // Number of cards that the player knows
+		// The only way a solution can be made is if the player doesn't know exactly three cards
+		if(allCards.size() - numKnownCards > 3) {
+			return null;
+		}
+		Card personSolution = null;
+		Card roomSolution = null;
+		Card weaponSolution = null;
+		// Loop through all cards
+		for(Map.Entry<String, Card> card : allCards.entrySet()) {
+			// If card isn't in hand or seen, it must be part of the solution
+			if(!hand.contains(card.getValue()) && !seen.contains(card.getValue())) {
+				// Save it based on type
+				switch(card.getValue().getType()) {
+					case PERSON:
+						personSolution = card.getValue();
+						break;
+					case ROOM:
+						roomSolution = card.getValue();
+						break;
+					case WEAPON:
+						weaponSolution = card.getValue();
+						break;
+					default:
+						break;
+				}
+			}
+		}
+		
+		return new Solution(personSolution, roomSolution, weaponSolution);
 	}
 }

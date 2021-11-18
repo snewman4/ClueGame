@@ -58,6 +58,7 @@ public class GameControlPanel extends JPanel {
 		
 		// Accusation button allows the player to make an accusation
 		JButton accusationButton = new JButton("Make Accusation");
+		accusationButton.addActionListener(new AccusationListener());
 		upperHalf.add(accusationButton);
 		
 		// Next button allows the player to move on to the next turn
@@ -102,6 +103,15 @@ public class GameControlPanel extends JPanel {
 			// If the player is not done, give them an error
 			else
 				JOptionPane.showMessageDialog(null, "Please complete your turn");
+		}
+	}
+	
+	// Listens for when the accusation button is pressed
+	class AccusationListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// Tell the gameboard to create an accusation dialog
+			gameboard.generateAccusationDialog();
 		}
 	}
 	

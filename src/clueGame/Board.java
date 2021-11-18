@@ -60,6 +60,7 @@ public class Board extends JPanel implements MouseListener {
 	// Solution and accusation variables
 	private Solution theAnswer; // Stores the solution
 	private SuggestionDialog suggestionDialog;
+	private AccusationDialog accusationDialog;
 	
 	// Board constructor, can only be accessed by this class
 	private Board() {
@@ -405,7 +406,8 @@ public class Board extends JPanel implements MouseListener {
 				break;
 			}
 		}
-		
+		BoardCell oldCell = getCell(suggestedPlayer.getRow(), suggestedPlayer.getColumn());
+		oldCell.setOccupied(false); // Mark that their old cell is not unoccupied
 		suggestedPlayer.setCurrentCell(suggestor.getCurrentCell()); // Move the player the the room
 		repaint();
 		while(true) {
@@ -516,9 +518,8 @@ public class Board extends JPanel implements MouseListener {
 			// Check only players prior, adding one offset for each player in the same cell
 			for(int j = 0; j < i; j++) {
 				Player comparePlayer = players.get(j);
-				if(currPlayer.getCurrentCell().equals(comparePlayer.getCurrentCell())) {
+				if(currPlayer.getCurrentCell().equals(comparePlayer.getCurrentCell()))
 					currOffset += offset;
-				}
 			}
 			// Draw themselves
 			currPlayer.draw(g, cellWidth, cellHeight, currOffset);
@@ -528,6 +529,11 @@ public class Board extends JPanel implements MouseListener {
 	public void generateSuggestionDialog(Room currRoom) {
 		suggestionDialog = new SuggestionDialog(currRoom);
 		suggestionDialog.setVisible(true);
+	}
+	
+	public void generateAccusationDialog() {
+		accusationDialog = new AccusationDialog();
+		accusationDialog.setVisible(true);
 	}
 	
 	// Class to allow for suggestions
@@ -579,6 +585,65 @@ public class Board extends JPanel implements MouseListener {
 				Card selectedWeapon = cards.get(weapon.getSelectedItem().toString());
 				// Pass the suggestion to the engine
 				engine.humanSuggestion(selectedPerson, selectedRoom, selectedWeapon);
+			}
+		}
+	}
+	
+	// Class to allow for accusations
+	public class AccusationDialog extends JDialog {
+		private JComboBox<String> person;
+		private JComboBox<String> room;
+		private JComboBox<String> weapon;
+		
+		public AccusationDialog() {
+			setTitle("Make an Accusation");
+			setSize(300, 300);
+			setLayout(new GridLayout(4, 2));
+			// Generate rooms from room cards
+			JLabel roomLabel = new JLabel("Room:");
+			room = new JComboBox<>();
+			for(Card roomCard : roomCards) {
+				room.addItem(roomCard.getName());
+			}
+			add(roomLabel);
+			add(this.room);
+			// Generate persons from person cards
+			JLabel personLabel = new JLabel("Person:");
+			person = new JComboBox<>();
+			for(Card personCard : personCards) {
+				person.addItem(personCard.getName());
+			}
+			add(personLabel);
+			add(person);
+			// Generate weapons from weapon cards
+			JLabel weaponLabel = new JLabel("Weapon:");
+			weapon = new JComboBox<>();
+			for(Card weaponCard : weaponCards) {
+				weapon.addItem(weaponCard.getName());
+			}
+			add(weaponLabel);
+			add(weapon);
+			// Button to submit accusation
+			JButton submitButton = new JButton("Submit");
+			submitButton.addActionListener(new SubmitListener());
+			add(submitButton);
+			// Button to cancel accusation
+			JButton cancelButton = new JButton("Cancel");
+			add(cancelButton);
+			
+			setLocationRelativeTo(null); // Makes it so dialog launches at center of screen
+		}
+		
+		class SubmitListener implements ActionListener {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				// Generate a suggestion based on the selected values
+				Card selectedPerson = cards.get(person.getSelectedItem().toString());
+				Card selectedRoom = cards.get(room.getSelectedItem().toString());
+				Card selectedWeapon = cards.get(weapon.getSelectedItem().toString());
+				// Pass the suggestion to the engine
+				engine.humanAccusation(selectedPerson, selectedRoom, selectedWeapon);
 			}
 		}
 	}
@@ -663,6 +728,10 @@ public class Board extends JPanel implements MouseListener {
 	@Override
 	public void mouseExited(MouseEvent e) { /* Not needed function */ }
 	
+	public Solution getSolution() {
+		return theAnswer;
+	}
+	
 	// The below getters are used for testing
 	public List<Player> getPlayers() {
 		return players;
@@ -674,9 +743,5 @@ public class Board extends JPanel implements MouseListener {
 	
 	public List<Card> getDeck() {
 		return deck;
-	}
-	
-	public Solution getSolution() {
-		return theAnswer;
 	}
 }
