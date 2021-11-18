@@ -587,20 +587,8 @@ public class Board extends JPanel implements MouseListener {
 				Card selectedPerson = cards.get(person.getSelectedItem().toString());
 				Card selectedRoom = cards.get(room.getText());
 				Card selectedWeapon = cards.get(weapon.getSelectedItem().toString());
-				Solution suggestion = new Solution(selectedPerson, selectedRoom, selectedWeapon);
-				// Update the control panel to show the guess
-				Player humanPlayer = players.get(0);
-				controlPanel.setGuess(selectedPerson.getName() + ", " + selectedRoom.getName() + ", " + selectedWeapon.getName(), humanPlayer.getColor());
-				// Attempt to disprove the suggestion
-				Card disprover = handleSuggestion(humanPlayer, suggestion);
-				if(disprover != null) {
-					controlPanel.setGuessResult("Your suggestion was disproven by " + disprover.getHolder().getName() + " with " + disprover.getName(), disprover.getHolder().getColor());
-					if(!humanPlayer.getSeen().contains(disprover))
-						cardsDisplay.updateSeen(disprover, disprover.getHolder());
-					humanPlayer.updateSeen(disprover);
-				}
-				else
-					controlPanel.setGuessResult("Your suggestion could not be disproven.", Color.WHITE);
+				// Pass the suggestion to the engine
+				engine.humanSuggestion(selectedPerson, selectedRoom, selectedWeapon);
 			}
 		}
 	}

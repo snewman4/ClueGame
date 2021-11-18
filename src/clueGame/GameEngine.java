@@ -94,6 +94,25 @@ public class GameEngine {
 		// Flag that the player's turn is done
 		playerIsDone = true;
 	}
+	
+	// Method to handle the human making a suggestion
+	public void humanSuggestion(Card personCard, Card roomCard, Card weaponCard) {
+		Solution suggestion = new Solution(personCard, roomCard, weaponCard); // Generate a solution object
+		// Update the control panel with the suggestion
+		controlPanel.setGuess(personCard.getName() + ", " + roomCard.getName() + ", " + weaponCard.getName(), humanPlayer.getColor());
+		// Attempt to disprove the suggestion
+		Card disprover = gameboard.handleSuggestion(humanPlayer, suggestion);
+		if(disprover != null) {
+			controlPanel.setGuessResult("Your suggestion was disproven by " + disprover.getHolder().getName() +
+					" with " + disprover.getName(), disprover.getHolder().getColor());
+			// If the human player hasn't seen the resulting card, update their display
+			if(!humanPlayer.getSeen().contains(disprover))
+				cardsDisplay.updateSeen(disprover, disprover.getHolder());
+			humanPlayer.updateSeen(disprover);
+		}
+		else
+			controlPanel.setGuessResult("Your suggestion could not be disproven.", Color.WHITE);
+	}
 
 	// Method that is run when it is a computer's turn
 	public void computerTurn(Player activePlayer) {
