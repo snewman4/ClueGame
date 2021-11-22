@@ -111,7 +111,11 @@ public class GameControlPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// Tell the gameboard to create an accusation dialog
-			gameboard.generateAccusationDialog();
+			if(engine.getCurrPlayer() == 0)
+				gameboard.generateAccusationDialog();
+			// If it is not the human player's turn, give error
+			else
+				JOptionPane.showMessageDialog(null, "Please wait until it is your turn");
 		}
 	}
 	

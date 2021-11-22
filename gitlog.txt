@@ -1,3 +1,69 @@
+commit 83405f65759617d1b8e4535d644aa63d83270937
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Mon Nov 22 12:27:12 2021 -0700
+
+    Added functionality to allow a player to stay in the room if they were pulled to it by another player.
+
+commit 0eb0e85a6004dabb7791891b593b6f3177147bd1
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Mon Nov 22 12:13:24 2021 -0700
+
+    Improved computer accusations. Can now make an earlier accusation if one of their suggestions wasn't disproven.
+
+commit 6b9462534f962f05fde2b695bc079a3062b65f2e
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Thu Nov 18 14:40:52 2021 -0700
+
+    Fixed cancel button on accusation dialog
+
+commit f2a41211304a61088c72f3a6b1d95f5f6c65b688
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Thu Nov 18 14:35:47 2021 -0700
+
+    Fixed bug where target calculation skipped some spaces. Implemented accusations. Game now runs all the way through
+
+commit 762345f4ebae7760aa89db7a9e2f965120126056
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Thu Nov 18 13:09:16 2021 -0700
+
+    Fixed player offsetting to be correct when multiple players share a cell (only for rooms)
+
+commit 4f1b3d60dced8ae2b3cef0d5d6d39dc8fd6faa98
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Thu Nov 18 12:52:37 2021 -0700
+
+    Moved human suggestion handling to game engine
+
+commit fb9ae85e9db32e5418f4f872242a2982574991b1
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Tue Nov 16 17:37:03 2021 -0700
+
+    Refactored. Added comments
+
+commit e4e9126d9d876d9b071f3dd321806e7e74928f93
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Tue Nov 16 17:23:26 2021 -0700
+
+    Changed some color's based on my girlfriend's preferences
+
+commit 919b1da06eb92deb4972c2e4224231438695be90
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Tue Nov 16 17:16:53 2021 -0700
+
+    Refactored. Created game engine class to handle majority of the logic in the game.
+
+commit ec2e029a3a0038581853a278ee61bad8abea6d02
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Tue Nov 16 11:57:55 2021 -0700
+
+    Fixed human suggestion not moving computer player
+
+commit 304ab5c6db344c5b1019cfd1f8c2f12156bc36c5
+Author: Sam Newman <snewman1@mines.edu>
+Date:   Tue Nov 16 11:26:44 2021 -0700
+
+    Implemented accusing player moving accused player. Also made entire rooms show as targets
+
 commit 1a384eb010d8a8012ee0c22357c5a3ce186d98c4
 Author: Sam Newman <snewman1@mines.edu>
 Date:   Mon Nov 15 20:18:56 2021 -0700
