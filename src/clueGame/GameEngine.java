@@ -166,6 +166,7 @@ public class GameEngine {
 			Card disprover = gameboard.handleSuggestion(activePlayer, suggestion);
 			// Because this will always be for the computer player, don't display the disprover
 			if(disprover != null) {
+				activePlayer.setAccusationFlag(false); // If the suggestion was disproven, an accusation should not be made next turn
 				activePlayer.updateSeen(disprover); // Add the disproving card to the player's hand
 				controlPanel.setGuessResult(activePlayer.getName() + "'s guess was disproven", Color.WHITE);
 			}

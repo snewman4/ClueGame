@@ -35,6 +35,8 @@ public abstract class Player {
 	protected Set<Card> seen;
 	protected Map<String, Card> allCards;
 	protected Map<Character, Room> roomMap;
+	protected Solution lastSuggestion;
+	protected boolean accusationFlag; // Turned to true if no-one could disprove the last suggestion
 	
 	protected Player(String name) {
 		super();
@@ -168,6 +170,10 @@ public abstract class Player {
 	
 	public Set<Card> getSeen() {
 		return seen;
+	}
+	
+	public void setAccusationFlag(boolean accusationFlag) {
+		this.accusationFlag = accusationFlag;
 	}
 	
 	// This is used for testing only

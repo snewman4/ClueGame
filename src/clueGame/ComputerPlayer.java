@@ -76,15 +76,26 @@ public class ComputerPlayer extends Player {
 		// Determine which room the player is currently in, get the matching card
 		Room currRoom = findCurrentRoom();
 		Card currRoomCard = allCards.get(currRoom.getName());
+		/* 
+		 * If the suggested room is not in the player's hand, and the suggestion can't be disproven, then
+		 * this solution should be made an accusation
+		 */
+		if(!hand.contains(currRoomCard))
+			accusationFlag = true;
 		// Select random cards from the unseen cards
 		Card suggPersonCard = unseenPerson.get(rand.nextInt(unseenPerson.size()));
 		Card suggWeaponCard = unseenWeapon.get(rand.nextInt(unseenWeapon.size()));
-		// Create and return the suggestion
-		return new Solution(suggPersonCard, currRoomCard, suggWeaponCard);
+		// Create, save, and return the suggestion
+		lastSuggestion = new Solution(suggPersonCard, currRoomCard, suggWeaponCard);
+		return lastSuggestion;
 	}
 	
 	// Method to generate an accusation if possible. If not, return null
 	public Solution createAccusation() {
+		// If the accusation flag is active, that means the last solution was valid
+		if(accusationFlag)
+			return lastSuggestion;
+		// Only happens if a previous suggestion was disproven
 		int numKnownCards = hand.size() + seen.size(); // Number of cards that the player knows
 		// The only way a solution can be made is if the player doesn't know exactly three cards
 		if(allCards.size() - numKnownCards > 3) {
