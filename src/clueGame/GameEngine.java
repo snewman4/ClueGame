@@ -53,6 +53,11 @@ public class GameEngine {
 		controlPanel.setTurn(activePlayer, roll); // Update the UI
 		BoardCell cell = gameboard.getCell(activePlayer.getRow(), activePlayer.getColumn());
 		gameboard.calcTargets(cell, roll);
+		// If the player was pulled to this room by a suggestion, they can choose to stay
+		if(activePlayer.getPulledFlag()) {
+			gameboard.getTargets().add(cell);
+			activePlayer.setPulledFlag(false);
+		}
 		// Determine how to handle the turn based on type of player
 		if(activePlayer.getClass() == HumanPlayer.class)
 			humanTurn();

@@ -409,6 +409,8 @@ public class Board extends JPanel implements MouseListener {
 		BoardCell oldCell = getCell(suggestedPlayer.getRow(), suggestedPlayer.getColumn());
 		oldCell.setOccupied(false); // Mark that their old cell is not unoccupied
 		suggestedPlayer.setCurrentCell(suggestor.getCurrentCell()); // Move the player the the room
+		if(suggestor != suggestedPlayer)
+			suggestedPlayer.setPulledFlag(true); // Indicate that the player was pulled here
 		repaint();
 		while(true) {
 			currPlayerNum++; // Move on to next player
@@ -544,7 +546,7 @@ public class Board extends JPanel implements MouseListener {
 		
 		public SuggestionDialog(Room room) {
 			setTitle("Make a Suggestion");
-			setSize(300, 300);
+			setSize(300, 200);
 			setLayout(new GridLayout(4, 2));
 			// The only allowed suggestion is the current room
 			JLabel roomLabel = new JLabel("Room:");
@@ -597,7 +599,7 @@ public class Board extends JPanel implements MouseListener {
 		
 		public AccusationDialog() {
 			setTitle("Make an Accusation");
-			setSize(300, 300);
+			setSize(300, 200);
 			setLayout(new GridLayout(4, 2));
 			// Generate rooms from room cards
 			JLabel roomLabel = new JLabel("Room:");

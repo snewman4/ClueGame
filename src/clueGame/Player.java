@@ -37,6 +37,7 @@ public abstract class Player {
 	protected Map<Character, Room> roomMap;
 	protected Solution lastSuggestion;
 	protected boolean accusationFlag; // Turned to true if no-one could disprove the last suggestion
+	protected boolean wasPulledFlag; // Only true if the player was pulled to their current room in the last turn
 	
 	protected Player(String name) {
 		super();
@@ -45,6 +46,8 @@ public abstract class Player {
 		this.seen = new HashSet<>();
 		this.allCards = new HashMap<>();
 		this.roomMap = new HashMap<>();
+		this.accusationFlag = false;
+		this.wasPulledFlag = false;
 		// Use the pre-set arrays to define individual players' starting locations and colors
 		this.color = playerColors[currPlayerNum];
 		this.row = startLocation[currPlayerNum][0];
@@ -174,6 +177,14 @@ public abstract class Player {
 	
 	public void setAccusationFlag(boolean accusationFlag) {
 		this.accusationFlag = accusationFlag;
+	}
+	
+	public void setPulledFlag(boolean wasPulledFlag) {
+		this.wasPulledFlag = wasPulledFlag;
+	}
+	
+	public boolean getPulledFlag() {
+		return wasPulledFlag;
 	}
 	
 	// This is used for testing only
